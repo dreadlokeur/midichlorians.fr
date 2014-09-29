@@ -14,7 +14,7 @@ class SkillManager extends Model implements IModelManager {
     }
 
     public function create(SkillObject $skill, $returnLastId = true) {
-        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("' . $skill->name . '", "' . $skill->value . '")';
+        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("", "' . $skill->name . '", "' . $skill->value . '")';
         return $this->execute($sql, array(), $returnLastId, true);
     }
 
@@ -30,7 +30,7 @@ class SkillManager extends Model implements IModelManager {
     }
 
     public function update(SkillObject $skill) {
-        $sql = 'UPDATE ' . $this->getModelDBTable() . ' name = "' . $skill->name . '", value = "' . $skill->value . '" WHERE id = "' . $skill->id . '"';
+        $sql = 'UPDATE ' . $this->getModelDBTable() . 'SET name = "' . $skill->name . '", value = "' . $skill->value . '" WHERE id = "' . $skill->id . '"';
         $this->execute($sql, array(), false, true);
     }
 

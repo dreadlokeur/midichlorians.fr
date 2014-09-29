@@ -8,7 +8,7 @@ use models\BacklinkObject;
 use framework\Database;
 
 class BacklinkManager extends Model implements IModelManager {
-
+    
     public function __construct() {
     }
 

@@ -88,10 +88,9 @@ $config = array(
         )
     ),
     //backlinks
-    'backlinkView' => array(
+    'backlink' => array(
         'rules' => array(
-            'backoffice/backlinkView',
-            'backoffice/backlinkView'
+            'backoffice/backlink'
         ),
         'controller' => 'backoffice\backlink',
         'methods' => array(
@@ -101,7 +100,7 @@ $config = array(
     ),
     'backlinkAdd' => array(
         'rules' => array(
-            'backoffice/backlinkAdd'
+            'backoffice/backlink/add'
         ),
         'controller' => 'backoffice\backlink',
         'methods' => array(
@@ -112,7 +111,7 @@ $config = array(
     'backlinkDelete' => array(
         'regex' => true,
         'rules' => array(
-            'backoffice/backlinkDelete/([a-zA-Z0-9]+)'
+            'backoffice/backlink/delete/([a-zA-Z0-9]+)'
         ),
         'controller' => 'backoffice\backlink',
         'methods' => array(
@@ -123,9 +122,52 @@ $config = array(
     'backlinkUpdate' => array(
         'regex' => true,
         'rules' => array(
-            'backoffice/backlinkUpdate/([a-zA-Z0-9]+)'
+            'backoffice/backlink/update/([a-zA-Z0-9]+)'
         ),
         'controller' => 'backoffice\backlink',
+        'methods' => array(
+            'setAjax' => true,
+            'update' => array('[[1]]')
+        )
+    ),
+    //prestations
+    'prestation' => array(
+        'rules' => array(
+            'backoffice/prestation'
+        ),
+        'controller' => 'backoffice\prestation',
+        'methods' => array(
+            'setAjax' => false,
+            'view'
+        )
+    ),
+    'prestationAdd' => array(
+        'rules' => array(
+            'backoffice/prestation/add'
+        ),
+        'controller' => 'backoffice\prestation',
+        'methods' => array(
+            'setAjax' => true,
+            'add',
+        )
+    ),
+    'prestationDelete' => array(
+        'regex' => true,
+        'rules' => array(
+            'backoffice/prestation/delete/([a-zA-Z0-9]+)'
+        ),
+        'controller' => 'backoffice\prestation',
+        'methods' => array(
+            'setAjax' => true,
+            'delete' => array('[[1]]')
+        )
+    ),
+    'prestationUpdate' => array(
+        'regex' => true,
+        'rules' => array(
+            'backoffice/prestation/update/([a-zA-Z0-9]+)'
+        ),
+        'controller' => 'backoffice\prestation',
         'methods' => array(
             'setAjax' => true,
             'update' => array('[[1]]')

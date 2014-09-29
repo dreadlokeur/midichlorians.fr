@@ -78,14 +78,14 @@ class Index extends Controller {
     }
 
     private function _readAll($modelType) {
-        $cache = $this->_cache->read($modelType . 'listing');
+        $cache = $this->_cache->read($modelType . 'List');
         if (!is_null($cache) && !Application::getDebug())
             $datas = $cache;
         else {
-            $manager = Model::factoryManager($modelType, 'default', $modelType);
+            $manager = Model::factoryManager($modelType);
             $datas = $manager->readAll();
             if (!is_null($datas))
-                $this->_cache->write($modelType . 'listing', $datas, true);
+                $this->_cache->write($modelType . 'List', $datas, true);
         }
 
         return $datas;

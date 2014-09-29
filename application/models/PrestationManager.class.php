@@ -14,7 +14,7 @@ class PrestationManager extends Model implements IModelManager {
     }
 
     public function create(PrestationObject $prestation, $returnLastId = true) {
-        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("' . $prestation->content . '", "' . $prestation->icon . '")';
+        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("", "' . $prestation->content . '", "' . $prestation->icon . '")';
         return $this->execute($sql, array(), $returnLastId, true);
     }
 
@@ -30,7 +30,7 @@ class PrestationManager extends Model implements IModelManager {
     }
 
     public function update(PrestationObject $prestation) {
-        $sql = 'UPDATE ' . $this->getModelDBTable() . ' content = "' . $prestation->content . '", icon = "' . $prestation->icon . '" WHERE id = "' . $prestation->id . '"';
+        $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET content = "' . $prestation->content . '", icon = "' . $prestation->icon . '" WHERE id = "' . $prestation->id . '"';
         $this->execute($sql, array(), false, true);
     }
 

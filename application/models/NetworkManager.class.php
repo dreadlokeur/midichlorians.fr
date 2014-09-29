@@ -14,7 +14,7 @@ class NetworkManager extends Model implements IModelManager {
     }
 
     public function create(NetworkObject $network, $returnLastId = true) {
-        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("' . $network->link . '", "' . $network->icon . '")';
+        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("", "' . $network->link . '", "' . $network->icon . '")';
         return $this->execute($sql, array(), $returnLastId, true);
     }
 
@@ -30,7 +30,7 @@ class NetworkManager extends Model implements IModelManager {
     }
 
     public function update(NetworkObject $network) {
-        $sql = 'UPDATE ' . $this->getModelDBTable() . ' link = "' . $network->link . '", icon = "' . $network->icon . '" WHERE id = "' . $network->id . '"';
+        $sql = 'UPDATE ' . $this->getModelDBTable() . 'SET link = "' . $network->link . '", icon = "' . $network->icon . '" WHERE id = "' . $network->id . '"';
         $this->execute($sql, array(), false, true);
     }
 

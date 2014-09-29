@@ -15,7 +15,7 @@
         <div class="row mt text-center">
             <?php if (is_array($this->prestations) && count($this->prestations) > 0) { ?>
                 <?php foreach ($this->prestations as $prestation) { ?>
-                    <div class="col-lg-3">
+                    <div class="col-lg-3 padding-top-20">
                         <span class="glyphicon <?php echo $prestation->icon; ?> fa-3x"></span>
                         <p><?php echo $prestation->content; ?></p>
                     </div>

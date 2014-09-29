@@ -21,8 +21,8 @@
                     <span>Préférences</span>
                 </a>
                 <ul class="sub">
-                    <li><a href="<?php echo $this->getUrl('backlinkView'); ?>" class="ajax-switcher">Partenaires</a></li>
-                    <li><a href="">Prestations</a></li>
+                    <li><a href="<?php echo $this->getUrl('backlink'); ?>" class="ajax-switcher">Partenaires</a></li>
+                    <li><a href="<?php echo $this->getUrl('prestation'); ?>">Prestations</a></li>
                     <li><a href="">Compétences</a></li>
                     <li><a href="">Coordonnées</a></li>
                     <li><a href="">Cv</a></li>

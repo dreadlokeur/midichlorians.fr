@@ -30,7 +30,7 @@ class PageManager extends Model implements IModelManager {
     }
 
     public function update(PageObject $page) {
-        $sql = 'UPDATE ' . $this->getModelDBTable() . ' content = "' . $page->content . '", title = "' . $page->title . '", menu = "' . $page->menu . '" WHERE name = "' . $page->name . '"';
+        $sql = 'UPDATE ' . $this->getModelDBTable() . 'SET content = "' . $page->content . '", title = "' . $page->title . '", menu = "' . $page->menu . '" WHERE name = "' . $page->name . '"';
         $this->execute($sql, array(), false, true);
     }
 

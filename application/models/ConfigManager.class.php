@@ -30,7 +30,7 @@ class ConfigManager extends Model implements IModelManager {
     }
 
     public function update(ConfigObject $config) {
-        $sql = 'UPDATE ' . $this->getModelDBTable() . ' value = "' . $config->value . '" WHERE name = "' . $config->name . '"';
+        $sql = 'UPDATE ' . $this->getModelDBTable() . 'SET value = "' . $config->value . '" WHERE name = "' . $config->name . '"';
         $this->execute($sql, array(), false, true);
     }
 

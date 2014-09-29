@@ -234,7 +234,7 @@ class Backoffice extends Controller {
         if (!is_null($cache) && !Application::getDebug())
             $data = $cache;
         else {
-            $manager = Model::factoryManager($modelType, 'default', $modelType);
+            $manager = Model::factoryManager($modelType);
             $data = $manager->read($id);
             if (!is_null($data))
                 $this->_cache->write($modelType . $id, $data, true);
@@ -248,7 +248,7 @@ class Backoffice extends Controller {
         if (!is_null($cache) && !Application::getDebug())
             $datas = $cache;
         else {
-            $manager = Model::factoryManager($modelType, 'default', $modelType);
+            $manager = Model::factoryManager($modelType);
             $datas = $manager->readAll();
             if (!is_null($datas))
                 $this->_cache->write($modelType . 'List', $datas, true);

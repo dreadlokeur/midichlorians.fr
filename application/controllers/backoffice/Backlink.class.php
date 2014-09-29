@@ -31,7 +31,7 @@ class Backlink extends Backoffice {
         // POST with AJAX
         if (Http::isPost() && $this->isAjaxController()) {
             // load model
-            $manager = Model::factoryManager('backlink', 'default', 'backlink');
+            $manager = Model::factoryManager('backlink');
             //insert
             $id = $manager->create(Model::factoryObject('backlink', array(
                         'name' => Http::getPost('name'),
@@ -59,7 +59,7 @@ class Backlink extends Backoffice {
         if (Http::isPost() && $this->isAjaxController()) {
             $style = $this->_read('backlink', $id);
             if ($style) {
-                $manager = Model::factoryManager('backlink', 'default', 'backlink');
+                $manager = Model::factoryManager('backlink');
                 $manager->delete($id);
                 //cache
                 $this->_cache->delete('backlink' . $id);
@@ -78,7 +78,7 @@ class Backlink extends Backoffice {
         // POST with AJAX
         if (Http::isPost() && $this->isAjaxController()) {
             //load modal
-            $manager = Model::factoryManager('backlink', 'default', 'backlink');
+            $manager = Model::factoryManager('backlink');
             $manager->update(Model::factoryObject('backlink', array(
                         'id' => $id,
                         'name' => Http::getPost('name'),

@@ -1,0 +1,19 @@
+.nicescroll-rails{z-index:9999!important};
+.centered {
+    text-align: center;
+}
+.pt {
+    padding-bottom: 50px;
+    padding-top: 50px;
+}
+.mt {
+    margin-bottom: 40px;
+    margin-top: 40px;
+}
+.progress {
+    height: 20px !important
+}
+.progress-bar {
+    font-size: 15px !important;
+    line-height: 15px !important;
+}

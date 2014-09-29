@@ -1,0 +1,13 @@
+.pagination > .active > a, .pagination > .active > a:hover, .pagination > .active > a:focus,
+.pagination > .active > span,
+.pagination > .active > span:hover,
+.pagination > .active > span:focus {
+    background-color: #18bc9c !important;
+    border-color: #18bc9c!important;
+}
+
+
+table#backlink textarea {
+    max-height: 50px;
+    width: 100%
+}

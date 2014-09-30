@@ -19,10 +19,9 @@ class PageManager extends Model implements IModelManager {
     }
 
     public function read($name) {
-        $engine = $this->getDb(true);
         $sql = 'SELECT * FROM ' . $this->getModelDBTable() . ' WHERE name = ?';
         $this->execute($sql, array($name => Database::PARAM_STR));
-        $data = $engine->fetchAll(Database::FETCH_ASSOC);
+        $data = $this->_engine->fetchAll(Database::FETCH_ASSOC);
         if (empty($data))
             return null;
 
@@ -30,7 +29,7 @@ class PageManager extends Model implements IModelManager {
     }
 
     public function update(PageObject $page) {
-        $sql = 'UPDATE ' . $this->getModelDBTable() . 'SET content = "' . $page->content . '", title = "' . $page->title . '", menu = "' . $page->menu . '" WHERE name = "' . $page->name . '"';
+        $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET content = "' . $page->content . '", title = "' . $page->title . '", menu = "' . $page->menu . '" WHERE name = "' . $page->name . '"';
         $this->execute($sql, array(), false, true);
     }
 
@@ -43,10 +42,9 @@ class PageManager extends Model implements IModelManager {
 
     public function readAll() {
         $all = array();
-        $engine = $this->getDb(true);
         $sql = 'SELECT * FROM ' . $this->getModelDBTable();
         $this->execute($sql);
-        $datas = $engine->fetchAll(Database::FETCH_ASSOC);
+        $datas = $this->_engine->fetchAll(Database::FETCH_ASSOC);
 
         foreach ($datas as $data)
             $all[$data['name']] = self::factoryObject('page', $data);

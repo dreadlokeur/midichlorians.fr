@@ -5,9 +5,32 @@
     background-color: #18bc9c !important;
     border-color: #18bc9c!important;
 }
+.cursor-pointer {
+    cursor: pointer;
+}
 
+.draghover {
+    background-color:  #18bc9c !important;
+}
+.drag:hover, .editable:hover {
+    cursor: pointer;
+    background-color:  #18bc9c !important;
+}
 
 table#backlink textarea {
+    max-height: 50px;
+    width: 100%
+}
+
+table#cv img {
+    max-height: 90px;
+    width: auto;
+}
+table#media img {
+    max-height: 90px;
+    width: auto;
+}
+table#media textarea {
     max-height: 50px;
     width: 100%
 }

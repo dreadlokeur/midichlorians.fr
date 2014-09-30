@@ -21,7 +21,6 @@ use framework\mvc\Model;
 
 class Backoffice extends Controller {
 
-    protected $_isUpload = false;
     protected $_security = null;
     protected $_crsf = null;
 
@@ -42,8 +41,7 @@ class Backoffice extends Controller {
 
         //check security
         if (Http::isPost()) {
-            $token = $this->router->getCurrentRoute() != 'upload' ? Http::getPost('backoffice-token') : Http::getServer('HTTP_TOKEN');
-            if (!$this->_crsf->check($token)) {
+            if (!$this->_crsf->check(Http::getPost('backoffice-token'))) {
                 $this->log->debug('Invalid token security');
                 $this->_redirect(Router::getUrl('error', array('404')), true);
             }
@@ -58,12 +56,6 @@ class Backoffice extends Controller {
     }
 
     public function __destruct() {
-        //flushing upload directory
-        if (!$this->_isUpload) {
-            $this->_flushTmpDirectory();
-            $this->log->debug('Upload tmp directory purged');
-        }
-
         //update token into session
         if ($this->_crsf) {
             $this->_crsf->set();
@@ -117,59 +109,11 @@ class Backoffice extends Controller {
 
     public function home() {
         //define tpl vars
-        $this->tpl->setVar('block', $this->tpl->getPath() .'blocks' . DS . 'home.tpl.php', false, true);
+        $this->tpl->setVar('block', $this->tpl->getPath() . 'blocks' . DS . 'home.tpl.php', false, true);
         //ajax datas
         if ($this->isAjaxController()) {
             $this->tpl->setFile('blocks' . DS . 'home.tpl.php');
             $this->setAjaxAutoAddDatas(true);
-        }
-    }
-
-    public function upload() {
-        $this->setAjaxController();
-        //desactivate logger display
-        $displayer = $this->log->getObservers('display');
-        if (!is_null($displayer))
-            $this->log->detach($displayer);
-
-        $file = Http::getServer('HTTP_NAME'); //get filename
-        if ($file) {
-            $path = PATH_TMP . $this->session->getId() . DS;
-            if (!is_dir($path))
-                mkdir($path, 0770);
-
-            $fileInfos = explode('-', $file);
-            //delete last thumb or original into tmp path
-            if ($fileInfos[1] == 'thumb' || $fileInfos[1] == 'original')
-                $this->_flushTmpDirectory($fileInfos[1]);
-
-
-            $ex = Tools::getFileExtension($file);
-            $salt = $this->session->increment('idUpload', 1, 1, true);
-            $randName = $salt . '-' . $fileInfos[0] . '-' . $fileInfos[1] . '-' . rand() . '.' . $ex;
-            //create tmp file, with php flux content
-            file_put_contents($path . $randName, file_get_contents('php://input'));
-            $this->log->debug('Uploaded file ' . $randName);
-            $this->addAjaxDatas('url', str_replace(DS, '/', Router::getHost(true, Http::isHttps()) . str_replace(PATH_ROOT, '', $path)) . $randName);
-            $this->addAjaxDatas('name', $randName);
-            $this->addAjaxDatas('token', $this->_crsf->get());
-        }
-        $this->_isUpload = true;
-    }
-
-    private function _flushTmpDirectory($filterType = null) {
-        $path = PATH_TMP /* . $this->session->getId() . DS */;
-        if (is_dir($path)) {
-            $dir = Tools::cleanScandir($path);
-            foreach ($dir as &$f) {
-                if ($filterType && stripos($f, $filterType) === false)
-                    continue;
-                if (is_file($path . $f) && $f != '.htaccess')
-                    unlink($path . $f);
-
-                if (is_dir($path . $f))
-                    Tools::deleteTreeDirectory($path . $f);
-            }
         }
     }
 
@@ -236,7 +180,7 @@ class Backoffice extends Controller {
         else {
             $manager = Model::factoryManager($modelType);
             $data = $manager->read($id);
-            if (!is_null($data))
+            if (!is_null($data) && !Application::getDebug())
                 $this->_cache->write($modelType . $id, $data, true);
         }
 
@@ -250,7 +194,7 @@ class Backoffice extends Controller {
         else {
             $manager = Model::factoryManager($modelType);
             $datas = $manager->readAll();
-            if (!is_null($datas))
+            if (!is_null($datas) && !Application::getDebug())
                 $this->_cache->write($modelType . 'List', $datas, true);
         }
 

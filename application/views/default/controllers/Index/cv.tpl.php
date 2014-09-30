@@ -17,7 +17,7 @@
                 <?php foreach ($this->cvs as $cv) { ?>
                     <div class="col-lg-4">
                         <a href="<?php echo $cv->link; ?>" target="_blank">
-                            <img alt="<?php echo $cv->name; ?>" src="<?php echo $cv->thumb; ?>">
+                            <img alt="<?php echo $cv->name; ?>" title="<?php echo $cv->descr; ?>" src="<?php echo $cv->media->filename; ?>" height="256px" width="256px">
                         </a>
                     </div>
                 <?php } ?>

@@ -81,7 +81,8 @@ class Prestation extends Backoffice {
             $manager->update(Model::factoryObject('prestation', array(
                         'id' => $id,
                         'content' => Http::getPost('content', null, true),
-                        'icon' => Http::getPost('icon')), false));
+                        'icon' => Http::getPost('icon')
+            )));
 
             //cache
             $this->_cache->delete('prestation' . $id);

@@ -27,7 +27,6 @@ class Index extends Controller {
         $this->tpl->setVar('cvs', $this->_readAll('cv'), false, true);
         $this->tpl->setVar('networks', $this->_readAll('network'), false, true);
         $this->tpl->setVar('config', $this->_readAll('config'), false, true);
-        $this->tpl->setVar('images', $this->_readAll('image'), false, true);
         // set template file
         $this->tpl->setFile('controllers' . DS . 'Index' . DS . 'index.tpl.php');
     }
@@ -84,7 +83,7 @@ class Index extends Controller {
         else {
             $manager = Model::factoryManager($modelType);
             $datas = $manager->readAll();
-            if (!is_null($datas))
+            if (!is_null($datas) && !Application::getDebug())
                 $this->_cache->write($modelType . 'List', $datas, true);
         }
 

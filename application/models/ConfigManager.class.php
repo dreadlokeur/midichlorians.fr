@@ -19,10 +19,9 @@ class ConfigManager extends Model implements IModelManager {
     }
 
     public function read($name) {
-        $engine = $this->getDb(true);
         $sql = 'SELECT * FROM ' . $this->getModelDBTable() . ' WHERE name = ?';
         $this->execute($sql, array($name => Database::PARAM_STR));
-        $data = $engine->fetchAll(Database::FETCH_ASSOC);
+        $data = $this->_engine->fetchAll(Database::FETCH_ASSOC);
         if (empty($data))
             return null;
 
@@ -30,7 +29,7 @@ class ConfigManager extends Model implements IModelManager {
     }
 
     public function update(ConfigObject $config) {
-        $sql = 'UPDATE ' . $this->getModelDBTable() . 'SET value = "' . $config->value . '" WHERE name = "' . $config->name . '"';
+        $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET value = "' . $config->value . '" WHERE name = "' . $config->name . '"';
         $this->execute($sql, array(), false, true);
     }
 
@@ -43,10 +42,9 @@ class ConfigManager extends Model implements IModelManager {
 
     public function readAll() {
         $all = array();
-        $engine = $this->getDb(true);
         $sql = 'SELECT * FROM ' . $this->getModelDBTable();
         $this->execute($sql);
-        $datas = $engine->fetchAll(Database::FETCH_ASSOC);
+        $datas = $this->_engine->fetchAll(Database::FETCH_ASSOC);
 
         foreach ($datas as $data)
             $all[$data['name']] = self::factoryObject('config', $data);

@@ -22,23 +22,29 @@
                 </a>
                 <ul class="sub">
                     <li><a href="<?php echo $this->getUrl('backlink'); ?>" class="ajax-switcher">Partenaires</a></li>
-                    <li><a href="<?php echo $this->getUrl('prestation'); ?>">Prestations</a></li>
-                    <li><a href="">Compétences</a></li>
+                    <li><a href="<?php echo $this->getUrl('prestation'); ?>" class="ajax-switcher">Prestations</a></li>
+                    <li><a href="<?php echo $this->getUrl('skill'); ?>" class="ajax-switcher">Compétences</a></li>
                     <li><a href="">Coordonnées</a></li>
-                    <li><a href="">Cv</a></li>
+                    <li><a href="<?php echo $this->getUrl('cv'); ?>">Cv</a></li>
                     <li><a href="">Réseaux sociaux</a></li>
                     <li><a href="">Languages</a></li>
                     <li><a href="">Paramètres</a></li>
                 </ul>
             </li>
             <li>
-                <a href="<?php echo $this->getUrl('edit', array('portfolio')); ?>">
+                <a href="<?php echo $this->getUrl('media'); ?>" class="ajax-switcher">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Médias</span>
+                </a>
+            </li>
+            <li>
+                <a href="">
                     <i class="fa fa-dashboard"></i>
                     <span>Portfolio</span>
                 </a>
             </li>
             <li>
-                <a href="<?php echo $this->getUrl('page'); ?>" class="ajax-switcher">
+                <a href="" class="ajax-switcher">
                     <i class="fa fa-dashboard"></i>
                     <span>Pages</span>
                 </a>
@@ -65,7 +71,6 @@
                 <ul class="sub">
                     <li><a  href="">Tâches</a></li>
                     <li><a  href="">Bloc note</a></li>
-                    <li><a  href="">Hebergement</a></li>
                     <li><a  href="">Logs</a></li>
                 </ul>
             </li>

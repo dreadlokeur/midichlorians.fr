@@ -13,8 +13,8 @@
     <meta name="Keywords" content="<?php if ($this->keywords) echo $this->keywords;else echo $this->langs->site_keywords; ?>" />
     <meta name="Robots" content="index,follow" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="<?php echo $this->images['favicon']->file; ?>" type="image/x-icon">
-    <link rel="shortcut icon" href="<?php echo $this->images['favicon']->file; ?>" type="image/x-icon" />
+    <link rel="icon" href="" type="image/x-icon">
+    <link rel="shortcut icon" href="" type="image/x-icon" />
     <style media="screen" type="text/css"><?php echo $this->getCss(); ?></style>
     <!--[if lt IE 7]>
             <div class='aligncenter'><a href="http://www.microsoft.com/windows/internet-explorer/default.aspx?ocid=ie6_countdown_bannercode"><img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg"border="0"></a></div>  

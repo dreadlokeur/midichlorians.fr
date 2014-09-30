@@ -37,7 +37,6 @@ define('PATH_TEMPLATE_DEFAULT_ASSETS', PATH_TEMPLATE_DEFAULT . 'assets' . DS);
 define('PATH_TEMPLATE_BACKOFFICE', PATH_VIEWS . 'backoffice' . DS);
 define('PATH_TEMPLATE_BACKOFFICE_ASSETS', PATH_TEMPLATE_BACKOFFICE . 'assets' . DS);
 //datas
+define('PATH_DATA_MEDIA', PATH_DATA . 'medias' . DS);
 define('PATH_DATA_REFERENCE', PATH_DATA . 'references' . DS);
-define('PATH_DATA_CV', PATH_DATA . 'cv' . DS);
-define('PATH_DATA_IMAGE', PATH_DATA . 'images' . DS);
 ?>

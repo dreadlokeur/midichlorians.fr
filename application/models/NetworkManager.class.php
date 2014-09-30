@@ -19,7 +19,6 @@ class NetworkManager extends Model implements IModelManager {
     }
 
     public function read($id) {
-        $engine = $this->getDb(true);
         $sql = 'SELECT * FROM ' . $this->getModelDBTable() . ' WHERE id = ?';
         $this->execute($sql, array($id => Database::PARAM_INT));
         $data = $engine->fetchAll(Database::FETCH_ASSOC);
@@ -30,7 +29,7 @@ class NetworkManager extends Model implements IModelManager {
     }
 
     public function update(NetworkObject $network) {
-        $sql = 'UPDATE ' . $this->getModelDBTable() . 'SET link = "' . $network->link . '", icon = "' . $network->icon . '" WHERE id = "' . $network->id . '"';
+        $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET link = "' . $network->link . '", icon = "' . $network->icon . '" WHERE id = "' . $network->id . '"';
         $this->execute($sql, array(), false, true);
     }
 
@@ -43,10 +42,9 @@ class NetworkManager extends Model implements IModelManager {
 
     public function readAll() {
         $all = array();
-        $engine = $this->getDb(true);
         $sql = 'SELECT * FROM ' . $this->getModelDBTable();
         $this->execute($sql);
-        $datas = $engine->fetchAll(Database::FETCH_ASSOC);
+        $datas = $this->_engine->fetchAll(Database::FETCH_ASSOC);
 
         foreach ($datas as $data)
             $all[] = self::factoryObject('network', $data);

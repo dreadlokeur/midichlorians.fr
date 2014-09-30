@@ -3,7 +3,7 @@
         <tr>
             <th>ID</th>
             <th>Content</th>
-            <th>Icon</th>
+            <th>Icone (font awesome)</th>
             <th>Action</th>
         </tr>
     </thead>

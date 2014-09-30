@@ -29,7 +29,7 @@ $config = array(
     'LOGGER_ERROR' => true,
     //app
     'ADMIN_PASSWORD' => '**********************',
-    'THUMB_MAXSIZE' => 0, //0 no limit (byte)
-    'THUMB_EXT' => 'image/*',
+    'MEDIA_MAXSIZE' => 10, //(MiB)
+    'MEDIA_ACCEPT' => 'image/*, audio/*, video/*',
 );
 ?>

@@ -6,7 +6,7 @@ use controllers\Backoffice;
 use framework\network\Http;
 use framework\mvc\Model;
 
-class Backlink extends Backoffice {
+class Skill extends Backoffice {
 
     public function __construct() {
         parent::__construct();
@@ -18,11 +18,11 @@ class Backlink extends Backoffice {
 
     public function view() {
         //define tpl vars
-        $this->tpl->setVar('block', $this->tpl->getPath() . 'blocks' . DS . 'backlink.tpl.php', false, true);
-        $this->tpl->setVar('backlinks', $this->_readAll('backlink'), false, true);
+        $this->tpl->setVar('block', $this->tpl->getPath() . 'blocks' . DS . 'skill.tpl.php', false, true);
+        $this->tpl->setVar('skills', $this->_readAll('skill'), false, true);
         //ajax datas
         if ($this->isAjaxController()) {
-            $this->tpl->setFile('blocks' . DS . 'backlink.tpl.php');
+            $this->tpl->setFile('blocks' . DS . 'skill.tpl.php');
             $this->setAjaxAutoAddDatas(true);
         }
     }
@@ -31,20 +31,19 @@ class Backlink extends Backoffice {
         // POST with AJAX
         if (Http::isPost() && $this->isAjaxController()) {
             // load model
-            $manager = Model::factoryManager('backlink');
+            $manager = Model::factoryManager('skill');
             //insert
-            $id = $manager->create(Model::factoryObject('backlink', array(
+            $id = $manager->create(Model::factoryObject('skill', array(
                         'name' => Http::getPost('name'),
-                        'descr' => Http::getPost('descr'),
-                        'link' => Http::getPost('link')
+                        'value' => Http::getPost('value')
             )));
             if (!is_null($id)) {
                 //cache
-                $this->_cache->delete('backlink' . 'List');
+                $this->_cache->delete('skill' . 'List');
 
                 //update content
-                $this->tpl->setVar('backlinks', $this->_readAll('backlink'), false, true);
-                $this->tpl->setFile('tables' . DS . 'backlink.tpl.php');
+                $this->tpl->setVar('skills', $this->_readAll('skill'), false, true);
+                $this->tpl->setFile('tables' . DS . 'skill.tpl.php');
                 $this->setAjaxAutoAddDatas(true);
 
                 //put ajax datas
@@ -57,17 +56,17 @@ class Backlink extends Backoffice {
     public function delete($id) {
         // POST with AJAX
         if (Http::isPost() && $this->isAjaxController()) {
-            $style = $this->_read('backlink', $id);
+            $style = $this->_read('skill', $id);
             if ($style) {
-                $manager = Model::factoryManager('backlink');
+                $manager = Model::factoryManager('skill');
                 $manager->delete($id);
                 //cache
-                $this->_cache->delete('backlink' . $id);
-                $this->_cache->delete('backlink' . 'List');
+                $this->_cache->delete('skill' . $id);
+                $this->_cache->delete('skill' . 'List');
 
                 //update content
-                $this->tpl->setVar('backlinks', $this->_readAll('backlink'), false, true);
-                $this->tpl->setFile('tables' . DS . 'backlink.tpl.php');
+                $this->tpl->setVar('skills', $this->_readAll('skill'), false, true);
+                $this->tpl->setFile('tables' . DS . 'skill.tpl.php');
                 $this->setAjaxAutoAddDatas(true);
                 $this->addAjaxDatas('success', true);
             }
@@ -78,17 +77,16 @@ class Backlink extends Backoffice {
         // POST with AJAX
         if (Http::isPost() && $this->isAjaxController()) {
             //load modal
-            $manager = Model::factoryManager('backlink');
-            $manager->update(Model::factoryObject('backlink', array(
+            $manager = Model::factoryManager('skill');
+            $manager->update(Model::factoryObject('skill', array(
                         'id' => $id,
                         'name' => Http::getPost('name'),
-                        'descr' => Http::getPost('descr'),
-                        'link' => Http::getPost('descr')
+                        'value' => Http::getPost('value')
             )));
 
             //cache
-            $this->_cache->delete('backlink' . $id);
-            $this->_cache->delete('backlink' . 'List');
+            $this->_cache->delete('skill' . $id);
+            $this->_cache->delete('skill' . 'List');
             $this->addAjaxDatas('success', true);
         }
     }

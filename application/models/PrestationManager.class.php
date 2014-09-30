@@ -19,10 +19,9 @@ class PrestationManager extends Model implements IModelManager {
     }
 
     public function read($id) {
-        $engine = $this->getDb(true);
         $sql = 'SELECT * FROM ' . $this->getModelDBTable() . ' WHERE id = ?';
         $this->execute($sql, array($id => Database::PARAM_INT));
-        $data = $engine->fetchAll(Database::FETCH_ASSOC);
+        $data = $this->_engine->fetchAll(Database::FETCH_ASSOC);
         if (empty($data))
             return null;
 
@@ -43,10 +42,9 @@ class PrestationManager extends Model implements IModelManager {
 
     public function readAll() {
         $all = array();
-        $engine = $this->getDb(true);
         $sql = 'SELECT * FROM ' . $this->getModelDBTable();
         $this->execute($sql);
-        $datas = $engine->fetchAll(Database::FETCH_ASSOC);
+        $datas = $this->_engine->fetchAll(Database::FETCH_ASSOC);
 
         foreach ($datas as $data)
             $all[] = self::factoryObject('prestation', $data);

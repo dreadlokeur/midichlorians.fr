@@ -4,35 +4,34 @@ namespace models;
 
 use framework\mvc\Model;
 use framework\mvc\IModelManager;
-use models\ImageObject;
+use models\MediaObject;
 use framework\Database;
 
-class ImageManager extends Model implements IModelManager {
+class MediaManager extends Model implements IModelManager {
 
-    protected static $_datasPath = PATH_DATA_IMAGE;
+    protected static $_datasPath = PATH_DATA_MEDIA;
 
     public function __construct() {
         
     }
 
-    public function create(ImageObject $image, $returnLastId = true) {
-        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("", "' . $image->name . '","' . $image->getFile(false) . '")';
+    public function create(MediaObject $media, $returnLastId = true) {
+        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("", "' . $media->getFilename(false) . '", "' . $media->type . '", "' . $media->mime . '", "' . $media->title . '", "' . $media->alt . '")';
         return $this->execute($sql, array(), $returnLastId, true);
     }
 
-    public function read($name) {
-        $engine = $this->getDb(true);
-        $sql = 'SELECT * FROM ' . $this->getModelDBTable() . ' WHERE name = ?';
-        $this->execute($sql, array($name => Database::PARAM_STR));
-        $data = $engine->fetchAll(Database::FETCH_ASSOC);
+    public function read($id) {
+        $sql = 'SELECT * FROM ' . $this->getModelDBTable() . ' WHERE id = ?';
+        $this->execute($sql, array($id => Database::PARAM_INT));
+        $data = $this->_engine->fetchAll(Database::FETCH_ASSOC);
         if (empty($data))
             return null;
 
-        return self::factoryObject('image', $data[0]);
+        return self::factoryObject('media', $data[0]);
     }
 
-    public function update(ImageObject $image) {
-        $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET file = "' . $image->getFile(false) . '" WHERE id = "' . $image->name . '"';
+    public function update(MediaObject $media) {
+        $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET filename = "' . $media->getFilename(false) . '", title = "' . $media->title . '", alt = "' . $media->alt . '" WHERE id = "' . $media->id . '"';
         $this->execute($sql, array(), false, true);
     }
 
@@ -44,16 +43,15 @@ class ImageManager extends Model implements IModelManager {
     }
 
     public function readAll() {
-        $all = array();
-        $engine = $this->getDb(true);
         $sql = 'SELECT * FROM ' . $this->getModelDBTable();
         $this->execute($sql);
-        $datas = $engine->fetchAll(Database::FETCH_ASSOC);
+        $datas = $this->_engine->fetchAll(Database::FETCH_ASSOC);
 
+        $medias = array();
         foreach ($datas as $data)
-            $all[$data['name']] = self::factoryObject('image', $data);
+            $medias[] = self::factoryObject('media', $data);
 
-        return $all;
+        return $medias;
     }
 
     public static function setDatasPath($dir, $forceCreate = true) {

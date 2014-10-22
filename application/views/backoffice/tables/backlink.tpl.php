@@ -13,13 +13,14 @@
             <?php foreach ($this->backlinks as $backlink) { ?>
                 <tr id="<?php echo $backlink->id; ?>">
                     <td name="id">
-                        <input type="checkbox" value="" class="deleteCheckbox">
+                        <input type="checkbox" class="deleteCheckbox">
                         <?php echo $backlink->id; ?>
                     </td>
                     <td class="editable" name="name"><?php echo $backlink->name; ?></td>
                     <td class="editable" name="descr"><?php echo $backlink->descr; ?></td>
                     <td class="editable" name="link"><?php echo $backlink->link; ?></td>
                     <td>
+                        <a href="<?php echo $backlink->link; ?>" target="blanck"class="btn btn-default" title="Voir" alt="Voir"><i class="fa fa-eye"></i></a>
                         <a href="<?php echo $this->getUrl('backlinkDelete', array($backlink->id)); ?>" class="btn btn-default delete" title="Supprimer" alt="Supprimer"><i class="fa fa-times"></i></a>
                     </td>
                 </tr>

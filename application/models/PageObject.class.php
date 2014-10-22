@@ -11,6 +11,7 @@ class PageObject extends Model implements IModelObject {
     protected $_content = null;
     protected $_title = null;
     protected $_menu = null;
+    protected $_deletable = true;
 
     public function __construct() {
         

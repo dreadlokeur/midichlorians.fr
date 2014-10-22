@@ -20,6 +20,7 @@ class Prestation extends Backoffice {
         //define tpl vars
         $this->tpl->setVar('block', $this->tpl->getPath() . 'blocks' . DS . 'prestation.tpl.php', false, true);
         $this->tpl->setVar('prestations', $this->_readAll('prestation'), false, true);
+        $this->tpl->setVar('icons', $this->_readAll('fontawesome'), false, true);
         //ajax datas
         if ($this->isAjaxController()) {
             $this->tpl->setFile('blocks' . DS . 'prestation.tpl.php');
@@ -43,6 +44,7 @@ class Prestation extends Backoffice {
 
                 //update content
                 $this->tpl->setVar('prestations', $this->_readAll('prestation'), false, true);
+                $this->tpl->setVar('icons', $this->_readAll('fontawesome'), false, true);
                 $this->tpl->setFile('tables' . DS . 'prestation.tpl.php');
                 $this->setAjaxAutoAddDatas(true);
 
@@ -66,6 +68,7 @@ class Prestation extends Backoffice {
 
                 //update content
                 $this->tpl->setVar('prestations', $this->_readAll('prestation'), false, true);
+                $this->tpl->setVar('icons', $this->_readAll('fontawesome'), false, true);
                 $this->tpl->setFile('tables' . DS . 'prestation.tpl.php');
                 $this->setAjaxAutoAddDatas(true);
                 $this->addAjaxDatas('success', true);

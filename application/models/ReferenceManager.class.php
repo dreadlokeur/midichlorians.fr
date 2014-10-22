@@ -53,15 +53,15 @@ class ReferenceManager extends Model implements IModelManager {
     }
 
     public function readAll() {
-        $all = array();
         $sql = 'SELECT * FROM ' . $this->getModelDBTable();
         $this->execute($sql);
         $datas = $this->_engine->fetchAll(Database::FETCH_ASSOC);
 
+        $references = array();
         foreach ($datas as $data)
-            $all[] = self::factoryObject('reference', $data);
+            $references[] = self::factoryObject('reference', $data);
 
-        return $all;
+        return $references;
     }
 
     public static function setDatasPath($dir, $forceCreate = true) {

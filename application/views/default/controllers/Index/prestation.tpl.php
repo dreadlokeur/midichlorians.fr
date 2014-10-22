@@ -16,7 +16,7 @@
             <?php if (is_array($this->prestations) && count($this->prestations) > 0) { ?>
                 <?php foreach ($this->prestations as $prestation) { ?>
                     <div class="col-lg-3 padding-top-20">
-                        <span class="glyphicon <?php echo $prestation->icon; ?> fa-3x"></span>
+                        <i class="fa fa-<?php echo $prestation->icon; ?> fa-3x"></i>
                         <p><?php echo $prestation->content; ?></p>
                     </div>
                 <?php } ?>

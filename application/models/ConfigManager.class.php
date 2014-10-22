@@ -41,15 +41,15 @@ class ConfigManager extends Model implements IModelManager {
     }
 
     public function readAll() {
-        $all = array();
         $sql = 'SELECT * FROM ' . $this->getModelDBTable();
         $this->execute($sql);
         $datas = $this->_engine->fetchAll(Database::FETCH_ASSOC);
-
+        
+        $configs = array();
         foreach ($datas as $data)
-            $all[$data['name']] = self::factoryObject('config', $data);
+            $configs[$data['name']] = self::factoryObject('config', $data);
 
-        return $all;
+        return $configs;
     }
 
 }

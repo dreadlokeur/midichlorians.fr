@@ -17,20 +17,29 @@
     background-color:  #18bc9c !important;
 }
 
-table#backlink textarea {
+table#backlink textarea, table#prestation textarea,table#skill textarea, table#media textarea {
     max-height: 50px;
     width: 100%
 }
 
-table#cv img {
+table#cv img, table#media img {
     max-height: 90px;
     width: auto;
 }
-table#media img {
-    max-height: 90px;
-    width: auto;
+
+.icon-select {
+    min-width: 200px;
 }
-table#media textarea {
-    max-height: 50px;
-    width: 100%
+
+.media-photo img {
+    max-height: 100px;
 }
+.media-photo img:hover {
+    cursor: pointer;
+}
+a.thumbnail:hover,
+a.thumbnail:focus,
+a.thumbnail.active {
+  border-color: #18bc9c !important;
+}
+

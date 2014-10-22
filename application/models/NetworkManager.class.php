@@ -21,7 +21,7 @@ class NetworkManager extends Model implements IModelManager {
     public function read($id) {
         $sql = 'SELECT * FROM ' . $this->getModelDBTable() . ' WHERE id = ?';
         $this->execute($sql, array($id => Database::PARAM_INT));
-        $data = $engine->fetchAll(Database::FETCH_ASSOC);
+        $data = $this->_engine->fetchAll(Database::FETCH_ASSOC);
         if (empty($data))
             return null;
 
@@ -41,15 +41,15 @@ class NetworkManager extends Model implements IModelManager {
     }
 
     public function readAll() {
-        $all = array();
         $sql = 'SELECT * FROM ' . $this->getModelDBTable();
         $this->execute($sql);
         $datas = $this->_engine->fetchAll(Database::FETCH_ASSOC);
 
+        $networks = array();
         foreach ($datas as $data)
-            $all[] = self::factoryObject('network', $data);
+            $networks[] = self::factoryObject('network', $data);
 
-        return $all;
+        return $networks;
     }
 
 }

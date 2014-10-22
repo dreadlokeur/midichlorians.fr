@@ -15,3 +15,4 @@
         </div>
     </section>
 </section>
+<?php include $this->getPath() . 'modals' . DS . 'media.tpl.php'; ?>

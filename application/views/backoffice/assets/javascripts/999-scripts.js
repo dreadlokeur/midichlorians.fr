@@ -231,10 +231,6 @@
         });
 
 
-
-
-
-
         // --------------------------------------------FUNCTIONS-------------------------------------------//
         function responsiveView() {
             var wSize = $(window).width();
@@ -324,6 +320,9 @@
 
             // media upload form
             dropzone();
+
+
+            iconSelect();
         }
 
         function tablesData() {
@@ -359,6 +358,11 @@
                 }
             });
         }
+        $("body").on('change', '.editableInput, .editableSelect', function () {
+            var url = urls[$(this).parents("table").attr('id') + 'Update'] + '/' + $(this).parents("tr").attr('id');
+            var tr = $(this).parents("tr");
+            update(url, tr);
+        });
 
         function tablesEditable() {
             $('td.editable, th.editable').each(function () {
@@ -437,9 +441,10 @@
                         }
                     }
 
-                    //reload plugins tables
+                    //reload plugins
                     tablesData();
                     tablesEditable();
+                    iconSelect();
                     //update token
                     $('input#backoffice-token').val(datas.token);
 
@@ -469,9 +474,10 @@
                         }
                     }
 
-                    //reload plugins tables
+                    //reload plugins
                     tablesData();
                     tablesEditable();
+                    iconSelect();
                     // update token
                     $('input#backoffice-token').val(datas.token);
                 }
@@ -483,8 +489,19 @@
             inputs['backoffice-token'] = $('input#backoffice-token').val();
             trElement.find('th, td').each(function () {
                 var name = $(this).attr('name');
-                if (typeof (name) !== "undefined")
+                if (typeof (name) !== "undefined") {
                     inputs[name] = $(this).html();
+                }
+                $(this).find('input').each(function () {
+                    if ($(this).attr('name') !== "undefined") {
+                        inputs[$(this).attr('name')] = $(this).val();
+                    }
+                });
+            });
+            trElement.find('option').each(function () {
+                if ($(this).is(':selected'))
+                    inputs[$(this).parent().attr('name')] = this.value;
+
             });
 
             $.ajax({
@@ -537,6 +554,24 @@
                     }
                 });
             }
+        }
+
+        function iconSelect() {
+            $('body').find('div.select2-container').each(function () {
+                $(this).remove();
+            });
+            $("select.icon-select").select2({
+                formatResult: format,
+                formatSelection: format,
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            });
+        }
+
+
+        function format(state) {
+            return "<div style='font-family: FontAwesome, arial'>" + state.text + "</i>";
         }
 
     });

@@ -19,6 +19,7 @@ class Cv extends Backoffice {
     public function view() {
         //define tpl vars
         $this->tpl->setVar('block', $this->tpl->getPath() . 'blocks' . DS . 'cv.tpl.php', false, true);
+        $this->tpl->setVar('medias', $this->_readAll('media'), false, true);
         $this->tpl->setVar('cvs', $this->_readAll('cv'), false, true);
         //ajax datas
         if ($this->isAjaxController()) {

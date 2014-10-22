@@ -83,7 +83,7 @@ class Backlink extends Backoffice {
                         'id' => $id,
                         'name' => Http::getPost('name'),
                         'descr' => Http::getPost('descr'),
-                        'link' => Http::getPost('descr')
+                        'link' => Http::getPost('link')
             )));
 
             //cache

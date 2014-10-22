@@ -4,7 +4,7 @@ $config = array(
     //NAME => VALUE
     //required
     'ENVIRONNEMENT' => 'dev', //dev/test/prod
-    'HOSTNAME' => 'localhost/midichlorians.fr', // your hostname
+    'HOSTNAME' => 'local.dev/midichlorians.fr', // your hostname
     'ADMIN_NAME' => 'dreadlokeur', // administrator name
     'ADMIN_EMAIL' => 'dreadlokeur@mail.com', // administrator email
     'LANGUAGE_DEFAULT' => 'fr_FR',
@@ -21,7 +21,7 @@ $config = array(
     'LOGGER_LEVEL' => 4, // EMERGENCY = 0,  ALERT = 1, CRITICAL = 2, ERROR = 3, WARNING = 4, NOTICE = 5, INFO = 6, DEBUG = 7
     'LOGGER_BACKTRACE' => false,
     'LOGGER_WRITE' => true,
-    'LOGGER_DISPLAY' => 'display,firebug,chrome',
+    'LOGGER_DISPLAY' => 'display,firebug',
     'LOGGER_MAIL' => true,
     'LOGGER_MAIL_TO_NAME' => '[ADMIN_NAME]',
     'LOGGER_MAIL_TO_EMAIL' => '[ADMIN_EMAIL]',

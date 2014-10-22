@@ -41,15 +41,15 @@ class SkillManager extends Model implements IModelManager {
     }
 
     public function readAll() {
-        $all = array();
         $sql = 'SELECT * FROM ' . $this->getModelDBTable();
         $this->execute($sql);
         $datas = $this->_engine->fetchAll(Database::FETCH_ASSOC);
 
+        $skills = array();
         foreach ($datas as $data)
-            $all[] = self::factoryObject('skill', $data);
+            $skills[] = self::factoryObject('skill', $data);
 
-        return $all;
+        return $skills;
     }
 
 }

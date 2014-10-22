@@ -41,15 +41,16 @@ class BacklinkManager extends Model implements IModelManager {
     }
 
     public function readAll() {
-        $all = array();
         $sql = 'SELECT * FROM ' . $this->getModelDBTable();
         $this->execute($sql);
         $datas = $this->_engine->fetchAll(Database::FETCH_ASSOC);
 
-        foreach ($datas as $data)
-            $all[] = self::factoryObject('backlink', $data);
 
-        return $all;
+        $backlinks = array();
+        foreach ($datas as $data)
+            $backlinks[] = self::factoryObject('backlink', $data);
+
+        return $backlinks;
     }
 
 }

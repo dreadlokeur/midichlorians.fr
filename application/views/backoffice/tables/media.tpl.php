@@ -18,14 +18,14 @@
             <?php foreach ($this->medias as $media) { ?>
                 <tr id="<?php echo $media->id; ?>">
                     <td name="id">
-                        <input type="checkbox" value="" class="deleteCheckbox">
+                        <input type="checkbox" class="deleteCheckbox">
                         <?php echo $media->id; ?>
                     </td>
                     <td>
                         <?php if ($media->isImage()) { ?>
-                            <img class="cursor-pointer" src="<?php echo $media->filename; ?>" title="Cliquer pour editer" alt="<?php echo $media->filename; ?>">
+                            <img class="cursor-pointer" src="<?php echo $media->filename; ?>" alt="<?php echo $media->filename; ?>">
                         <?php } else { ?>
-                            <img class="cursor-pointer" src="<?php echo $media->getThumbType(); ?>" title="Cliquer pour editer" alt="<?php echo $media->filename; ?>">
+                            <img class="cursor-pointer" src="<?php echo $media->getThumbType(); ?>" alt="<?php echo $media->filename; ?>">
                         <?php } ?>
                     </td>
                     <td><?php echo $media->type; ?></td>

@@ -14,7 +14,7 @@
             <?php foreach ($this->cvs as $cv) { ?>
                 <tr id="<?php echo $cv->id; ?>">
                     <td name="id">
-                        <input type="checkbox" value="" class="deleteCheckbox">
+                        <input type="checkbox" class="deleteCheckbox">
                         <?php echo $cv->id; ?>
                     </td>
                     <td class="editable" name="name"><?php echo $cv->name; ?></td>
@@ -24,6 +24,7 @@
                         <img src="<?php echo $cv->media->filename; ?>">
                     </td>
                     <td>
+                        <a href="<?php echo $cv->link; ?>" target="blanck"class="btn btn-default" title="Voir" alt="Voir"><i class="fa fa-eye"></i></a>
                         <a href="<?php echo $this->getUrl('cvDelete', array($cv->id)); ?>" class="btn btn-default delete" title="Supprimer" alt="Supprimer"><i class="fa fa-times"></i></a>
                     </td>
                 </tr>
@@ -37,7 +38,7 @@
             <th><input name="descr" type="text" class="form-control" placeholder="Description"></th>
             <th><input name="link" type="text" class="form-control" placeholder="Lien"></th>
             <th>
-                <a href="" class="btn btn-default" title="Parcourir les medias" alt="Parcourir les medias"><i class="fa fa-folder-open"></i></a>
+                <a href="" class="btn btn-default" data-target="#mediaModal" data-toggle="modal" title="Parcourir les medias" alt="Parcourir les medias"><i class="fa fa-folder-open"></i></a>
             </th>
             <th>
                 <a href="<?php echo $this->getUrl('cvAdd'); ?>" class="btn btn-default add" title="Ajouter" alt="Ajouter"><i class="fa fa-plus"></i></a>
@@ -45,3 +46,4 @@
         </tr>
     </tfoot>
 </table>
+

@@ -41,15 +41,15 @@ class PrestationManager extends Model implements IModelManager {
     }
 
     public function readAll() {
-        $all = array();
         $sql = 'SELECT * FROM ' . $this->getModelDBTable();
         $this->execute($sql);
         $datas = $this->_engine->fetchAll(Database::FETCH_ASSOC);
 
+        $prestations = array();
         foreach ($datas as $data)
-            $all[] = self::factoryObject('prestation', $data);
+            $prestations[] = self::factoryObject('prestation', $data);
 
-        return $all;
+        return $prestations;
     }
 
 }

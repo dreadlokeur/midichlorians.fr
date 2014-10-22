@@ -14,7 +14,7 @@ class PageManager extends Model implements IModelManager {
     }
 
     public function create(PageObject $page, $returnLastId = true) {
-        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("' . $page->name . '", "' . $page->content . '", "' . $page->title . '", "' . $page->menu . '")';
+        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("' . $page->name . '", "' . $page->content . '", "' . $page->title . '", "' . $page->menu . '", "' . $page->deletable . '")';
         return $this->execute($sql, array(), $returnLastId, true);
     }
 
@@ -29,7 +29,7 @@ class PageManager extends Model implements IModelManager {
     }
 
     public function update(PageObject $page) {
-        $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET content = "' . $page->content . '", title = "' . $page->title . '", menu = "' . $page->menu . '" WHERE name = "' . $page->name . '"';
+        $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET content = "' . $page->content . '", title = "' . $page->title . '", menu = "' . $page->menu . '", deletable = "' . $page->deletable . '" WHERE name = "' . $page->name . '"';
         $this->execute($sql, array(), false, true);
     }
 
@@ -41,15 +41,15 @@ class PageManager extends Model implements IModelManager {
     }
 
     public function readAll() {
-        $all = array();
         $sql = 'SELECT * FROM ' . $this->getModelDBTable();
         $this->execute($sql);
         $datas = $this->_engine->fetchAll(Database::FETCH_ASSOC);
 
+        $pages = array();
         foreach ($datas as $data)
-            $all[$data['name']] = self::factoryObject('page', $data);
+            $pages[$data['name']] = self::factoryObject('page', $data);
 
-        return $all;
+        return $pages;
     }
 
 }

@@ -1,14 +1,12 @@
 <section id="main-content">
     <section class="wrapper site-min-height">
-        <h3>Préférences</h3>
+        <h3>Pages</h3>
+        <?php include $this->getPath() . 'includes' . DS . 'datatablesFilter.tpl.php'; ?>
         <div class="row mt">
             <div class="col-lg-12">
                 <div class="content-panel">
                     <section id="unseen">
-                        <h3>Compétences</h3>
-                        <?php include $this->getPath() . 'tables' . DS . 'skill.tpl.php'; ?>
-                        <h4>Action groupées</h4>
-                        <a href="" class="btn btn-default deleteAll" title="Supprimer la selection" alt="Supprimer la selection"><i class="fa fa-times"></i></a>
+                        <?php include $this->getPath() . 'tables' . DS . 'pages.tpl.php'; ?>
                     </section>
                 </div><!-- /content-panel -->
             </div><!-- /col-lg-4 -->			

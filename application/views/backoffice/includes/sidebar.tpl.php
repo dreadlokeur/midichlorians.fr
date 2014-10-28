@@ -21,12 +21,6 @@
                     <span>Préférences</span>
                 </a>
                 <ul class="sub">
-                    <li><a href="<?php echo $this->getUrl('backlink'); ?>" class="ajax-switcher">Partenaires</a></li>
-                    <li><a href="<?php echo $this->getUrl('prestation'); ?>" class="ajax-switcher">Prestations</a></li>
-                    <li><a href="<?php echo $this->getUrl('skill'); ?>" class="ajax-switcher">Compétences</a></li>
-                    <li><a href="<?php echo $this->getUrl('cv'); ?>">Cv</a></li>
-                    <li><a href="">Coordonnées</a></li>
-                    <li><a href="">Réseaux sociaux</a></li>
                     <li><a href="">Languages</a></li>
                     <li><a href="">Paramètres</a></li>
                 </ul>
@@ -44,7 +38,7 @@
                 </a>
             </li>
             <li>
-                <a href="" class="ajax-switcher">
+                <a href="<?php echo $this->getUrl('page'); ?>" class="ajax-switcher">
                     <i class="fa fa-dashboard"></i>
                     <span>Pages</span>
                 </a>

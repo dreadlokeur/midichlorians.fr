@@ -19,24 +19,10 @@ class Index extends Controller {
         //cache
         $this->_cache = Cache::getCache('bdd');
         //assigns vars
-        $this->tpl->setVar('backlinks', $this->_readAll('backlink'), false, true);
         $this->tpl->setVar('pages', $this->_readAll('page'), false, true);
-        $this->tpl->setVar('skills', $this->_readAll('skill'), false, true);
-        $this->tpl->setVar('prestations', $this->_readAll('prestation'), false, true);
         $this->tpl->setVar('references', $this->_readAll('reference'), false, true);
-        $this->tpl->setVar('cvs', $this->_readAll('cv'), false, true);
-        $this->tpl->setVar('networks', $this->_readAll('network'), false, true);
-        $this->tpl->setVar('config', $this->_readAll('config'), false, true);
         // set template file
         $this->tpl->setFile('controllers' . DS . 'Index' . DS . 'index.tpl.php');
-    }
-
-    public function setAjax($check = false) {
-        if (!Http::isAjaxRequest() && $check)
-            Http::redirect($this->router->getUrl('index'));
-
-        if (Http::isAjaxRequest())
-            $this->setAjaxController();
     }
 
     public function language($language) {

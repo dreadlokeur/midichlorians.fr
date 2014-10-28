@@ -5,6 +5,17 @@
     background-color: #18bc9c !important;
     border-color: #18bc9c!important;
 }
+#unseen {
+    padding-bottom: 50px;
+}
+#global-loader {
+    position : fixed;
+    left : 50%;
+    top : 50%;
+    text-align : center;
+    z-index : 11000;
+    padding: 20px 20px 20px 20px;
+}
 .cursor-pointer {
     cursor: pointer;
 }
@@ -17,12 +28,12 @@
     background-color:  #18bc9c !important;
 }
 
-table#backlink textarea, table#prestation textarea,table#skill textarea, table#media textarea {
+table#page textarea, table#media textarea {
     max-height: 50px;
     width: 100%
 }
 
-table#cv img, table#media img {
+table#media img {
     max-height: 90px;
     width: auto;
 }
@@ -40,6 +51,23 @@ table#cv img, table#media img {
 a.thumbnail:hover,
 a.thumbnail:focus,
 a.thumbnail.active {
-  border-color: #18bc9c !important;
+    border-color: #18bc9c !important;
+}
+
+.selectAll {
+    background: none repeat scroll 0 0 #fcfcfc;
+    border: 1px solid #e7e7e7;
+    border-radius: 3px !important;
+    color: #afafaf;
+    display: inline-block;
+    padding-left: 10px;
+}
+.selectAll input[type="checkbox"]{
+    margin-top: 10px;
+}
+
+
+.has-switch > div.switch-on label {
+    background-color: #18bc9c!important;
 }
 

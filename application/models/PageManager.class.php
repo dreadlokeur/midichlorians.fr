@@ -14,7 +14,7 @@ class PageManager extends Model implements IModelManager {
     }
 
     public function create(PageObject $page, $returnLastId = true) {
-        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("' . $page->name . '", "' . $page->content . '", "' . $page->title . '", "' . $page->menu . '", "' . $page->deletable . '")';
+        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("' . $page->generateName() . '", "' . $page->content . '", "' . $page->title . '", "' . $page->menu . '", "' . $page->deletable . '")';
         return $this->execute($sql, array(), $returnLastId, true);
     }
 
@@ -29,8 +29,11 @@ class PageManager extends Model implements IModelManager {
     }
 
     public function update(PageObject $page) {
-        $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET content = "' . $page->content . '", title = "' . $page->title . '", menu = "' . $page->menu . '", deletable = "' . $page->deletable . '" WHERE name = "' . $page->name . '"';
-        $this->execute($sql, array(), false, true);
+        $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET content = ?, title = "' . $page->title . '", menu = "' . $page->menu . '", deletable = "' . $page->deletable . '" WHERE name = "' . $page->name . '"';
+        $this->execute($sql, array(
+            $page->content => Database::PARAM_STR
+                ), false, true
+        );
     }
 
     public function delete($name) {
@@ -50,6 +53,17 @@ class PageManager extends Model implements IModelManager {
             $pages[$data['name']] = self::factoryObject('page', $data);
 
         return $pages;
+    }
+
+    public function existsName($name, $lastName = null) {
+        $sql = 'SELECT name FROM ' . $this->getModelDBTable() . ' WHERE name = ?';
+        if (!is_null($lastName))
+            $sql .= ' AND name != "' . $lastName . '"';
+
+        $this->execute($sql, array(
+            $name => Database::PARAM_STR), false, false
+        );
+        return $this->_engine->rowCount();
     }
 
 }

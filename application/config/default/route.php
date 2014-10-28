@@ -54,7 +54,6 @@ $config = array(
         ),
         'controller' => 'backoffice',
         'methods' => array(
-            'setAjax' => false,
             'home'
         )
     ),
@@ -64,7 +63,6 @@ $config = array(
         ),
         'controller' => 'backoffice',
         'methods' => array(
-            'setAjax' => false,
             'login'
         )
     ),
@@ -74,181 +72,10 @@ $config = array(
         ),
         'controller' => 'backoffice',
         'methods' => array(
-            'setAjax' => true,
             'logout'
-        )
-    ),
-    //backlinks
-    'backlink' => array(
-        'rules' => array(
-            'backoffice/backlink'
         ),
-        'controller' => 'backoffice\backlink',
-        'methods' => array(
-            'setAjax' => false,
-            'view'
-        )
-    ),
-    'backlinkAdd' => array(
-        'rules' => array(
-            'backoffice/backlink/add'
-        ),
-        'controller' => 'backoffice\backlink',
-        'methods' => array(
-            'setAjax' => true,
-            'add',
-        )
-    ),
-    'backlinkDelete' => array(
-        'regex' => true,
-        'rules' => array(
-            'backoffice/backlink/delete/([a-zA-Z0-9]+)'
-        ),
-        'controller' => 'backoffice\backlink',
-        'methods' => array(
-            'setAjax' => true,
-            'delete' => array('[[1]]')
-        )
-    ),
-    'backlinkUpdate' => array(
-        'regex' => true,
-        'rules' => array(
-            'backoffice/backlink/update/([a-zA-Z0-9]+)'
-        ),
-        'controller' => 'backoffice\backlink',
-        'methods' => array(
-            'setAjax' => true,
-            'update' => array('[[1]]')
-        )
-    ),
-    //prestations
-    'prestation' => array(
-        'rules' => array(
-            'backoffice/prestation'
-        ),
-        'controller' => 'backoffice\prestation',
-        'methods' => array(
-            'setAjax' => false,
-            'view'
-        )
-    ),
-    'prestationAdd' => array(
-        'rules' => array(
-            'backoffice/prestation/add'
-        ),
-        'controller' => 'backoffice\prestation',
-        'methods' => array(
-            'setAjax' => true,
-            'add',
-        )
-    ),
-    'prestationDelete' => array(
-        'regex' => true,
-        'rules' => array(
-            'backoffice/prestation/delete/([a-zA-Z0-9]+)'
-        ),
-        'controller' => 'backoffice\prestation',
-        'methods' => array(
-            'setAjax' => true,
-            'delete' => array('[[1]]')
-        )
-    ),
-    'prestationUpdate' => array(
-        'regex' => true,
-        'rules' => array(
-            'backoffice/prestation/update/([a-zA-Z0-9]+)'
-        ),
-        'controller' => 'backoffice\prestation',
-        'methods' => array(
-            'setAjax' => true,
-            'update' => array('[[1]]')
-        )
-    ),
-    //skills
-    'skill' => array(
-        'rules' => array(
-            'backoffice/skill'
-        ),
-        'controller' => 'backoffice\skill',
-        'methods' => array(
-            'setAjax' => false,
-            'view'
-        )
-    ),
-    'skillAdd' => array(
-        'rules' => array(
-            'backoffice/skill/add'
-        ),
-        'controller' => 'backoffice\skill',
-        'methods' => array(
-            'setAjax' => true,
-            'add',
-        )
-    ),
-    'skillDelete' => array(
-        'regex' => true,
-        'rules' => array(
-            'backoffice/skill/delete/([a-zA-Z0-9]+)'
-        ),
-        'controller' => 'backoffice\skill',
-        'methods' => array(
-            'setAjax' => true,
-            'delete' => array('[[1]]')
-        )
-    ),
-    'skillUpdate' => array(
-        'regex' => true,
-        'rules' => array(
-            'backoffice/skill/update/([a-zA-Z0-9]+)'
-        ),
-        'controller' => 'backoffice\skill',
-        'methods' => array(
-            'setAjax' => true,
-            'update' => array('[[1]]')
-        )
-    ),
-    //cvs
-    'cv' => array(
-        'rules' => array(
-            'backoffice/cv'
-        ),
-        'controller' => 'backoffice\cv',
-        'methods' => array(
-            'setAjax' => false,
-            'view'
-        )
-    ),
-    'cvAdd' => array(
-        'rules' => array(
-            'backoffice/cv/add'
-        ),
-        'controller' => 'backoffice\cv',
-        'methods' => array(
-            'setAjax' => true,
-            'add',
-        )
-    ),
-    'cvDelete' => array(
-        'regex' => true,
-        'rules' => array(
-            'backoffice/cv/delete/([a-zA-Z0-9]+)'
-        ),
-        'controller' => 'backoffice\cv',
-        'methods' => array(
-            'setAjax' => true,
-            'delete' => array('[[1]]')
-        )
-    ),
-    'cvUpdate' => array(
-        'regex' => true,
-        'rules' => array(
-            'backoffice/cv/update/([a-zA-Z0-9]+)'
-        ),
-        'controller' => 'backoffice\cv',
-        'methods' => array(
-            'setAjax' => true,
-            'update' => array('[[1]]')
-        )
+        'requireAjax' => true,
+        'requireHttpMethod' => 'POST',
     ),
     //medias
     'media' => array(
@@ -257,8 +84,7 @@ $config = array(
         ),
         'controller' => 'backoffice\media',
         'methods' => array(
-            'setAjax' => false,
-            'view'
+            'all'
         )
     ),
     'mediaAdd' => array(
@@ -267,20 +93,22 @@ $config = array(
         ),
         'controller' => 'backoffice\media',
         'methods' => array(
-            'setAjax' => true,
             'add',
-        )
+        ),
+        'requireAjax' => true,
+        'requireHttpMethod' => 'POST',
     ),
     'mediaDelete' => array(
         'regex' => true,
         'rules' => array(
-            'backoffice/backlink/media/([a-zA-Z0-9]+)'
+            'backoffice/media/([a-zA-Z0-9]+)'
         ),
         'controller' => 'backoffice\media',
         'methods' => array(
-            'setAjax' => true,
             'delete' => array('[[1]]')
-        )
+        ),
+        'requireAjax' => true,
+        'requireHttpMethod' => 'POST',
     ),
     'mediaUpdate' => array(
         'regex' => true,
@@ -289,9 +117,66 @@ $config = array(
         ),
         'controller' => 'backoffice\media',
         'methods' => array(
-            'setAjax' => true,
             'update' => array('[[1]]')
+        ),
+        'requireAjax' => true,
+        'requireHttpMethod' => 'POST',
+    ),
+    //pages
+    'page' => array(
+        'rules' => array(
+            'backoffice/page',
+        ),
+        'controller' => 'backoffice\page',
+        'methods' => array(
+            'all'
         )
+    ),
+    'pageView' => array(
+        'regex' => true,
+        'rules' => array(
+            'backoffice/page/view/([a-zA-Z0-9_-]+)',
+        ),
+        'controller' => 'backoffice\page',
+        'methods' => array(
+            'view' => array('[[1]]')
+        )
+    ),
+    'pageAdd' => array(
+        'rules' => array(
+            'backoffice/page/add'
+        ),
+        'controller' => 'backoffice\page',
+        'methods' => array(
+            'add',
+        ),
+        'requireAjax' => true,
+        'requireHttpMethod' => 'POST',
+    ),
+    'pageDelete' => array(
+        'regex' => true,
+        'rules' => array(
+            'backoffice/page/delete/([a-zA-Z0-9_-]+)'
+        ),
+        'controller' => 'backoffice\page',
+        'methods' => array(
+            'delete' => array('[[1]]')
+        ),
+        'requireAjax' => true,
+        'requireHttpMethod' => 'POST',
+    ),
+    'pageUpdate' => array(
+        'regex' => true,
+        'rules' => array(
+            'backoffice/page/update/([a-zA-Z0-9_-]+)',
+            'backoffice/page/update/([a-zA-Z0-9_-]+)/([0-9]+)'
+        ),
+        'controller' => 'backoffice\page',
+        'methods' => array(
+            'update' => array('[[1]]', '[[2]]')
+        ),
+        'requireAjax' => true,
+        'requireHttpMethod' => 'POST',
     ),
 );
 ?>

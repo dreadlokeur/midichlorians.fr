@@ -63,14 +63,6 @@ class Backoffice extends Controller {
         }
     }
 
-    public function setAjax($check = false) {
-        if (!Http::isAjaxRequest() && $check)
-            $this->_redirect(Router::getUrl('backoffice'), true);
-
-        if (Http::isAjaxRequest())
-            $this->setAjaxController();
-    }
-
     public function login() {
         //already logged
         if (Session::getInstance()->get('admin'))
@@ -119,7 +111,7 @@ class Backoffice extends Controller {
 
     private function _assignToken() {
         //assign token value
-        if ($this->isAjaxController() || Http::isAjaxRequest())
+        if ($this->isAjaxController() || Http::isAjax())
             $this->addAjaxDatas('token', $this->_crsf->get());
         else
             $this->tpl->setVar('token', $this->_crsf->get());
@@ -166,10 +158,10 @@ class Backoffice extends Controller {
     }
 
     protected function _redirect($url, $allowAjaxRedirect = false) {
-        if ($this->isAjaxController() || Http::isAjaxRequest())
+        if ($this->isAjaxController() || Http::isAjax())
             $this->notifyError('redirecting', array('url' => $url));
 
-        if (!$this->isAjaxController() || !Http::isAjaxRequest() || $allowAjaxRedirect)
+        if (!$this->isAjaxController() || !Http::isAjax() || $allowAjaxRedirect)
             Http::redirect($url);
     }
 

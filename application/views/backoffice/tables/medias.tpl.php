@@ -1,10 +1,7 @@
 <table id="media" class="table table-bordered table-striped table-condensed datatable">
     <thead>
         <tr>
-            <th>
-                <input type="checkbox" name="selectAll" value="selectAll"> 
-                <span>ID</span>
-            </th>
+            <th>ID</th>
             <th>Fichier</th>
             <th>Type media</th>
             <th>Mime type</th>
@@ -17,10 +14,7 @@
         <?php if (is_array($this->medias) && count($this->medias) > 0) { ?>
             <?php foreach ($this->medias as $media) { ?>
                 <tr id="<?php echo $media->id; ?>">
-                    <td name="id">
-                        <input type="checkbox" class="deleteCheckbox">
-                        <?php echo $media->id; ?>
-                    </td>
+                    <td name="id"><input type="checkbox" class="deleteCheckbox"> <?php echo $media->id; ?></td>
                     <td>
                         <?php if ($media->isImage()) { ?>
                             <img class="cursor-pointer" src="<?php echo $media->filename; ?>" alt="<?php echo $media->filename; ?>">

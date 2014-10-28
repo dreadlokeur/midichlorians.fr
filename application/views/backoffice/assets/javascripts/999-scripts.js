@@ -5,6 +5,7 @@
         var historyApi = true;
         var historyState = false;
         var datatables = [];
+        var wysiwygs = [];
 
         /* INIT */
         init();
@@ -181,7 +182,7 @@
 
         /* SELECT ALL */
         $("body").on('click', "input[name='selectAll']", function () {
-            var tableId = $(this).parent().parents("table").attr('id');
+            var tableId = $(this).parents().find('table').attr('id');
             $('#' + tableId).find('input:checkbox').not(this).prop('checked', this.checked);
         });
 
@@ -191,7 +192,7 @@
             return false;
         });
         $("body").on("click", ".deleteAll", function () {
-            var tableId = $(this).parent().find('table').attr('id');
+            var tableId = $(this).parents().find('table').attr('id');
             var urlsList = [];
             $("body").find(':input').each(function () {
                 if ($(this).hasClass('deleteCheckbox')) {
@@ -227,6 +228,26 @@
             else
                 $('#media-dropzone').addClass('hide');
 
+            return false;
+        });
+
+        $("body").on("click", 'button[type="reset"]', function () {
+            //restore wysiwyg default content
+            var idwysiwyg = $(this).parents().find('.wysiwyg').attr('id');
+            if (wysiwygs[idwysiwyg] !== "undefined") {
+                wysiwygs[idwysiwyg].code($('#' + idwysiwyg).html());
+            }
+        });
+
+        /* CLICK UPDATE */
+        $("body").on("click", ".update", function () {
+            var inputs = getInputsValues();
+            var idwysiwyg = $(this).parents().find('.wysiwyg').attr('id');
+            if (wysiwygs[idwysiwyg] !== "undefined")
+               inputs[idwysiwyg] = wysiwygs[idwysiwyg].code();
+           
+            var url = $(this).attr('href');
+            update(url, inputs);
             return false;
         });
 
@@ -289,6 +310,9 @@
             });
         }
         function init() {
+            // forms with wysiwyg plugin
+            formsWysiwyg();
+
             //inputs/textearea forms
             setDefaultInputs();
 
@@ -323,15 +347,39 @@
 
 
             iconSelect();
+
+            // Switch
+            $("[data-toggle='switch']").wrap('<div class="switch" />').parent().bootstrapSwitch();
         }
 
         function tablesData() {
+            //pages info
+            $.fn.dataTableExt.oApi.fnPagingInfo = function (oSettings) {
+                return {
+                    "iStart": oSettings._iDisplayStart,
+                    "iEnd": oSettings.fnDisplayEnd(),
+                    "iLength": oSettings._iDisplayLength,
+                    "iTotal": oSettings.fnRecordsTotal(),
+                    "iFilteredTotal": oSettings.fnRecordsDisplay(),
+                    "iPage": oSettings._iDisplayLength === -1 ?
+                            0 : Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength),
+                    "iTotalPages": oSettings._iDisplayLength === -1 ?
+                            0 : Math.ceil(oSettings.fnRecordsDisplay() / oSettings._iDisplayLength)
+                };
+            };
             //tables (managed by dataTable)
             $('table.datatable').each(function () {
                 var id = $(this).attr('id');
                 if (id !== "undefined") {
                     datatables[id] = $('#' + id).dataTable({
                         "bDestroy": true,
+                        "bStateSave": true,
+                        "bJQueryUI": true,
+                        "sPaginationType": "full_numbers",
+                        "bProcessing": true,
+                        "oSearch": {"bSmart": false},
+                        "iDisplayLength": 10,
+                        "dom": 'fptip',
                         "oLanguage": {
                             "sProcessing": "Traitement en cours...",
                             "sSearch": "Rechercher&nbsp;:",
@@ -353,15 +401,46 @@
                                 "sSortAscending": ": activer pour trier la colonne par ordre croissant",
                                 "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
                             }
+                        },
+                        "fnDrawCallback": function () {
+                            tablesEditable();
+                            iconSelect();
+
                         }
                     });
+                    // custom input search and pagination filter
+                    $("body").on("keyup", ".filter-search", function () {
+                        $("#global-loader").addClass('show');
+                        datatables[id].fnFilter($(this).val());
+                        $("#global-loader").removeClass('show');
+                    });
+                    if ($('.filter-search').length !== 0 && $('#' + id + '_filter').length !== 0) {
+                        $('#' + id + '_filter').remove();
+                    }
+                    $("body").on("change", ".filter-number", function () {
+                        setDefaultInputs();
+                        $("#global-loader").addClass('show');
+                        var perPage = $("select.filter-number option").filter(":selected").val();
+                        var oSettings = datatables[id].fnSettings();
+                        if (perPage == 'all') {
+                            oSettings._iDisplayLength = 9999999999999; //TODO FIX: need disabled paging and reload
+                        } else
+                            oSettings._iDisplayLength = perPage;
+
+                        datatables[id].fnDraw();
+                        $("#global-loader").removeClass('show');
+
+
+                    });
+
+                    if ($('.filter-number').length !== 0 && $('#' + id + '_length').length !== 0)
+                        $('#' + id + '_length').remove();
                 }
             });
         }
         $("body").on('change', '.editableInput, .editableSelect', function () {
             var url = urls[$(this).parents("table").attr('id') + 'Update'] + '/' + $(this).parents("tr").attr('id');
-            var tr = $(this).parents("tr");
-            update(url, tr);
+            update(url, getInputsTr($(this).parents("tr")));
         });
 
         function tablesEditable() {
@@ -374,7 +453,7 @@
                     bg_over: "rgb(24,188,156)",
                     default_text: "",
                     callback: function (idOfEditor, enteredText, orinalHTMLContent, settingsParams, animationCallbacks) {
-                        update(url, tr);
+                        update(url, getInputsTr(tr));
                         animationCallbacks.didStartSaving();
                         setTimeout(animationCallbacks.didEndSaving, 1200);
                         return enteredText;
@@ -390,10 +469,15 @@
                 if (this.type === 'checkbox') {
                     if ($(this).is(':checked'))
                         datas[this.name] = this.value;
-                } else
+                }
+                else
                     datas[this.name] = this.value;
             });
             $("body").find('textarea').each(function () {
+                datas[this.name] = this.value;
+            });
+
+            $("body").find('option:selected').each(function () {
                 datas[this.name] = this.value;
             });
 
@@ -401,18 +485,30 @@
         }
         function setDefaultInputs() {
             $("body").find(':input').each(function () {
-                defaultInputs[this.name] = this.value;
+                if (this.name !== "" && typeof (this.name) !== "undefined")
+                    defaultInputs[this.name] = this.value;
             });
             $("body").find('textarea').each(function () {
-                defaultInputs[this.name] = this.value;
+                if (this.name !== "" && typeof (this.name) !== "undefined")
+                    defaultInputs[this.name] = this.value;
+            });
+            $("body").find('option:selected').each(function () {
+                if (this.name !== "" && typeof (this.name) !== "undefined")
+                    defaultInputs[this.name] = this.value;
             });
         }
         function restoreDefaultInputs() {
             $("body").find(':input').each(function () {
-                $(this).val(defaultInputs[this.name]);
+                if (this.name !== "" && typeof (this.name) !== "undefined")
+                    $(this).val(defaultInputs[this.name]);
             });
             $("body").find('textarea').each(function () {
-                $(this).val(defaultInputs[this.name]);
+                if (this.name !== "" && typeof (this.name) !== "undefined")
+                    $(this).val(defaultInputs[this.name]);
+            });
+            $("body").find('option:selected').each(function () {
+                if (this.name !== "" && typeof (this.name) !== "undefined")
+                    $(this).val(defaultInputs[this.name]);
             });
         }
 
@@ -424,6 +520,7 @@
         }
 
         function remove(url, tableId, urlsList) {
+            $("#global-loader").addClass('show');
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -438,15 +535,29 @@
                             restoreDefaultInputs();
                             //update table content
                             $('#' + tableId).html(datas.content);
+
+
+                            //reload plugins tables
+                            if (datatables[tableId] !== "undefined") {
+                                var datatablePages = datatables[tableId].fnPagingInfo();
+                            }
+                            tablesData();
+                            //set current table
+                            if (datatables[tableId] !== "undefined") {
+                                var currentPage = datatablePages.iPage;
+                                if (datatables[tableId].fnPagingInfo().iTotalPages <= currentPage)
+                                    currentPage = currentPage - 1;
+                                datatables[tableId].fnPageChange(currentPage);
+                            }
+
+                            tablesEditable();
+                            iconSelect();
                         }
                     }
 
-                    //reload plugins
-                    tablesData();
-                    tablesEditable();
-                    iconSelect();
                     //update token
                     $('input#backoffice-token').val(datas.token);
+                    $("#global-loader").removeClass('show');
 
                     if (urlsList && urlsList.length !== 0) {
                         var url = urlsList[0];
@@ -458,6 +569,7 @@
         }
 
         function add(tableId, inputs, url) {
+            $("#global-loader").addClass('show');
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -471,23 +583,36 @@
                             //restore inputs default value
                             restoreDefaultInputs();
                             $('#' + tableId).html(datas.content);
+
+
+                            //reload plugins tables
+                            if (datatables[tableId] !== "undefined") {
+                                var datatablePages = datatables[tableId].fnPagingInfo();
+                            }
+                            tablesData();
+                            //set current table
+                            if (datatables[tableId] !== "undefined") {
+                                if ((datatablePages.iPage + 1) < datatables[tableId].fnPagingInfo().iTotalPages)
+                                    datatables[tableId].fnPageChange(datatablePages.iPage + 1);
+
+                            }
+
+                            tablesEditable();
+                            iconSelect();
                         }
                     }
 
-                    //reload plugins
-                    tablesData();
-                    tablesEditable();
-                    iconSelect();
                     // update token
                     $('input#backoffice-token').val(datas.token);
+
+                    $("#global-loader").removeClass('show');
                 }
             });
         }
 
-        function update(url, trElement) {
+        function getInputsTr(tr) {
             var inputs = {};
-            inputs['backoffice-token'] = $('input#backoffice-token').val();
-            trElement.find('th, td').each(function () {
+            tr.find('th, td').each(function () {
                 var name = $(this).attr('name');
                 if (typeof (name) !== "undefined") {
                     inputs[name] = $(this).html();
@@ -498,12 +623,18 @@
                     }
                 });
             });
-            trElement.find('option').each(function () {
+            tr.find('option').each(function () {
                 if ($(this).is(':selected'))
                     inputs[$(this).parent().attr('name')] = this.value;
 
             });
 
+            return inputs;
+        }
+
+        function update(url, inputs) {
+            $("#global-loader").addClass('show');
+            inputs['backoffice-token'] = $('input#backoffice-token').val();
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -513,6 +644,8 @@
                     ajaxCallback(datas);
                     // update token
                     $('input#backoffice-token').val(datas.token);
+                    
+                    $("#global-loader").removeClass('show');
                 }
             });
         }
@@ -539,12 +672,24 @@
                                     //restore inputs default value
                                     restoreDefaultInputs();
                                     $('#media').html(response.content);
+
+
+                                    //reload plugins tables
+                                    if (datatables['media'] !== "undefined") {
+                                        var datatablePages = datatables['media'].fnPagingInfo();
+                                    }
+                                    tablesData();
+                                    //set current table
+                                    if (datatables['media'] !== "undefined") {
+                                        if ((datatablePages.iPage + 1) < datatables['media'].fnPagingInfo().iTotalPages)
+                                            datatables['media'].fnPageChange(datatablePages.iPage + 1);
+
+                                    }
+
+                                    tablesEditable();
+                                    iconSelect();
                                 }
                             }
-
-                            //reload plugins tables
-                            tablesData();
-                            tablesEditable();
                             // update token
                             $('input#backoffice-token').val(response.token);
                         });
@@ -572,6 +717,20 @@
 
         function format(state) {
             return "<div style='font-family: FontAwesome, arial'>" + state.text + "</i>";
+        }
+
+
+        function formsWysiwyg() {
+            $('.wysiwyg').each(function () {
+                var id = $(this).attr('id');
+                if (id !== "undefined")
+                    wysiwygs[id] = $('#' + id).summernote({
+                        height: 450, // set editor height
+                        minHeight: null, // set minimum height of editor
+                        maxHeight: null, // set maximum height of editor
+                        focus: true // set focus to editable area after initializing summernote
+                    });
+            });
         }
 
     });

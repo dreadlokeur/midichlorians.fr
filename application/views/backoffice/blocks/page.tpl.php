@@ -4,7 +4,7 @@
         <div class="row mt">
             <div class="col-lg-12">
                 <div class="form-panel">
-                    <form method="get" class="form-horizontal style-form">
+                    <form method="POST" action="<?php echo $this->getUrl('pageUpdate', array($this->page->name, true)); ?>" class="form-horizontal style-form form-update">
                         <div class="form-group">
                             <label class="col-sm-2 col-sm-2 control-label">Nom</label>
                             <div class="col-sm-10">
@@ -37,8 +37,8 @@
                         </div>
                         <div class="form-group margin-top-20">
                             <div class="col-sm-12 text-center">
-                                <button href="<?php echo $this->getUrl('pageUpdate', array($this->page->name, true)); ?>" class="btn btn-theme03 update" type="submit">Modifier</button>
-                                <button class="btn btn-theme04" type="reset">Annuler</button>
+                                <input class="btn btn-theme03 update" type="submit" value="Eregistrer"></button>
+                                <input class="btn btn-theme04" type="reset" value="Annuler">
                             </div>
                         </div>
                     </form>

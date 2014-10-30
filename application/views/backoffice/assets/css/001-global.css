@@ -23,17 +23,17 @@
 .draghover {
     background-color:  #18bc9c !important;
 }
-.drag:hover, .editable:hover {
-    cursor: pointer;
+.drag:hover, .editable:hover, .editableDate:hover {
+    cursor: pointer !important;
     background-color:  #18bc9c !important;
 }
 
-table#page textarea, table#media textarea {
+table#page textarea, table#media textarea, table#reference textarea {
     max-height: 50px;
     width: 100%
 }
 
-table#media img {
+table#media img,table#reference img  {
     max-height: 90px;
     width: auto;
 }
@@ -41,18 +41,23 @@ table#media img {
 .icon-select {
     min-width: 200px;
 }
-
-.media-photo img {
+#medias img {
     max-height: 100px;
+    min-height: 100px;
 }
-.media-photo img:hover {
+#medias img.thumbnail {
     cursor: pointer;
 }
-a.thumbnail:hover,
-a.thumbnail:focus,
-a.thumbnail.active {
+#medias img.thumbnail:hover,
+#medias img.thumbnail:focus,
+#medias img.thumbnail.active {
     border-color: #18bc9c !important;
 }
+img.media {
+    /*max-height: 600px;*/
+    max-width: 600px;
+}
+
 
 .selectAll {
     background: none repeat scroll 0 0 #fcfcfc;

@@ -179,15 +179,15 @@ class Backoffice extends Controller {
         return $data;
     }
 
-    protected function _readAll($modelType) {
-        $cache = $this->_cache->read($modelType . 'List');
+    protected function _readAll($modelType, $option = '') {
+        $cache = $this->_cache->read($modelType . 'List' . (string) $option);
         if (!is_null($cache) && !Application::getDebug())
             $datas = $cache;
         else {
             $manager = Model::factoryManager($modelType);
-            $datas = $manager->readAll();
+            $datas = $manager->readAll($option);
             if (!is_null($datas) && !Application::getDebug())
-                $this->_cache->write($modelType . 'List', $datas, true);
+                $this->_cache->write($modelType . 'List' . (string) $option, $datas, true);
         }
 
         return $datas;

@@ -20,7 +20,7 @@
                         <?php if ($page->deletable) { ?>
                             <a href="<?php echo $this->getUrl('pageDelete', array($page->name)); ?>" class="btn btn-default delete" title="Supprimer" alt="Supprimer"><i class="fa fa-times"></i></a>
                         <?php } ?>
-                        <a href="<?php echo $this->getUrl('pageView', array($page->name)); ?>" class="btn btn-default" title="Editer" alt="Editer"><i class="fa fa-pencil"></i></a>
+                        <a href="<?php echo $this->getUrl('pageView', array($page->name)); ?>" class="btn btn-default ajax-switcher" title="Editer" alt="Editer"><i class="fa fa-pencil"></i></a>
                     </td>
                 </tr>
             <?php } ?>

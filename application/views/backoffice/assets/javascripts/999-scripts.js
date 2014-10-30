@@ -1,4 +1,8 @@
 (function ($) {
+    /*
+     * TODO 
+     * bug on jcrop bug rotate or flip image, or update form (need destroy and reload plugin)
+     */
     $(document).ready(function () {
         /* PUBLIC VARS */
         var defaultInputs = {};
@@ -6,6 +10,10 @@
         var historyState = false;
         var datatables = [];
         var wysiwygs = [];
+        var rotateStep = 0;
+        var flipHSep = 0;
+        var flipVSep = 0;
+        var jcrop_api;
 
         /* INIT */
         init();
@@ -216,7 +224,7 @@
         /* CLICK ADD LINK */
         $("body").on("click", ".add", function () {
             var tableId = $(this).parent().parents("table").attr('id');
-            var inputs = getInputsValues();
+            var inputs = getInputsTr($(this).parents("tr"));
             var url = $(this).attr('href');
             add(tableId, inputs, url);
             return false;
@@ -231,25 +239,155 @@
             return false;
         });
 
-        $("body").on("click", 'button[type="reset"]', function () {
+        $("body").on("click", 'input[type="reset"]', function () {
             //restore wysiwyg default content
             var idwysiwyg = $(this).parents().find('.wysiwyg').attr('id');
-            if (wysiwygs[idwysiwyg] !== "undefined") {
-                wysiwygs[idwysiwyg].code($('#' + idwysiwyg).html());
+            if (idwysiwyg) {
+                if (wysiwygs[idwysiwyg] !== "undefined") {
+                    wysiwygs[idwysiwyg].code($('#' + idwysiwyg).html());
+                }
             }
+
+            var img = $('body').find('img.media');
+            if (img) {
+                resetMediaManipulate();
+                rotateMediaImage(rotateStep, img);
+            }
+            /*
+             * TODO 
+             * reset input checkbox data-toggle="switch"
+             * crop selection
+             */
         });
 
         /* CLICK UPDATE */
-        $("body").on("click", ".update", function () {
+        $("body").on("submit", "form.form-update", function () {
             var inputs = getInputsValues();
             var idwysiwyg = $(this).parents().find('.wysiwyg').attr('id');
-            if (wysiwygs[idwysiwyg] !== "undefined")
-               inputs[idwysiwyg] = wysiwygs[idwysiwyg].code();
-           
-            var url = $(this).attr('href');
+            if (idwysiwyg) {
+                if (wysiwygs[idwysiwyg] !== "undefined")
+                    inputs[idwysiwyg] = wysiwygs[idwysiwyg].code();
+            }
+
+            var url = $(this).attr('action');
             update(url, inputs);
             return false;
         });
+
+        $("body").on('change', '.editableDate', function () {
+            var url = urls[$(this).parents("table").attr('id') + 'Update'] + '/' + $(this).parents("tr").attr('id');
+            //TODO background animation...
+            update(url, getInputsTr($(this).parents("tr")));
+            //replace hide span
+            $(this).find('span.hide').html($(this).find('input').val());
+        });
+        $("body").on('click', '.mediaModal', function () {
+            var idMedia = $(this).parent().attr('id');
+            var idSrc = $(this).attr('src');
+            $(this).parent().parent().parent().find('img').each(function () {
+                $(this).removeClass('active');
+            });
+            $(this).addClass('active');
+            $('body').find('#mediaId').val(idMedia);
+            $('body').find('#imageMediaId').attr('src', idSrc);
+            $(this).parents('div.modal').modal('hide');
+        });
+
+
+
+
+        // media image manipulate
+        $("body").on('click', '.media-rotate-l', function () {
+            var img = $(this).parents().find('img.media');
+            rotateStep -= 90;
+            if (rotateStep <= -360)
+                rotateStep = 0;
+
+            rotateMediaImage(rotateStep, img);
+        });
+        $("body").on('click', '.media-rotate-r', function () {
+            var img = $(this).parents().find('img.media');
+            rotateStep += 90;
+            if (rotateStep >= 360)
+                rotateStep = 0;
+
+            rotateMediaImage(rotateStep, img);
+        });
+
+
+        $("body").on('click', '.media-flip-h', function () {
+            if (flipHSep === 0 || flipHSep === 1)
+                flipHSep = -1;
+            else {
+                flipHSep = 1;
+            }
+            var img = $(this).parents().find('img.media');
+            var transform = 'scaleX(' + flipHSep + ')';
+            if (flipVSep !== 0)
+                transform += ' scaleY(' + flipVSep + ')';
+            if (rotateStep !== 0)
+                transform += ' rotate(' + rotateStep + 'deg)';
+            img.css('transform', transform);
+
+            //set value on hidden input
+            img.parent('p#media-block').find('input#flipH').val(flipHSep);
+        });
+
+        $("body").on('click', '.media-flip-v', function () {
+            if (flipVSep === 0 || flipVSep === 1)
+                flipVSep = -1;
+            else {
+                flipVSep = 1;
+            }
+            var img = $(this).parents().find('img.media');
+            var transform = 'scaleY(' + flipVSep + ')';
+            if (flipHSep !== 0)
+                transform += ' scaleX(' + flipVSep + ')';
+            if (rotateStep !== 0)
+                transform += ' rotate(' + rotateStep + 'deg)';
+            img.css('transform', transform);
+
+            //set value on hidden input
+            img.parent('p#media-block').find('input#flipV').val(flipVSep);
+
+        });
+
+        $("body").on('change', 'input#media-height', function () {
+            var heightValue = $(this).attr('value');
+            var proportion = $('body').find('input#media-proportion');
+            if (proportion.is(':checked')) {
+                var ratio = getImageMediaRatio();
+                var widthInput = $('body').find('input#media-width');
+                widthInput.val(Math.round(heightValue * ratio));
+            }
+        });
+        $("body").on('change', 'input#media-width', function () {
+            var widthValue = $(this).attr('value');
+            var proportion = $('body').find('input#media-proportion');
+            if (proportion.is(':checked')) {
+                var ratio = getImageMediaRatio();
+                var heightInput = $('body').find('input#media-height');
+                heightInput.val(Math.round(widthValue / ratio));
+            }
+        });
+
+        $("body").on('click', '.media-crop', function () {
+            var x1 = $('#x1').value;
+            var y1 = $('#y1').value;
+            var w = $('#w').value;
+            var h = $('#h').value;
+            var img = $(this).parents().find('img.media');
+            /*
+             * TODO 
+             * need to complete
+             */
+        });
+
+
+
+
+
+
 
 
         // --------------------------------------------FUNCTIONS-------------------------------------------//
@@ -344,12 +482,34 @@
 
             // media upload form
             dropzone();
-
-
             iconSelect();
+            inputSwitch();
+            datepicker();
 
+            // reset
+            rotateStep = 0;
+            flipHSep = 0;
+            flipVSep = 0;
+
+            crop();
+        }
+
+        function inputSwitch() {
             // Switch
             $("[data-toggle='switch']").wrap('<div class="switch" />').parent().bootstrapSwitch();
+        }
+
+        function datepicker() {
+            $('body').find('.bootstrap-datetimepicker-widget').each(function () {
+                $(this).remove();
+            });
+
+            $('body').find('.datepicker').each(function () {
+                $(this).datetimepicker({
+                    language: 'fr',
+                    pickTime: false,
+                });
+            });
         }
 
         function tablesData() {
@@ -422,7 +582,7 @@
                         $("#global-loader").addClass('show');
                         var perPage = $("select.filter-number option").filter(":selected").val();
                         var oSettings = datatables[id].fnSettings();
-                        if (perPage == 'all') {
+                        if (perPage === 'all') {
                             oSettings._iDisplayLength = 9999999999999; //TODO FIX: need disabled paging and reload
                         } else
                             oSettings._iDisplayLength = perPage;
@@ -438,10 +598,7 @@
                 }
             });
         }
-        $("body").on('change', '.editableInput, .editableSelect', function () {
-            var url = urls[$(this).parents("table").attr('id') + 'Update'] + '/' + $(this).parents("tr").attr('id');
-            update(url, getInputsTr($(this).parents("tr")));
-        });
+
 
         function tablesEditable() {
             $('td.editable, th.editable').each(function () {
@@ -483,6 +640,30 @@
 
             return datas;
         }
+
+        function getInputsTr(tr) {
+            var inputs = {};
+            tr.find('th, td').each(function () {
+                var name = $(this).attr('name');
+                if (typeof (name) !== "undefined") {
+                    inputs[name] = $(this).html();
+                }
+                $(this).find('input').each(function () {
+                    if (this.type === 'checkbox') {
+                        if ($(this).is(':checked'))
+                            inputs[this.name] = 'on';
+                    }
+                    else
+                        inputs[this.name] = this.value;
+                });
+            });
+            tr.find('option:selected').each(function () {
+                inputs[this.name] = this.value;
+            });
+
+            return inputs;
+        }
+
         function setDefaultInputs() {
             $("body").find(':input').each(function () {
                 if (this.name !== "" && typeof (this.name) !== "undefined")
@@ -552,6 +733,8 @@
 
                             tablesEditable();
                             iconSelect();
+                            inputSwitch();
+                            datepicker();
                         }
                     }
 
@@ -570,6 +753,7 @@
 
         function add(tableId, inputs, url) {
             $("#global-loader").addClass('show');
+            inputs['backoffice-token'] = $('input#backoffice-token').val();
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -599,6 +783,8 @@
 
                             tablesEditable();
                             iconSelect();
+                            inputSwitch();
+                            datepicker();
                         }
                     }
 
@@ -610,27 +796,7 @@
             });
         }
 
-        function getInputsTr(tr) {
-            var inputs = {};
-            tr.find('th, td').each(function () {
-                var name = $(this).attr('name');
-                if (typeof (name) !== "undefined") {
-                    inputs[name] = $(this).html();
-                }
-                $(this).find('input').each(function () {
-                    if ($(this).attr('name') !== "undefined") {
-                        inputs[$(this).attr('name')] = $(this).val();
-                    }
-                });
-            });
-            tr.find('option').each(function () {
-                if ($(this).is(':selected'))
-                    inputs[$(this).parent().attr('name')] = this.value;
 
-            });
-
-            return inputs;
-        }
 
         function update(url, inputs) {
             $("#global-loader").addClass('show');
@@ -644,11 +810,24 @@
                     ajaxCallback(datas);
                     // update token
                     $('input#backoffice-token').val(datas.token);
-                    
+                    if (typeof (datas.mediaImageSrc) !== "undefined" && datas.mediaImageSrc !== null) {
+                        //update image src
+                        $('body').find('#media-block img').remove();
+                        $('body').find('#media-block').append('<img class="cursor-pointer img-responsive media crop" src="' + datas.mediaImageSrc + '?' + Math.floor(Math.random() * 100) + '"">');
+                        //update input height/width
+                        $('body').find('input#media-height-default').val(datas.mediaImageHeight);
+                        $('body').find('input#media-width-default').val(datas.mediaImageWidth);
+                        $('body').find('input#size').val(datas.mediaImageSize);
+                        // reset
+                        resetMediaManipulate();
+
+                    }
+
                     $("#global-loader").removeClass('show');
                 }
             });
         }
+
 
         function dropzone() {
             //disable auto init
@@ -733,5 +912,97 @@
             });
         }
 
+
+        function resetMediaManipulate() {
+            rotateStep = 0;
+            flipHSep = 0;
+            flipVSep = 0;
+            $('body').find('input#rotate').val(0);
+            $('body').find('input#flipV').val(0);
+            $('body').find('input#flipH').val(0);
+            jcrop_api.destroy();
+            clearCoords();
+        }
+
+        function rotateMediaImage(rotateStep, img) {
+            var transform = 'rotate(' + rotateStep + 'deg)';
+            if (flipHSep !== 0)
+                transform += ' scaleX(' + flipHSep + ')';
+            if (flipVSep !== 0)
+                transform += ' scaleY(' + flipVSep + ')';
+            img.css('transform', transform);
+
+
+            //align
+            if (rotateStep === -90 || rotateStep === -270 || rotateStep === 90 || rotateStep === 270) {
+                img.css('margin-top', ((img.width() - img.height()) / 2) + 15);
+                img.css('margin-left', ((img.height() - img.width()) / 2));
+                img.parent('p#media-block').css('margin-bottom', (img.width() - img.height()) / 2);
+            } else {
+                img.css('margin-top', 0);
+                img.css('margin-left', 0);
+                img.parent('p#media-block').css('margin-bottom', 0);
+            }
+
+            //update inputs
+            img.parent('p#media-block').find('input#rotate').val(getRotationDegrees(img));
+            var height = $('body').find('input#media-height-default').attr('value');
+            var width = $('body').find('input#media-width-default').attr('value');
+            if (rotateStep === -90 || rotateStep === -270 || rotateStep === 90 || rotateStep === 270) {
+                $('body').find('input#media-height').val(width);
+                $('body').find('input#media-width').val(height);
+            } else {
+                $('body').find('input#media-height').val(height);
+                $('body').find('input#media-width').val(width);
+            }
+        }
+
+        function getImageMediaRatio() {
+            return $('body').find('input#media-width-default').attr('value') / $('body').find('input#media-height-default').attr('value');
+        }
+
+        function getRotationDegrees(img) {
+            var angle = 0;
+            var matrix = img.css("-webkit-transform") ||
+                    img.css("-moz-transform") ||
+                    img.css("-ms-transform") ||
+                    img.css("-o-transform") ||
+                    img.css("transform");
+            if (typeof matrix === 'string' && matrix !== 'none') {
+                var values = matrix.split('(')[1].split(')')[0].split(',');
+                var a = values[0];
+                var b = values[1];
+                angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
+            }
+            return angle;
+        }
+
+
+
+        function crop() {
+            $('img.crop').Jcrop({
+                onChange: showCoords,
+                onSelect: showCoords,
+                onRelease: clearCoords
+            }, function () {
+                jcrop_api = this;
+            });
+        }
+        function showCoords(c) {
+            var realH = $('body').find('input#media-height-default').attr('value');
+            var h = $('img.crop').height();
+            var ratioH = realH / h;
+            var realW = $('body').find('input#media-width-default').attr('value');
+            var w = $('img.crop').width();
+            var ratioW = realW / w;
+            $('#x1').val(Math.round(c.x * ratioW));
+            $('#y1').val(Math.round(c.y * ratioH));
+            $('#w').val(Math.round(c.w * ratioW));
+            $('#h').val(Math.round(c.h * ratioH));
+        }
+
+        function clearCoords() {
+            $('#coords input').val('');
+        }
     });
 })(jQuery);

@@ -9,40 +9,46 @@ use framework\Database;
 
 class ReferenceManager extends Model implements IModelManager {
 
-    protected static $_datasPath = PATH_DATA_REFERENCE;
-
     public function __construct() {
         
     }
 
     public function create(ReferenceObject $reference, $returnLastId = true) {
-        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("", "' . $reference->name . '", "' . $reference->descr . '", "' . $reference->date . '", "' . $reference->link . '", "' . $reference->getThumb(false) . '", "' . $reference->getImage(false) . '")';
+        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("", "' . $reference->name . '", "' . $reference->content . '", "' . $reference->date . '", "' . $reference->link . '", "' . $reference->technology . '", "' . $reference->online . '", "' . $reference->mediaId . '")';
+        //if is null foreign_key
+        $this->execute('SET FOREIGN_KEY_CHECKS=0', array(), false, true);
         return $this->execute($sql, array(), $returnLastId, true);
     }
 
     public function read($id) {
-        $sql = 'SELECT * FROM ' . $this->getModelDBTable() . ' WHERE id = ?';
+        $sql = 'SELECT
+            R.`id`, R.`name`, R.`content`, R.`date`, R.`link`, R.`online`, R.`mediaId`, R.`technology`,
+            MEDIA.`id` AS `MEDIAid`, MEDIA.`filename`, MEDIA.`title`, MEDIA.`alt`
+            FROM `' . $this->getModelDBTable() . '` R
+            LEFT JOIN `media` MEDIA
+            ON MEDIA.`id` = R.`mediaId`
+            WHERE R.`id` = ?';
         $this->execute($sql, array($id => Database::PARAM_INT));
         $data = $this->_engine->fetchAll(Database::FETCH_ASSOC);
         if (empty($data))
             return null;
 
+
+        // set media object
+        if ($data[0]['mediaId']) {
+            $data[0]['media'] = self::factoryObject('media', array(
+                        'id' => $data[0]['MEDIAid'],
+                        'filename' => $data[0]['filename'])
+            );
+        } else
+            $data[0]['media'] = self::factoryObject('media', array('filename' => 'no-image.png'));
+
         return self::factoryObject('reference', $data[0]);
     }
 
-    public function update(ReferenceObject $reference, $updateReference = true, $updateThumb = false, $updateImage = false) {
-        if ($updateReference) {
-            $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET name = "' . $reference->name . '", descr = "' . $reference->descr . '", date = "' . $reference->date . '", link = "' . $reference->link . '" WHERE id = "' . $reference->id . '"';
-            $this->execute($sql, array(), false, true);
-        }
-        if ($updateThumb) {
-            $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET thumb = "' . $reference->getThumb(false) . '" WHERE id = "' . $reference->id . '"';
-            $this->execute($sql, array(), false, true);
-        }
-        if ($updateImage) {
-            $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET image = "' . $reference->getImage(false) . '" WHERE id = "' . $reference->id . '"';
-            $this->execute($sql, array(), false, true);
-        }
+    public function update(ReferenceObject $reference) {
+        $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET name = "' . $reference->name . '", content =  ?, date = "' . $reference->date . '", link = "' . $reference->link . '", technology = "' . $reference->technology . '", online = "' . $reference->online . '", mediaId = "' . $reference->mediaId . '" WHERE id = "' . $reference->id . '"';
+        $this->execute($sql, array($reference->content => Database::PARAM_STR), false, true);
     }
 
     public function delete($id) {
@@ -59,26 +65,9 @@ class ReferenceManager extends Model implements IModelManager {
 
         $references = array();
         foreach ($datas as $data)
-            $references[] = self::factoryObject('reference', $data);
+            $references[] = $this->read($data['id']);
 
         return $references;
-    }
-
-    public static function setDatasPath($dir, $forceCreate = true) {
-        if ($forceCreate && !is_dir($dir)) {
-            if (!mkdir($dir, 0775, true))
-                throw new \Exception('Error on creating "' . $dir . '" directory');
-        }else {
-            if (!is_dir($dir))
-                throw new \Exception('Directory "' . $dir . '" do not exists');
-        }
-        if (!is_writable($dir))
-            throw new \Exception('Directory "' . $dir . '" is not writable');
-        self::$_datasPath = realpath($dir) . DS;
-    }
-
-    public static function getDatasPath() {
-        return self::$_datasPath;
     }
 
 }

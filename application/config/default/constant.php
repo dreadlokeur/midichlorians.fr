@@ -29,7 +29,7 @@ $config = array(
     'LOGGER_ERROR' => true,
     //app
     'ADMIN_PASSWORD' => '**********************',
-    'MEDIA_MAXSIZE' => 10, //(MiB)
+    'MEDIA_MAXSIZE' => 2, //(MiB)
     'MEDIA_ACCEPT' => 'image/*, audio/*, video/*',
 );
 ?>

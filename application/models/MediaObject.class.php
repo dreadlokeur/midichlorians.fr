@@ -19,6 +19,9 @@ class MediaObject extends Model implements IModelObject {
     protected $_mime = null;
     protected $_title = null;
     protected $_alt = null;
+    protected $_height = null;
+    protected $_width = null;
+    protected $_size = null;
 
     public function __construct() {
         

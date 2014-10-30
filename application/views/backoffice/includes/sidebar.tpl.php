@@ -32,7 +32,7 @@
                 </a>
             </li>
             <li>
-                <a href="">
+                <a href="<?php echo $this->getUrl('reference'); ?>" class="ajax-switcher">
                     <i class="fa fa-dashboard"></i>
                     <span>Portfolio</span>
                 </a>

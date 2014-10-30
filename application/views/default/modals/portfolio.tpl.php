@@ -15,17 +15,13 @@
                             <div class="modal-body">
                                 <h2><?php echo $reference->name; ?></h2>
                                 <hr class="star-primary">
-                                <img src="<?php echo $reference->image; ?>" class="img-responsive img-centered" alt="">
-                                <p><?php echo $reference->descr; ?></p>
+                                <?php echo $reference->content; ?>
                                 <ul class="list-inline item-details">
-                                    <li>Date:
-                                        <strong><?php echo $reference->date; ?></strong>
-                                    </li>
-                                    <li>Lien:
-                                        <strong><a href="<?php echo $reference->link; ?>">Voir le site</a></strong>
-                                    </li>
+                                    <li>Date: <strong><?php echo $reference->date; ?></strong></li>
+                                    <li>Technologies: <strong><?php echo $reference->technology; ?></strong></li>
+                                    <li>Lien: <strong><a href="<?php echo $reference->link; ?>">Voir le site</a></strong></li>
                                 </ul>
-                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Fermer</button>
                             </div>
                         </div>
                     </div>

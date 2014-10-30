@@ -87,6 +87,16 @@ $config = array(
             'all'
         )
     ),
+    'mediaView' => array(
+        'regex' => true,
+        'rules' => array(
+            'backoffice/page/media/([a-zA-Z0-9_-]+)',
+        ),
+        'controller' => 'backoffice\media',
+        'methods' => array(
+            'view' => array('[[1]]')
+        )
+    ),
     'mediaAdd' => array(
         'rules' => array(
             'backoffice/media/add'
@@ -113,11 +123,12 @@ $config = array(
     'mediaUpdate' => array(
         'regex' => true,
         'rules' => array(
-            'backoffice/media/update/([a-zA-Z0-9]+)'
+            'backoffice/media/update/([a-zA-Z0-9_-]+)',
+            'backoffice/media/update/([a-zA-Z0-9_-]+)/([0-9]+)'
         ),
         'controller' => 'backoffice\media',
         'methods' => array(
-            'update' => array('[[1]]')
+            'update' => array('[[1]]', '[[2]]')
         ),
         'requireAjax' => true,
         'requireHttpMethod' => 'POST',
@@ -172,6 +183,62 @@ $config = array(
             'backoffice/page/update/([a-zA-Z0-9_-]+)/([0-9]+)'
         ),
         'controller' => 'backoffice\page',
+        'methods' => array(
+            'update' => array('[[1]]', '[[2]]')
+        ),
+        'requireAjax' => true,
+        'requireHttpMethod' => 'POST',
+    ),
+    //references
+    'reference' => array(
+        'rules' => array(
+            'backoffice/reference',
+        ),
+        'controller' => 'backoffice\reference',
+        'methods' => array(
+            'all'
+        )
+    ),
+    'referenceView' => array(
+        'regex' => true,
+        'rules' => array(
+            'backoffice/reference/view/([a-zA-Z0-9_-]+)',
+        ),
+        'controller' => 'backoffice\reference',
+        'methods' => array(
+            'view' => array('[[1]]')
+        )
+    ),
+    'referenceAdd' => array(
+        'rules' => array(
+            'backoffice/reference/add'
+        ),
+        'controller' => 'backoffice\reference',
+        'methods' => array(
+            'add',
+        ),
+        'requireAjax' => true,
+        'requireHttpMethod' => 'POST',
+    ),
+    'referenceDelete' => array(
+        'regex' => true,
+        'rules' => array(
+            'backoffice/reference/delete/([a-zA-Z0-9]+)'
+        ),
+        'controller' => 'backoffice\reference',
+        'methods' => array(
+            'delete' => array('[[1]]')
+        ),
+        'requireAjax' => true,
+        'requireHttpMethod' => 'POST',
+    ),
+    'referenceUpdate' => array(
+        'regex' => true,
+        'rules' => array(
+            'backoffice/reference/update/([a-zA-Z0-9_-]+)',
+            'backoffice/reference/update/([a-zA-Z0-9_-]+)/([0-9]+)'
+        ),
+        'controller' => 'backoffice\reference',
         'methods' => array(
             'update' => array('[[1]]', '[[2]]')
         ),

@@ -31,8 +31,7 @@ class PageManager extends Model implements IModelManager {
     public function update(PageObject $page) {
         $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET content = ?, title = "' . $page->title . '", menu = "' . $page->menu . '", deletable = "' . $page->deletable . '" WHERE name = "' . $page->name . '"';
         $this->execute($sql, array(
-            $page->content => Database::PARAM_STR
-                ), false, true
+            $page->content => Database::PARAM_STR), false, true
         );
     }
 

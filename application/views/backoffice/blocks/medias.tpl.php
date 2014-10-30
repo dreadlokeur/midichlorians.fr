@@ -1,10 +1,10 @@
 <section id="main-content">
     <section class="wrapper site-min-height">
         <h3>Medias</h3>
-        <div class="col-md-3 margin-top-10 pull-right">
-            <button class="btn btn-theme03" type="button" id="request-media-dropzone">Ajouter</button>
-        </div>
         <?php include $this->getPath() . 'includes' . DS . 'datatablesFilter.tpl.php'; ?>
+        <div class="col-md-3 margin-top-10 pull-left">
+            <button class="btn btn-theme03 btn-lg btn-block padding-bot-5 padding-top-5" type="button" id="request-media-dropzone">Ajouter</button>
+        </div>
         <div class="row mt">
             <div class="col-lg-12">
                 <div class="content-panel">

@@ -16,7 +16,7 @@ class MediaManager extends Model implements IModelManager {
     }
 
     public function create(MediaObject $media, $returnLastId = true) {
-        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("", "' . $media->getFilename(false) . '", "' . $media->type . '", "' . $media->mime . '", "' . $media->title . '", "' . $media->alt . '")';
+        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("", "' . $media->getFilename(false) . '", "' . $media->type . '", "' . $media->mime . '", "' . $media->title . '", "' . $media->alt . '", "' . $media->height . '", "' . $media->wdith . '", "' . $media->size . '")';
         return $this->execute($sql, array(), $returnLastId, true);
     }
 
@@ -31,7 +31,7 @@ class MediaManager extends Model implements IModelManager {
     }
 
     public function update(MediaObject $media) {
-        $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET filename = "' . $media->getFilename(false) . '", title = "' . $media->title . '", alt = "' . $media->alt . '" WHERE id = "' . $media->id . '"';
+        $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET filename = "' . $media->getFilename(false) . '", title = "' . $media->title . '", alt = "' . $media->alt . '", height = "' . $media->height . '", width = "' . $media->width . '", size = "' . $media->size . '" WHERE id = "' . $media->id . '"';
         $this->execute($sql, array(), false, true);
     }
 
@@ -42,8 +42,11 @@ class MediaManager extends Model implements IModelManager {
         return true;
     }
 
-    public function readAll() {
+    public function readAll($type = '') {
         $sql = 'SELECT * FROM ' . $this->getModelDBTable();
+        if ($type != '') {
+            $sql .= ' WHERE type = "' . $type . '"';
+        }
         $this->execute($sql);
         $datas = $this->_engine->fetchAll(Database::FETCH_ASSOC);
 

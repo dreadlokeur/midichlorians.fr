@@ -3,9 +3,11 @@
 namespace controllers\backoffice;
 
 use controllers\Backoffice;
-use framework\network\Http;
 use framework\mvc\Model;
+use framework\mvc\Router;
+use framework\network\Http;
 use framework\utility\Tools;
+use models\MediaManager;
 
 class Media extends Backoffice {
 
@@ -43,10 +45,22 @@ class Media extends Backoffice {
                     )));
                     if (!is_null($id)) {
                         //save file
-                        $filename = Tools::stringToUrl($file['name']);
-                        Tools::saveFile($file['tmp_name'], $manager::getDatasPath() . $id . '-' . $filename);
+                        $ex = Tools::getFileExtension($file['name']);
+                        $filename = $id . '-' . Tools::stringToUrl(str_replace($ex, '', $file['name'])) . '.' . $ex;
+                        $filePath = $manager::getDatasPath() . $filename;
+                        Tools::saveFile($file['tmp_name'], $filePath);
                         $media = $manager->read($id);
-                        $media->filename = $id . '-' . $filename;
+                        $media->filename = $filename;
+
+
+                        if ($media->isImage()) {
+                            $sizes = getimagesize($filePath);
+                            $media->width = $sizes[0];
+                            $media->height = $sizes[1];
+                        }
+                        $media->size = filesize($filePath);
+
+                        //update
                         $manager->update($media);
 
 
@@ -96,11 +110,51 @@ class Media extends Backoffice {
         }
     }
 
-    public function update($id) {
+    public function update($id, $fullUpdate = false) {
         $media = $this->_read('media', $id);
         if ($media) {
             $media->alt = Http::getPost('alt');
             $media->title = Http::getPost('title');
+            if ($fullUpdate) {
+                $filePath = MediaManager::getDatasPath() . $media->getFilename(false);
+                // manipulate image
+                if ($media->isImage()) {
+                    $imagine = new \Imagine\Gd\Imagine();
+                    $image = $imagine->open($filePath);
+                    //rotate
+                    $image->rotate(Http::getPost('rotate'));
+                    //flip
+                    $flipH = Http::getPost('flipH');
+                    $flipV = Http::getPost('flipV');
+                    if ($flipH)
+                        $image->flipHorizontally();
+                    if ($flipV)
+                        $image->flipVertically();
+
+                    //resize
+                    $width = Http::getPost('width');
+                    $height = Http::getPost('height');
+                    $size = new \Imagine\Image\Box($width, $height);
+                    $image->resize($size);
+                    //crop
+                    if (Http::getPost('x1') && Http::getPost('y1') && Http::getPost('w') && Http::getPost('h'))
+                        $image->crop(new \Imagine\Image\Point(Http::getPost('x1'), Http::getPost('y1')), new \Imagine\Image\Box(Http::getPost('w'), Http::getPost('h')));
+
+                    // save
+                    $image->save($filePath);
+
+                    //updates media size
+                    $sizes = getimagesize($filePath);
+                    $media->width = $sizes[0];
+                    $media->height = $sizes[1];
+                    $media->size = filesize($filePath);
+                    // add to ajax
+                    $this->addAjaxDatas('mediaImageSrc', $media->getFilename());
+                    $this->addAjaxDatas('mediaImageWidth', $media->width);
+                    $this->addAjaxDatas('mediaImageHeight', $media->height);
+                    $this->addAjaxDatas('mediaImageSize', $media->size);
+                }
+            }
             //load model
             $manager = Model::factoryManager('media');
             $manager->update($media);
@@ -109,6 +163,22 @@ class Media extends Backoffice {
             $this->_cache->delete('media' . $id);
             $this->_cache->delete('media' . 'List');
             $this->addAjaxDatas('success', true);
+        }
+    }
+
+    public function view($id) {
+        $media = $this->_read('media', $id);
+        if ($media) {
+            $this->tpl->setVar('block', $this->tpl->getPath() . 'blocks' . DS . 'media.tpl.php', false, true);
+            $this->tpl->setVar('media', $media, false, true);
+
+            //ajax datas
+            if ($this->isAjaxController()) {
+                $this->tpl->setFile('blocks' . DS . 'media.tpl.php');
+                $this->setAjaxAutoAddDatas(true);
+            }
+        } else {
+            $this->_redirect(Router::getUrl('error', array('404')), true);
         }
     }
 

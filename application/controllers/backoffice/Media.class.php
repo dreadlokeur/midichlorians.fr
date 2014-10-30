@@ -31,6 +31,7 @@ class Media extends Backoffice {
     }
 
     public function add() {
+        ini_set('upload_max_filesize', MEDIA_MAXSIZE);
         $file = Http::getFile('file');
         if (!is_null($file)) {
             if (isset($file['error']) && $file['error'] == 0) {
@@ -42,6 +43,7 @@ class Media extends Backoffice {
                     $id = $manager->create(Model::factoryObject('media', array(
                                 'type' => (string) $type[0],
                                 'mime' => $file['type'],
+                                'date' => date('d-m-Y'),
                     )));
                     if (!is_null($id)) {
                         //save file
@@ -93,17 +95,18 @@ class Media extends Backoffice {
                     $this->log->debug('Delete media : ' . $file);
                 }
                 // delete into database
-                $manager->delete($id);
+                $success = $manager->delete($id);
+                if ($success) {
+                    //cache
+                    $this->_cache->delete('media' . $id);
+                    $this->_cache->delete('media' . 'List');
 
-                //cache
-                $this->_cache->delete('media' . $id);
-                $this->_cache->delete('media' . 'List');
-
-                //update content
-                $this->tpl->setVar('medias', $this->_readAll('media'), false, true);
-                $this->tpl->setFile('tables' . DS . 'medias.tpl.php');
-                $this->setAjaxAutoAddDatas(true);
-                $this->addAjaxDatas('success', true);
+                    //update content
+                    $this->tpl->setVar('medias', $this->_readAll('media'), false, true);
+                    $this->tpl->setFile('tables' . DS . 'medias.tpl.php');
+                    $this->setAjaxAutoAddDatas(true);
+                }
+                $this->addAjaxDatas('success', $success);
             } catch (Exception $e) {
                 //TODO rollback...
             }
@@ -157,12 +160,13 @@ class Media extends Backoffice {
             }
             //load model
             $manager = Model::factoryManager('media');
-            $manager->update($media);
-
-            //cache
-            $this->_cache->delete('media' . $id);
-            $this->_cache->delete('media' . 'List');
-            $this->addAjaxDatas('success', true);
+            $success = $manager->update($media);
+            if ($success) {
+                //cache
+                $this->_cache->delete('media' . $id);
+                $this->_cache->delete('media' . 'List');
+            }
+            $this->addAjaxDatas('success', $success);
         }
     }
 

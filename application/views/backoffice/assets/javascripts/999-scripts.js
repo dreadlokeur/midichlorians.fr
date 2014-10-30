@@ -808,21 +808,24 @@
                 dataType: "json",
                 success: function (datas) {
                     ajaxCallback(datas);
+                    if (typeof (datas.success) !== "undefined" && datas.success === true) {
+                        // update token
+                        $('input#backoffice-token').val(datas.token);
+                        if (typeof (datas.mediaImageSrc) !== "undefined" && datas.mediaImageSrc !== null) {
+                            //update image src
+                            $('body').find('#media-block img').remove();
+                            $('body').find('#media-block').append('<img class="cursor-pointer img-responsive media crop" src="' + datas.mediaImageSrc + '?' + Math.floor(Math.random() * 100) + '"">');
+                            //update input height/width
+                            $('body').find('input#media-height-default').val(datas.mediaImageHeight);
+                            $('body').find('input#media-width-default').val(datas.mediaImageWidth);
+                            $('body').find('input#size').val(datas.mediaImageSize);
+                            // reset
+                            resetMediaManipulate();
+
+                        }
+                    }
                     // update token
                     $('input#backoffice-token').val(datas.token);
-                    if (typeof (datas.mediaImageSrc) !== "undefined" && datas.mediaImageSrc !== null) {
-                        //update image src
-                        $('body').find('#media-block img').remove();
-                        $('body').find('#media-block').append('<img class="cursor-pointer img-responsive media crop" src="' + datas.mediaImageSrc + '?' + Math.floor(Math.random() * 100) + '"">');
-                        //update input height/width
-                        $('body').find('input#media-height-default').val(datas.mediaImageHeight);
-                        $('body').find('input#media-width-default').val(datas.mediaImageWidth);
-                        $('body').find('input#size').val(datas.mediaImageSize);
-                        // reset
-                        resetMediaManipulate();
-
-                    }
-
                     $("#global-loader").removeClass('show');
                 }
             });

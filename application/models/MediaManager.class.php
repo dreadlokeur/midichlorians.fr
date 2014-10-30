@@ -16,13 +16,48 @@ class MediaManager extends Model implements IModelManager {
     }
 
     public function create(MediaObject $media, $returnLastId = true) {
-        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("", "' . $media->getFilename(false) . '", "' . $media->type . '", "' . $media->mime . '", "' . $media->title . '", "' . $media->alt . '", "' . $media->height . '", "' . $media->wdith . '", "' . $media->size . '")';
-        return $this->execute($sql, array(), $returnLastId, true);
+        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("",?,?,?,?,?,?,?,?,?)';
+        $this->_engine->prepare($sql);
+        $this->_engine->bind($media->getFilename(false), Database::PARAM_STR);
+        $this->_engine->bind($media->type, Database::PARAM_STR);
+        $this->_engine->bind($media->mime, Database::PARAM_STR);
+        $this->_engine->bind($media->title, Database::PARAM_STR);
+        $this->_engine->bind($media->alt, Database::PARAM_STR);
+        $this->_engine->bind($media->height, Database::PARAM_STR);
+        $this->_engine->bind($media->width, Database::PARAM_STR);
+        $this->_engine->bind($media->size, Database::PARAM_STR);
+        $this->_engine->bind($media->date, Database::PARAM_STR);
+        $this->_engine->execute();
+        if ($returnLastId)
+            return $this->_engine->lastInsertId();
+    }
+
+    public function update(MediaObject $media) {
+        $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET filename = ?, title = ?, alt = ?, height = ?, width = ?, size = ?, date = ? WHERE id = ?';
+        $this->_engine->prepare($sql);
+        $this->_engine->bind($media->getFilename(false), Database::PARAM_STR);
+        $this->_engine->bind($media->title, Database::PARAM_STR);
+        $this->_engine->bind($media->alt, Database::PARAM_STR);
+        $this->_engine->bind($media->height, Database::PARAM_STR);
+        $this->_engine->bind($media->width, Database::PARAM_STR);
+        $this->_engine->bind($media->size, Database::PARAM_STR);
+        $this->_engine->bind($media->date, Database::PARAM_STR);
+        $this->_engine->bind($media->id, Database::PARAM_INT);
+        return $this->_engine->execute();
+    }
+
+    public function delete($id) {
+        $sql = 'DELETE FROM ' . $this->getModelDBTable() . ' WHERE id = "' . $id . '"';
+        $this->_engine->prepare($sql);
+        $this->_engine->bind($id, Database::PARAM_INT);
+        return $this->_engine->execute();
     }
 
     public function read($id) {
         $sql = 'SELECT * FROM ' . $this->getModelDBTable() . ' WHERE id = ?';
-        $this->execute($sql, array($id => Database::PARAM_INT));
+        $this->_engine->prepare($sql);
+        $this->_engine->bind($id, Database::PARAM_INT);
+        $this->_engine->execute();
         $data = $this->_engine->fetchAll(Database::FETCH_ASSOC);
         if (empty($data))
             return null;
@@ -30,24 +65,15 @@ class MediaManager extends Model implements IModelManager {
         return self::factoryObject('media', $data[0]);
     }
 
-    public function update(MediaObject $media) {
-        $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET filename = "' . $media->getFilename(false) . '", title = "' . $media->title . '", alt = "' . $media->alt . '", height = "' . $media->height . '", width = "' . $media->width . '", size = "' . $media->size . '" WHERE id = "' . $media->id . '"';
-        $this->execute($sql, array(), false, true);
-    }
-
-    public function delete($id) {
-        $sql = 'DELETE FROM ' . $this->getModelDBTable() . ' WHERE id = "' . $id . '"';
-        $this->execute($sql, array(), false, true);
-
-        return true;
-    }
-
     public function readAll($type = '') {
         $sql = 'SELECT * FROM ' . $this->getModelDBTable();
-        if ($type != '') {
+        if ($type != '')
             $sql .= ' WHERE type = "' . $type . '"';
-        }
-        $this->execute($sql);
+        $this->_engine->prepare($sql);
+        if ($type != '')
+            $this->_engine->bind($type, Database::PARAM_STR);
+
+        $this->_engine->execute();
         $datas = $this->_engine->fetchAll(Database::FETCH_ASSOC);
 
         $medias = array();

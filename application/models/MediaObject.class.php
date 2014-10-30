@@ -22,6 +22,7 @@ class MediaObject extends Model implements IModelObject {
     protected $_height = null;
     protected $_width = null;
     protected $_size = null;
+    protected $_date = null;
 
     public function __construct() {
         
@@ -43,6 +44,14 @@ class MediaObject extends Model implements IModelObject {
 
     public function isImage() {
         return $this->_type == self::TYPE_IMAGE;
+    }
+
+    public function isAudio() {
+        return $this->_type == self::TYPE_AUDIO;
+    }
+
+    public function isVideo() {
+        return $this->_type == self::TYPE_VIDEO;
     }
 
     public function getThumbType($withUrl = true) {

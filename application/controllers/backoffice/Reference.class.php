@@ -58,16 +58,18 @@ class Reference extends Backoffice {
         $reference = $this->_read('reference', $id);
         if ($reference) {
             $manager = Model::factoryManager('reference');
-            $manager->delete($id);
-            //cache
-            $this->_cache->delete('reference' . $id);
-            $this->_cache->delete('reference' . 'List');
+            $success = $manager->delete($id);
+            if ($success) {
+                //cache
+                $this->_cache->delete('reference' . $id);
+                $this->_cache->delete('reference' . 'List');
 
-            //update content
-            $this->tpl->setVar('references', $this->_readAll('reference'), false, true);
-            $this->tpl->setFile('tables' . DS . 'references.tpl.php');
-            $this->setAjaxAutoAddDatas(true);
-            $this->addAjaxDatas('success', true);
+                //update content
+                $this->tpl->setVar('references', $this->_readAll('reference'), false, true);
+                $this->tpl->setFile('tables' . DS . 'references.tpl.php');
+                $this->setAjaxAutoAddDatas(true);
+            }
+            $this->addAjaxDatas('success', $success);
         }
     }
 
@@ -87,12 +89,13 @@ class Reference extends Backoffice {
 
             //load model
             $manager = Model::factoryManager('reference');
-            $manager->update($reference);
-
-            //cache
-            $this->_cache->delete('reference' . $id);
-            $this->_cache->delete('reference' . 'List');
-            $this->addAjaxDatas('success', true);
+            $success = $manager->update($reference);
+            if ($success) {
+                //cache
+                $this->_cache->delete('reference' . $id);
+                $this->_cache->delete('reference' . 'List');
+            }
+            $this->addAjaxDatas('success', $success);
         }
     }
 

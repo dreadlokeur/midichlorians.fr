@@ -4,6 +4,7 @@
             <th>ID</th>
             <th style="max-width: 100px;">Fichier</th>
             <th style="max-width: 100px;">Nom</th>
+            <th>Date d'ajout</th>
             <th>Type media</th>
             <th>Mime type</th>
             <th>Légende</th>
@@ -25,6 +26,7 @@
                         <?php } ?>
                     </td>
                     <td><?php echo $media->getFilename(false); ?></td>
+                    <td name="date"><?php echo $media->date; ?></td>
                     <td><?php echo $media->type; ?></td>
                     <td><?php echo $media->mime; ?></td>
                     <td class="editable" name="title"><?php echo $media->title; ?></td>

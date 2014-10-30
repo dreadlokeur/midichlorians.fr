@@ -14,10 +14,39 @@ class ReferenceManager extends Model implements IModelManager {
     }
 
     public function create(ReferenceObject $reference, $returnLastId = true) {
-        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("", "' . $reference->name . '", "' . $reference->content . '", "' . $reference->date . '", "' . $reference->link . '", "' . $reference->technology . '", "' . $reference->online . '", "' . $reference->mediaId . '")';
-        //if is null foreign_key
-        $this->execute('SET FOREIGN_KEY_CHECKS=0', array(), false, true);
-        return $this->execute($sql, array(), $returnLastId, true);
+        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("",?,?,?,?,?,?,?)';
+        $this->_engine->prepare($sql);
+        $this->_engine->bind($reference->name, Database::PARAM_STR);
+        $this->_engine->bind($reference->content, Database::PARAM_STR);
+        $this->_engine->bind($reference->date, Database::PARAM_STR);
+        $this->_engine->bind($reference->link, Database::PARAM_STR);
+        $this->_engine->bind($reference->technology, Database::PARAM_STR);
+        $this->_engine->bind($reference->online, Database::PARAM_INT);
+        $this->_engine->bind($reference->mediaId, Database::PARAM_INT);
+        $this->_engine->execute();
+        if ($returnLastId)
+            return $this->_engine->lastInsertId();
+    }
+
+    public function update(ReferenceObject $reference) {
+        $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET name = ?, content =  ?, date = ?, link = ?, technology = ?, online = ?, mediaId = ? WHERE id = ?';
+        $this->_engine->prepare($sql);
+        $this->_engine->bind($reference->name, Database::PARAM_STR);
+        $this->_engine->bind($reference->content, Database::PARAM_STR);
+        $this->_engine->bind($reference->date, Database::PARAM_STR);
+        $this->_engine->bind($reference->link, Database::PARAM_STR);
+        $this->_engine->bind($reference->technology, Database::PARAM_STR);
+        $this->_engine->bind($reference->online, Database::PARAM_INT);
+        $this->_engine->bind($reference->mediaId, Database::PARAM_INT);
+        $this->_engine->bind($reference->id, Database::PARAM_INT);
+        return $this->_engine->execute();
+    }
+
+    public function delete($id) {
+        $sql = 'DELETE FROM ' . $this->getModelDBTable() . ' WHERE id = "' . $id . '"';
+        $this->_engine->prepare($sql);
+        $this->_engine->bind($id, Database::PARAM_INT);
+        return $this->_engine->execute();
     }
 
     public function read($id) {
@@ -28,11 +57,12 @@ class ReferenceManager extends Model implements IModelManager {
             LEFT JOIN `media` MEDIA
             ON MEDIA.`id` = R.`mediaId`
             WHERE R.`id` = ?';
-        $this->execute($sql, array($id => Database::PARAM_INT));
+        $this->_engine->prepare($sql);
+        $this->_engine->bind($id, Database::PARAM_INT);
+        $this->_engine->execute();
         $data = $this->_engine->fetchAll(Database::FETCH_ASSOC);
         if (empty($data))
             return null;
-
 
         // set media object
         if ($data[0]['mediaId']) {
@@ -46,21 +76,10 @@ class ReferenceManager extends Model implements IModelManager {
         return self::factoryObject('reference', $data[0]);
     }
 
-    public function update(ReferenceObject $reference) {
-        $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET name = "' . $reference->name . '", content =  ?, date = "' . $reference->date . '", link = "' . $reference->link . '", technology = "' . $reference->technology . '", online = "' . $reference->online . '", mediaId = "' . $reference->mediaId . '" WHERE id = "' . $reference->id . '"';
-        $this->execute($sql, array($reference->content => Database::PARAM_STR), false, true);
-    }
-
-    public function delete($id) {
-        $sql = 'DELETE FROM ' . $this->getModelDBTable() . ' WHERE id = "' . $id . '"';
-        $this->execute($sql, array(), false, true);
-
-        return true;
-    }
-
     public function readAll() {
-        $sql = 'SELECT * FROM ' . $this->getModelDBTable();
-        $this->execute($sql);
+        $sql = 'SELECT id FROM ' . $this->getModelDBTable();
+        $this->_engine->prepare($sql);
+        $this->_engine->execute();
         $datas = $this->_engine->fetchAll(Database::FETCH_ASSOC);
 
         $references = array();

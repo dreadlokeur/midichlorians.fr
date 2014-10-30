@@ -56,16 +56,18 @@ class Page extends Backoffice {
         $page = $this->_read('page', $name);
         if ($page) {
             $manager = Model::factoryManager('page');
-            $manager->delete($name);
-            //cache
-            $this->_cache->delete('page' . $name);
-            $this->_cache->delete('page' . 'List');
+            $success = $manager->delete($name);
+            if ($success) {
+                //cache
+                $this->_cache->delete('page' . $name);
+                $this->_cache->delete('page' . 'List');
 
-            //update content
-            $this->tpl->setVar('pages', $this->_readAll('page'), false, true);
-            $this->tpl->setFile('tables' . DS . 'pages.tpl.php');
-            $this->setAjaxAutoAddDatas(true);
-            $this->addAjaxDatas('success', true);
+                //update content
+                $this->tpl->setVar('pages', $this->_readAll('page'), false, true);
+                $this->tpl->setFile('tables' . DS . 'pages.tpl.php');
+                $this->setAjaxAutoAddDatas(true);
+            }
+            $this->addAjaxDatas('success', $success);
         }
     }
 
@@ -81,12 +83,14 @@ class Page extends Backoffice {
 
             //load model
             $manager = Model::factoryManager('page');
-            $manager->update($page);
+            $success = $manager->update($page);
 
-            //cache
-            $this->_cache->delete('page' . $name);
-            $this->_cache->delete('page' . 'List');
-            $this->addAjaxDatas('success', true);
+            if ($success) {
+                //cache
+                $this->_cache->delete('page' . $name);
+                $this->_cache->delete('page' . 'List');
+            }
+            $this->addAjaxDatas('success', $success);
         }
     }
 

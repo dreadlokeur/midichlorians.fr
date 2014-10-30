@@ -37,8 +37,9 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 col-sm-2 control-label">Fichier</label>
-                            <?php if ($this->media->isImage()) { ?>
-                                <div class="col-sm-10">
+                            <div class="col-sm-10">
+                                <?php if ($this->media->isImage()) { ?>
+
                                     <ul class="list-inline margin-top-30">
                                         <li><i class="fa fa-crop fa-4x cursor-pointer media-crop" title="Recadrer"></i></li>
                                         <li><i class="fa fa-arrows-h fa-4x cursor-pointer media-flip-h" title="Retournement horizontal"></i></li>
@@ -70,10 +71,20 @@
                                         <input type="hidden" value="0" id="flipH" name="flipH" class="form-control">
                                         <input type="hidden" value="0" id="flipV" name="flipV" class="form-control">
                                     </p>
-                                </div>
-                            <?php } else { ?>
-                                <img class="cursor-pointer" src="<?php echo $this->media->getThumbType(); ?>" alt="<?php echo $this->media->filename; ?>">
-                            <?php } ?>
+
+                                <?php } elseif ($this->media->isAudio()) { ?>
+                                    <audio controls>
+                                        <source src="<?php echo $this->media->filename; ?>" type="audio/ogg">
+                                        <source src="<?php echo $this->media->filename; ?>" type="<?php echo $this->media->mime; ?>">
+                                        Your browser does not support the audio tag.
+                                    </audio> 
+                                <?php } elseif ($this->media->isVideo()) { ?>
+                                    <video controls>
+                                        <source src="<?php echo $this->media->filename; ?>" type="<?php echo $this->media->mime; ?>">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                <?php } ?>
+                            </div>
                         </div>
 
 

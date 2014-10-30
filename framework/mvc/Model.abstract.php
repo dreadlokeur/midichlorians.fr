@@ -208,12 +208,12 @@ abstract class Model {
         return $this->_engine;
     }
 
-    public function execute($query, $parameters = array(), $returnLastInsertId = false, $closeStatement = false, $checkBindNumber = true) {
+    public function execute($query, $parameters = array(), $returnLastInsertId = false, $checkBindNumber = false) {
         $this->_engine->prepare($query);
         foreach ($parameters as $paramValue => $paramType)
             $this->_engine->bind($paramValue, $paramType);
 
-        $this->_engine->execute($closeStatement, $checkBindNumber);
+        $this->_engine->execute($checkBindNumber);
 
 
         if ($returnLastInsertId)

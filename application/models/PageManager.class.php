@@ -14,13 +14,42 @@ class PageManager extends Model implements IModelManager {
     }
 
     public function create(PageObject $page, $returnLastId = true) {
-        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("' . $page->generateName() . '", "' . $page->content . '", "' . $page->title . '", "' . $page->menu . '", "' . $page->deletable . '")';
-        return $this->execute($sql, array(), $returnLastId, true);
+        $name = $page->generateName();
+        $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES(?,?,?,?,?)';
+        $this->_engine->prepare($sql);
+        $this->_engine->bind($name, Database::PARAM_STR);
+        $this->_engine->bind($page->content, Database::PARAM_STR);
+        $this->_engine->bind($page->title, Database::PARAM_STR);
+        $this->_engine->bind($page->menu, Database::PARAM_STR);
+        $this->_engine->bind($page->deletable, Database::PARAM_INT);
+        $this->_engine->execute();
+        if ($returnLastId)
+            return $this->_engine->lastInsertId();
+    }
+
+    public function update(PageObject $page) {
+        $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET content = ?, title = ?, menu = ?, deletable = ? WHERE name = ?';
+        $this->_engine->prepare($sql);
+        $this->_engine->bind($page->content, Database::PARAM_STR);
+        $this->_engine->bind($page->title, Database::PARAM_STR);
+        $this->_engine->bind($page->menu, Database::PARAM_STR);
+        $this->_engine->bind($page->deletable, Database::PARAM_INT);
+        $this->_engine->bind($page->name, Database::PARAM_STR);
+        return $this->_engine->execute();
+    }
+
+    public function delete($name) {
+        $sql = 'DELETE FROM ' . $this->getModelDBTable() . ' WHERE name = ?';
+        $this->_engine->prepare($sql);
+        $this->_engine->bind($name, Database::PARAM_STR);
+        return $this->_engine->execute();
     }
 
     public function read($name) {
         $sql = 'SELECT * FROM ' . $this->getModelDBTable() . ' WHERE name = ?';
-        $this->execute($sql, array($name => Database::PARAM_STR));
+        $this->_engine->prepare($sql);
+        $this->_engine->bind($name, Database::PARAM_STR);
+        $this->_engine->execute();
         $data = $this->_engine->fetchAll(Database::FETCH_ASSOC);
         if (empty($data))
             return null;
@@ -28,23 +57,10 @@ class PageManager extends Model implements IModelManager {
         return self::factoryObject('page', $data[0]);
     }
 
-    public function update(PageObject $page) {
-        $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET content = ?, title = "' . $page->title . '", menu = "' . $page->menu . '", deletable = "' . $page->deletable . '" WHERE name = "' . $page->name . '"';
-        $this->execute($sql, array(
-            $page->content => Database::PARAM_STR), false, true
-        );
-    }
-
-    public function delete($name) {
-        $sql = 'DELETE FROM ' . $this->getModelDBTable() . ' WHERE name = "' . $name . '"';
-        $this->execute($sql, array(), false, true);
-
-        return true;
-    }
-
     public function readAll() {
         $sql = 'SELECT * FROM ' . $this->getModelDBTable();
-        $this->execute($sql);
+        $this->_engine->prepare($sql);
+        $this->_engine->execute();
         $datas = $this->_engine->fetchAll(Database::FETCH_ASSOC);
 
         $pages = array();
@@ -57,11 +73,13 @@ class PageManager extends Model implements IModelManager {
     public function existsName($name, $lastName = null) {
         $sql = 'SELECT name FROM ' . $this->getModelDBTable() . ' WHERE name = ?';
         if (!is_null($lastName))
-            $sql .= ' AND name != "' . $lastName . '"';
+            $sql .= ' AND name != ?';
+        $this->_engine->prepare($sql);
+        $this->_engine->bind($name, Database::PARAM_STR);
+        if (!is_null($lastName))
+            $this->_engine->bind($lastName, Database::PARAM_STR);
 
-        $this->execute($sql, array(
-            $name => Database::PARAM_STR), false, false
-        );
+        $this->_engine->execute();
         return $this->_engine->rowCount();
     }
 

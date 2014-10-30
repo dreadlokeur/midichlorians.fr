@@ -16,7 +16,7 @@ interface IModelManager {
 
     public function getDB();
 
-    public function execute($query, $parameters = array(), $returnLastInsertId = false, $closeStatement = false, $checkBindNumber = true);
+    public function execute($query, $parameters = array(), $returnLastInsertId = false, $checkBindNumber = true);
 }
 
 ?>

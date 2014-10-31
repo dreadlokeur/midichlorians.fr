@@ -9,7 +9,9 @@
             <th>Mime type</th>
             <th>Légende</th>
             <th>Texte alternatif</th>
-            <th>Poids (byte)</th>
+            <th>Poids (MB)</th>
+            <th>Hauteur</th>
+            <th>Largeur</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -31,7 +33,9 @@
                     <td><?php echo $media->mime; ?></td>
                     <td class="editable" name="title"><?php echo $media->title; ?></td>
                     <td class="editable" name="alt"><?php echo $media->alt; ?></td>
-                    <td><?php echo $media->size; ?></td>
+                    <td><?php echo $media->getSize(true); ?></td>
+                    <td><?php echo $media->height; ?></td>
+                    <td><?php echo $media->width; ?></td>
                     <td>
                         <a href="<?php echo $media->filename; ?>" target="blanck"class="btn btn-default" title="Voir" alt="Voir"><i class="fa fa-eye"></i></a>
                         <a href="<?php echo $this->getUrl('mediaView', array($media->id)); ?>" class="btn btn-default ajax-switcher" title="Editer" alt="Editer"><i class="fa fa-pencil"></i></a>

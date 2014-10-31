@@ -61,6 +61,13 @@ class MediaObject extends Model implements IModelObject {
         return Router::getHost(true, Http::isHttps()) . str_replace(PATH_ROOT, '', MediaManager::getDatasPath()) . $this->_type . '.png';
     }
 
+    public function getSize($mb = false) {
+        if ($mb)
+            return round($this->_size / 1048576, 2); //in MB
+
+        return $this->_size;
+    }
+
 }
 
 ?>

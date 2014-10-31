@@ -36,6 +36,18 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label">Poids (MB)</label>
+                            <div class="col-sm-10">
+                                <input type="text" disabled="" value="<?php echo $this->media->getSize(true); ?>" id="size" name="size" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label">Date d'ajout</label>
+                            <div class="col-sm-10">
+                                <input type="text" disabled="" value="<?php echo $this->media->date; ?>" id="size" name="size" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-2 col-sm-2 control-label">Fichier</label>
                             <div class="col-sm-10">
                                 <?php if ($this->media->isImage()) { ?>
@@ -48,25 +60,26 @@
                                         <li><i class="fa fa-repeat fa-4x cursor-pointer media-rotate-r" title="Tourner dans le sens des aiguilles d’une montre"></i></li>
                                     </ul>
                                     <ul class="list-inline">
-                                        <li>Height 
+                                        <li>Hauteur 
                                             <input type="number" value="<?php echo $this->media->height; ?>" id="media-height" name="height" class="form-control" required="">
                                             <input type="hidden" value="<?php echo $this->media->height; ?>" id="media-height-default" name="height-default">
                                         </li>
-                                        <li>Width 
+                                        <li>Largeur 
                                             <input type="number" value="<?php echo $this->media->width; ?>" id="media-width" name="width" class="form-control" required="">
                                             <input type="hidden" value="<?php echo $this->media->width; ?>" id="media-width-default" name="width-default">
                                         </li>
-                                        <li>Poid <input type="text" disabled="" value="<?php echo $this->media->size; ?>" id="size" name="size" class="form-control"></li>
                                         <li>Conserver les proportions <p class="margin-top-10"><input type="checkbox" id="media-proportion" name="proportion" checked="" class="form-control" data-toggle="switch"></p></li>
                                     </ul>
                                     <ul class="list-inline margin-top-30" id="coords">
-                                        <li>X <input type="text" class="form-control" id="x1" name="x1" /></li>
-                                        <li>Y <input type="text" class="form-control" id="y1" name="y1" /></li>
-                                        <li>Height <input type="text" class="form-control" id="h" name="h" /></li>
-                                        <li>Width <input type="text" class="form-control" id="w" name="w" /></li>
+                                        <li>Axe X <input type="number" class="form-control" id="x1" name="x1" /></li>
+                                        <li><input type="hidden" class="form-control" id="x2" name="x2" /></li>
+                                        <li>Axe Y <input type="number" class="form-control" id="y1" name="y1" /></li>
+                                        <li><input type="hidden" class="form-control" id="y2" name="y2" /></li>
+                                        <li>Hauteur <input type="number" class="form-control" id="h" name="h" /></li>
+                                        <li>Largeur <input type="number" class="form-control" id="w" name="w" /></li>
                                     </ul>
                                     <p id="media-block">
-                                        <img class="cursor-pointer img-responsive media crop" src="<?php echo $this->media->filename; ?>">
+                                        <img class="cursor-pointer img-responsive media" src="<?php echo $this->media->filename; ?>">
                                         <input type="hidden" value="0" id="rotate" name="rotate" class="form-control">
                                         <input type="hidden" value="0" id="flipH" name="flipH" class="form-control">
                                         <input type="hidden" value="0" id="flipV" name="flipV" class="form-control">

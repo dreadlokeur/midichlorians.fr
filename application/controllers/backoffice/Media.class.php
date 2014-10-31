@@ -155,7 +155,7 @@ class Media extends Backoffice {
                     $this->addAjaxDatas('mediaImageSrc', $media->getFilename());
                     $this->addAjaxDatas('mediaImageWidth', $media->width);
                     $this->addAjaxDatas('mediaImageHeight', $media->height);
-                    $this->addAjaxDatas('mediaImageSize', $media->size);
+                    $this->addAjaxDatas('mediaImageSize', $media->getSize(true));
                 }
             }
             //load model

@@ -30,12 +30,6 @@
                 <li class="page-scroll">
                     <a href="#cv"><?php echo $this->pages['cv']->menu; ?></a>
                 </li>
-<!--                <li class="page-scroll">
-                    <a href="#contact"><?php echo $this->pages['contact']->menu; ?></a>
-                </li>-->
-                <li>
-                    <a href="" target="_blank"><?php echo $this->pages['blog']->menu; ?></a>
-                </li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->

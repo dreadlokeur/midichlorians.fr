@@ -813,11 +813,13 @@
                         $('input#backoffice-token').val(datas.token);
                         if (typeof (datas.mediaImageSrc) !== "undefined" && datas.mediaImageSrc !== null) {
                             //update image src
-                            $('body').find('#media-block img').remove();
-                            $('body').find('#media-block').append('<img class="cursor-pointer img-responsive media crop" src="' + datas.mediaImageSrc + '?' + Math.floor(Math.random() * 100) + '"">');
+                            $('body').find('#media-block img').attr('src', datas.mediaImageSrc + '?' + Math.floor(Math.random() * 100)).removeAttr('style');
+                            $('body').find('#media-block').css('margin-bottom', 10);
                             //update input height/width
                             $('body').find('input#media-height-default').val(datas.mediaImageHeight);
+                            $('body').find('input#media-height').val(datas.mediaImageHeight);
                             $('body').find('input#media-width-default').val(datas.mediaImageWidth);
+                            $('body').find('input#media-width').val(datas.mediaImageWidth);
                             $('body').find('input#size').val(datas.mediaImageSize);
                             // reset
                             resetMediaManipulate();
@@ -923,8 +925,10 @@
             $('body').find('input#rotate').val(0);
             $('body').find('input#flipV').val(0);
             $('body').find('input#flipH').val(0);
-            jcrop_api.destroy();
-            clearCoords();
+            if (jcrop_api) {
+                jcrop_api.destroy();
+                clearCoords();
+            }
         }
 
         function rotateMediaImage(rotateStep, img) {
@@ -998,14 +1002,28 @@
             var realW = $('body').find('input#media-width-default').attr('value');
             var w = $('img.crop').width();
             var ratioW = realW / w;
-            $('#x1').val(Math.round(c.x * ratioW));
-            $('#y1').val(Math.round(c.y * ratioH));
-            $('#w').val(Math.round(c.w * ratioW));
-            $('#h').val(Math.round(c.h * ratioH));
+            var x1 = Math.round(c.x * ratioW);
+            var y1 = Math.round(c.y * ratioH);
+            var w = Math.round(c.w * ratioW);
+            var h = Math.round(c.h * ratioH);
+            $('#x1').val(x1);
+            $('#y1').val(y1);
+            $('#w').val(w);
+            $('#h').val(h);
+            $('#x2').val(x1 + w);
+            $('#y2').val(y1 + h);
         }
 
         function clearCoords() {
             $('#coords input').val('');
         }
+
+        $('#coords').on('change', 'input', function (e) {
+            var x1 = $('#x1').val(),
+                    x2 = $('#x2').val(),
+                    y1 = $('#y1').val(),
+                    y2 = $('#y2').val();
+            jcrop_api.setSelect([x1, y1, x2, y2]);
+        });
     });
 })(jQuery);

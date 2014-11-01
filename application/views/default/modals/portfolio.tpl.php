@@ -13,15 +13,17 @@
                     <div class="row">
                         <div class="col-lg-8 col-lg-offset-2">
                             <div class="modal-body">
-                                <h2><?php echo $reference->name; ?></h2>
+                                <h2 class="align-center"><?php echo $reference->name; ?></h2>
                                 <hr class="star-primary">
                                 <?php echo $reference->content; ?>
-                                <ul class="list-inline item-details">
-                                    <li>Date: <strong><?php echo $reference->date; ?></strong></li>
-                                    <li>Technologies: <strong><?php echo $reference->technology; ?></strong></li>
-                                    <li>Lien: <strong><a href="<?php echo $reference->link; ?>">Voir le site</a></strong></li>
-                                </ul>
-                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Fermer</button>
+                                <div class="align-center">
+                                    <ul class="list-inline item-details">
+                                        <li>Date: <strong><?php echo $reference->date; ?></strong></li>
+                                        <li>Technologies: <strong><?php echo $reference->technology; ?></strong></li>
+                                        <li>Lien: <strong><a href="<?php echo $reference->link; ?>" target='blanck'>Voir le site</a></strong></li>
+                                    </ul>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Fermer</button>
+                                </div>
                             </div>
                         </div>
                     </div>

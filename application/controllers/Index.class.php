@@ -20,7 +20,7 @@ class Index extends Controller {
         $this->_cache = Cache::getCache('bdd');
         //assigns vars
         $this->tpl->setVar('pages', $this->_readAll('page'), false, true);
-        $this->tpl->setVar('references', $this->_readAll('reference'), false, true);
+        $this->tpl->setVar('references', $this->_readAll('reference', true), false, true);
         // set template file
         $this->tpl->setFile('controllers' . DS . 'Index' . DS . 'index.tpl.php');
     }
@@ -62,13 +62,13 @@ class Index extends Controller {
         }
     }
 
-    private function _readAll($modelType) {
+    private function _readAll($modelType, $option = false) {
         $cache = $this->_cache->read($modelType . 'List');
         if (!is_null($cache) && !Application::getDebug())
             $datas = $cache;
         else {
             $manager = Model::factoryManager($modelType);
-            $datas = $manager->readAll();
+            $datas = $manager->readAll($option);
             if (!is_null($datas) && !Application::getDebug())
                 $this->_cache->write($modelType . 'List', $datas, true);
         }

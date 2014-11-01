@@ -10,10 +10,10 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2">
                     <div class="modal-body">
-                        <h2><?php echo $this->pages['legal']->title; ?></h2>
+                        <h2 class="align-center"><?php echo $this->pages['legal']->title; ?></h2>
                         <hr class="star-primary">
                         <?php echo $this->pages['legal']->content; ?>
-                        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        <div class="align-center"><button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Fermer</button></div>
                     </div>
                 </div>
             </div>

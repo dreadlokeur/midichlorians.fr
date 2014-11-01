@@ -382,6 +382,13 @@
              * need to complete
              */
         });
+        $('#coords').on('change', 'input', function (e) {
+            var x1 = $('#x1').val(),
+                    x2 = $('#x2').val(),
+                    y1 = $('#y1').val(),
+                    y2 = $('#y2').val();
+            jcrop_api.setSelect([x1, y1, x2, y2]);
+        });
 
 
 
@@ -1018,12 +1025,6 @@
             $('#coords input').val('');
         }
 
-        $('#coords').on('change', 'input', function (e) {
-            var x1 = $('#x1').val(),
-                    x2 = $('#x2').val(),
-                    y1 = $('#y1').val(),
-                    y2 = $('#y2').val();
-            jcrop_api.setSelect([x1, y1, x2, y2]);
-        });
+
     });
 })(jQuery);

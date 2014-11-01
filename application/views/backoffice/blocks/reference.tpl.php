@@ -45,7 +45,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 col-sm-2 control-label">En ligne</label>
                             <div class="col-sm-10">
-                                <input type="checkbox" id="deletable" name="online" data-toggle="switch" <?php if ($this->reference->online) { ?>checked=""<?php } ?>>
+                                <input type="checkbox" id="online" name="online" data-toggle="switch" <?php if ($this->reference->online) { ?>checked=""<?php } ?>>
                             </div>
                         </div>
                         <div class="form-group margin-top-20">

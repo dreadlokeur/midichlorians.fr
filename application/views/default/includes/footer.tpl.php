@@ -16,10 +16,9 @@
         </div>
     </div>
 </footer>
-<!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
 <div id="scrolltop" class="scroll-top page-scroll hide">
-    <a class="btn btn-primary" href="#page-top">
-        <i class="fa fa-chevron-up"></i>
+    <a href="#page-top" class="btn btn-primary">
+        <i class="fa fa-chevron-circle-up fa-4x cursor-pointer"></i>
     </a>
 </div>
 <script type="text/javascript"><?php echo $this->getJs(); ?></script>

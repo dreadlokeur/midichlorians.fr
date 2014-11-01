@@ -12,7 +12,7 @@
                 <?php echo $this->pages['reference']->content; ?>
             </div>
         </div>
-        <div class="row">
+        <div class="row" id="portfolio-row">
             <?php if (is_array($this->references) && count($this->references) > 0) { ?>
                 <?php foreach ($this->references as $reference) { ?>
                     <div class="col-sm-4 portfolio-item">
@@ -27,6 +27,11 @@
                     </div>
                 <?php } ?>
             <?php } ?>
+        </div>
+        <div class="align-center">
+            <div class="holder hide"></div>
+            <i class="fa fa-chevron-circle-left fa-4x cursor-pointer jPagesPrevious btn btn-primary"></i>
+            <i class="fa fa-chevron-circle-right fa-4x cursor-pointer jPagesNext btn btn-primary"></i>
         </div>
     </div>
 </section>

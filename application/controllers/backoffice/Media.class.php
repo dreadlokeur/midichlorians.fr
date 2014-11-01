@@ -8,6 +8,9 @@ use framework\mvc\Router;
 use framework\network\Http;
 use framework\utility\Tools;
 use models\MediaManager;
+use \Imagine\Gd\Imagine;
+use \Imagine\Image\Box;
+use Imagine\Image\Point;
 
 class Media extends Backoffice {
 
@@ -122,7 +125,7 @@ class Media extends Backoffice {
                 $filePath = MediaManager::getDatasPath() . $media->getFilename(false);
                 // manipulate image
                 if ($media->isImage()) {
-                    $imagine = new \Imagine\Gd\Imagine();
+                    $imagine = new Imagine();
                     $image = $imagine->open($filePath);
                     //rotate
                     $image->rotate(Http::getPost('rotate'));
@@ -137,11 +140,11 @@ class Media extends Backoffice {
                     //resize
                     $width = Http::getPost('width');
                     $height = Http::getPost('height');
-                    $size = new \Imagine\Image\Box($width, $height);
+                    $size = new Box($width, $height);
                     $image->resize($size);
                     //crop
                     if (Http::getPost('x1') && Http::getPost('y1') && Http::getPost('w') && Http::getPost('h'))
-                        $image->crop(new \Imagine\Image\Point(Http::getPost('x1'), Http::getPost('y1')), new \Imagine\Image\Box(Http::getPost('w'), Http::getPost('h')));
+                        $image->crop(new Point(Http::getPost('x1'), Http::getPost('y1')), new Box(Http::getPost('w'), Http::getPost('h')));
 
                     // save
                     $image->save($filePath);

@@ -14,6 +14,9 @@ class ReferenceManager extends Model implements IModelManager {
     }
 
     public function create(ReferenceObject $reference, $returnLastId = true) {
+        // if mediaId is null foreign_key
+        $this->execute('SET FOREIGN_KEY_CHECKS=0');
+
         $sql = 'INSERT INTO ' . $this->getModelDBTable() . ' VALUES("",?,?,?,?,?,?,?)';
         $this->_engine->prepare($sql);
         $this->_engine->bind($reference->name, Database::PARAM_STR);
@@ -29,6 +32,9 @@ class ReferenceManager extends Model implements IModelManager {
     }
 
     public function update(ReferenceObject $reference) {
+        // if mediaId is null foreign_key
+        $this->execute('SET FOREIGN_KEY_CHECKS=0');
+
         $sql = 'UPDATE ' . $this->getModelDBTable() . ' SET name = ?, content =  ?, date = ?, link = ?, technology = ?, online = ?, mediaId = ? WHERE id = ?';
         $this->_engine->prepare($sql);
         $this->_engine->bind($reference->name, Database::PARAM_STR);
@@ -76,8 +82,13 @@ class ReferenceManager extends Model implements IModelManager {
         return self::factoryObject('reference', $data[0]);
     }
 
-    public function readAll() {
-        $sql = 'SELECT id FROM ' . $this->getModelDBTable();
+    public function readAll($onlineOnly = false) {
+        $sql = 'SELECT id, date FROM ' . $this->getModelDBTable();
+        if ($onlineOnly) {
+            $sql .= ' WHERE online = 1';
+        }
+        $sql .= ' ORDER BY LENGTH(date), id DESC';
+        
         $this->_engine->prepare($sql);
         $this->_engine->execute();
         $datas = $this->_engine->fetchAll(Database::FETCH_ASSOC);

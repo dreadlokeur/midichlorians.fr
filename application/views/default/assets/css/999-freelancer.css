@@ -369,22 +369,11 @@ footer .footer-below {
 .scroll-top {
     z-index: 1049;
     position: fixed;
-    right: 2%;
+    right: 2.12%;
     bottom: 2%;
     width: 50px;
     height: 50px;
-}
-
-.scroll-top .btn {
-    width: 50px;
-    height: 50px;
-    border-radius: 100%;
-    font-size: 20px;
-    line-height: 28px;
-}
-
-.scroll-top .btn:focus {
-    outline: 0;
+    margin-bottom: 4px;
 }
 
 .portfolio-modal .modal-content {
@@ -392,7 +381,7 @@ footer .footer-below {
     min-height: 100%;
     border: 0;
     border-radius: 0;
-    text-align: center;
+    /*text-align: center;*/
     background-clip: border-box;
     -webkit-box-shadow: none;
     box-shadow: none;

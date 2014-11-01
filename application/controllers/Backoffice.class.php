@@ -166,31 +166,13 @@ class Backoffice extends Controller {
     }
 
     protected function _read($modelType, $id) {
-        $cache = $this->_cache->read($modelType . $id);
-        if (!is_null($cache) && !Application::getDebug())
-            $data = $cache;
-        else {
-            $manager = Model::factoryManager($modelType);
-            $data = $manager->read($id);
-            if (!is_null($data) && !Application::getDebug())
-                $this->_cache->write($modelType . $id, $data, true);
-        }
-
-        return $data;
+        $manager = Model::factoryManager($modelType);
+        return $manager->read($id);
     }
 
     protected function _readAll($modelType, $option = '') {
-        $cache = $this->_cache->read($modelType . 'List' . (string) $option);
-        if (!is_null($cache) && !Application::getDebug())
-            $datas = $cache;
-        else {
-            $manager = Model::factoryManager($modelType);
-            $datas = $manager->readAll($option);
-            if (!is_null($datas) && !Application::getDebug())
-                $this->_cache->write($modelType . 'List' . (string) $option, $datas, true);
-        }
-
-        return $datas;
+        $manager = Model::factoryManager($modelType);
+        return $manager->readAll($option);
     }
 
 }

@@ -1,7 +1,7 @@
-(function($) {
-    $(document).ready(function() {
+(function ($) {
+    $(document).ready(function () {
         //refresh captcha
-        $("body").on("click", ".refresh-captcha", function() {
+        $("body").on("click", ".refresh-captcha", function () {
             refreshCaptcha($(this).find(".captach-image"), $(this).attr('href'));
             return false;
         });
@@ -10,7 +10,7 @@
                 type: 'GET',
                 url: url,
                 dataType: 'json',
-                success: function(datas) {
+                success: function (datas) {
                     if (datas.imageUrl && img !== "undefined")
                         img.attr("src", datas.imageUrl + '/' + Math.floor(Math.random() * 100));
                 }
@@ -18,7 +18,7 @@
         }
 
         //refresh audio captcha
-        $("body").on("click", ".play-captcha", function() {
+        $("body").on("click", ".play-captcha", function () {
             $(this).find(".captach-audio").remove();
             if ($.browser.msie) {
                 $(this).append('<embed src="' + $(this).attr('href') + '/' + Math.floor(Math.random() * 100) + '" hidden="true" class="captach-audio">').appendTo('body');
@@ -30,7 +30,7 @@
         });
 
         // language updater
-        $('.updateLanguage').click(function() {
+        $('.updateLanguage').click(function () {
             var language = $(this).attr('id');
             if (language === $('html').attr("lang"))
                 return false;
@@ -38,7 +38,7 @@
                 type: 'GET',
                 url: urls['language'] + '/' + language,
                 dataType: 'json',
-                success: function(datas) {
+                success: function (datas) {
                     if (datas.updated === true)
                         window.location.replace(urls['index']);
                 }
@@ -47,20 +47,20 @@
         });
 
         /* REQUEST BACKOFFICE CONSOLE */
-        $('body').keydown(function(event) {
+        $('body').keydown(function (event) {
             if (event.keyCode === 120)
                 window.location.replace(urls['backoffice']);
         });
 
         // jQuery for page scrolling feature - requires jQuery Easing plugin
-        $('.page-scroll a').bind('click', function(event) {
+        $('.page-scroll a').bind('click', function (event) {
             var anchor = $(this);
             $('html, body').stop().animate({
                 scrollTop: $(anchor.attr('href')).offset().top
             }, 1500, 'easeInOutExpo');
             event.preventDefault();
         });
-        $(window).scroll(function() {
+        $(window).scroll(function () {
             if ($(this).scrollTop() < 100)
                 $('.nicescroll-rails').addClass('hide');
             else
@@ -79,8 +79,22 @@
             target: '.navbar-fixed-top'
         });
         // Closes the Responsive Menu on Menu Item Click
-        $('.navbar-collapse ul li a').click(function() {
+        $('.navbar-collapse ul li a').click(function () {
             $('.navbar-toggle:visible').click();
+        });
+
+        $("div.holder").jPages({
+            perPage: 6,
+            containerID: "portfolio-row",
+            animation: "bounceIn",
+            previous: 'i.jPagesPrevious',
+            next: 'i.jPagesNext',
+            first: false,
+            last: false,
+        });
+        $(document).delegate('*[data-toggle="lightbox"]', 'click', function (event) {
+            event.preventDefault();
+            return $(this).ekkoLightbox();
         });
     });
 

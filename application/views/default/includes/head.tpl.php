@@ -5,7 +5,7 @@
     <meta http-equiv="Expires" content="24Oct 2018 23:59:59 GMT">
     <meta http-equiv="Cache-Control" content="public;max-age=315360000" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <?php if (defined('GOOGLE_VERIFICATION')) { ?>
+    <?php if (defined('GOOGLE_VERIFICATION') && !is_null(GOOGLE_VERIFICATION)) { ?>
         <meta name="google-site-verification" content="<?php echo GOOGLE_VERIFICATION; ?>" />
     <?php } ?>
     <meta name="Author" content="<?php echo ADMIN_NAME; ?>" />
@@ -26,7 +26,7 @@
     <!--[if IE]>
             <link rel="stylesheet" href="<?php echo $this->getUrlAsset('css'); ?>no-autoload/ie.css"> 
     <!--[endif]-->
-    <?php if (defined('GOOGLE_UA')) { ?>
+    <?php if (defined('GOOGLE_UA') && !is_null(GOOGLE_UA)) { ?>
     <script type="text/javascript">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', '<?php echo GOOGLE_UA; ?>']);

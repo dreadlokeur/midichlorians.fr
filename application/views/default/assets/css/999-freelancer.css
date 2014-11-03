@@ -192,7 +192,20 @@ section.success {
     section.first {
         padding-top: 75px;
     }
+    .scroll-top {
+        right: 12%!important;
+        bottom: 3.9%!important;
+    }
+    .portfolio-item {
+        padding-right: 0px!important;
+        padding-left: 0px!important;
+    }
 }
+@media(max-width:300px) {
+
+}
+
+
 
 #portfolio .portfolio-item {
     right: 0;

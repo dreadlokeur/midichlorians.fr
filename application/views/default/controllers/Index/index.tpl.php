@@ -11,7 +11,6 @@
         <?php include $this->getPath() . 'includes' . DS . 'cv.tpl.php'; ?>
         <!-- modals -->
         <?php include $this->getPath() . 'modals' . DS . 'portfolio.tpl.php'; ?>
-        <?php include $this->getPath() . 'modals' . DS . 'legal.tpl.php'; ?>
         <!-- footer -->
         <?php include $this->getPath() . 'includes' . DS . 'footer.tpl.php'; ?>
     </body>

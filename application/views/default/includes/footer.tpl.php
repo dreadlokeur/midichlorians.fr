@@ -10,7 +10,6 @@
             <div class="row">
                 <div class="col-lg-12">
                     Copyright &copy; <?php echo HOSTNAME; ?> <?php echo Date("Y"); ?>
-                    <span class="pull-right text-uppercase"><a href="#legal" class="portfolio-link" data-toggle="modal"><?php echo $this->langs->content_2; ?></a></span>
                 </div>
             </div>
         </div>

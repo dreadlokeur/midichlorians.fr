@@ -4,6 +4,7 @@ namespace models;
 
 use framework\mvc\Model;
 use framework\mvc\IModelObject;
+use framework\utility\Date;
 
 class ReferenceObject extends Model implements IModelObject {
 
@@ -27,6 +28,13 @@ class ReferenceObject extends Model implements IModelObject {
 
         $this->_link = $link;
         return $this;
+    }
+
+    public function getDate($convert = false) {
+        if ($convert) {
+            return Date::dateFromUsFormat($this->_date);
+        }
+        return $this->_date;
     }
 
 }

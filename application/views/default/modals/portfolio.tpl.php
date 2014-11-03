@@ -18,7 +18,7 @@
                                 <?php echo $reference->content; ?>
                                 <div class="align-center">
                                     <ul class="list-inline item-details">
-                                        <li>Date: <strong><?php echo $reference->date; ?></strong></li>
+                                        <li>Date: <strong><?php echo $reference->getDate(true); ?></strong></li>
                                         <li>Technologies: <strong><?php echo $reference->technology; ?></strong></li>
                                         <li>Lien: <strong><a href="<?php echo $reference->link; ?>" target='blanck'>Voir le site</a></strong></li>
                                     </ul>

@@ -87,8 +87,8 @@ class ReferenceManager extends Model implements IModelManager {
         if ($onlineOnly) {
             $sql .= ' WHERE online = 1';
         }
-        $sql .= ' ORDER BY LENGTH(date), id DESC';
-        
+        $sql .= ' ORDER BY DATE(date) DESC, id DESC';
+
         $this->_engine->prepare($sql);
         $this->_engine->execute();
         $datas = $this->_engine->fetchAll(Database::FETCH_ASSOC);

@@ -35,7 +35,7 @@ class Reference extends Backoffice {
         //insert
         $id = $manager->create(Model::factoryObject('reference', array(
                     'name' => Http::getPost('name'),
-                    'date' => Http::getPost('date') != null ? Http::getPost('date') : date('d-m-Y'),
+                    'date' => Http::getPost('date') != null ? Http::getPost('date') : date('y-m-d'),
                     'link' => Http::getPost('link'),
                     'technology' => Http::getPost('technology'),
         )));

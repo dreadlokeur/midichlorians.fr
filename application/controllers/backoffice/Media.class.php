@@ -44,7 +44,7 @@ class Media extends Backoffice {
                     //insert
                     $this->_modelObject->type = (string) explode('/', $file['type'])[0];
                     $this->_modelObject->mime = $file['type'];
-                    $this->_modelObject->date = date('d-m-Y');
+                    $this->_modelObject->date = date('y-m-d');
                     $this->_modelObject->id = $this->_modelManager->create($this->_modelObject);
                     if (!is_null($this->_modelObject->id)) {
                         // save file
@@ -221,7 +221,6 @@ class Media extends Backoffice {
         $w = MEDIA_SIZE_PORTFOLIO_W;
         $h = MEDIA_SIZE_PORTFOLIO_H;
         if (MEDIA_SIZE_PORTFOLIO_PROPORTION) {
-
             $sourceSize = $image->getSize();
             $sourceW = $sourceSize->getWidth();
             $sourceH = $sourceSize->getHeight();

@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `media` (
   `height` int(11) DEFAULT NULL,
   `width` int(11) DEFAULT NULL,
   `size` int(11) DEFAULT NULL,
-  `date` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `type` (`type`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `reference` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `content` text COLLATE utf8_unicode_ci,
-  `date` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `date` date DEFAULT NULL,
   `link` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `technology` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `online` tinyint(1) NOT NULL DEFAULT '1',

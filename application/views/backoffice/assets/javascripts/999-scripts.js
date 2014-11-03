@@ -515,6 +515,7 @@
                 $(this).datetimepicker({
                     language: 'fr',
                     pickTime: false,
+                    format:"YYYY-MM-DD"
                 });
             });
         }

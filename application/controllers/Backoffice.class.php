@@ -23,6 +23,8 @@ class Backoffice extends Controller {
 
     protected $_security = null;
     protected $_crsf = null;
+    protected $_modelManager;
+    protected $_modelObject;
 
     public function __construct() {
         // set backoffice template

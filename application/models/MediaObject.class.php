@@ -12,6 +12,10 @@ class MediaObject extends Model implements IModelObject {
     CONST TYPE_IMAGE = 'image';
     CONST TYPE_AUDIO = 'audio';
     CONST TYPE_VIDEO = 'video';
+    CONST SIZE_ORIGINAL = 'original';
+    CONST SIZE_MEDIUM = 'medium';
+    CONST SIZE_SMALL = 'small';
+    CONST SIZE_PORTFOLIO = 'portfolio';
 
     protected $_id = null;
     protected $_filename = null;
@@ -35,11 +39,19 @@ class MediaObject extends Model implements IModelObject {
         $this->_type = $type;
     }
 
-    public function getFilename($withUrl = true) {
-        if (!$withUrl)
-            return $this->_filename;
+    public function getFilename($withUrl = true, $withPath = false, $size = false) {
+        if ($this->isImage() && $size !== false) {
+            if ($size != self::SIZE_MEDIUM && $size != self::SIZE_SMALL && $size != self::SIZE_ORIGINAL && $size != self::SIZE_PORTFOLIO)
+                throw new \Exception('Invalid media size : ' . $size);
+        }
+        $filename = $this->_filename;
+        if ($this->isImage() && $size !== false)
+            $filename = $size . '-' . $filename;
 
-        return Router::getHost(true, Http::isHttps()) . str_replace(PATH_ROOT, '', MediaManager::getDatasPath()) . $this->_filename;
+        if (!$withUrl)
+            return $withPath ? MediaManager::getDatasPath() . $filename : $filename;
+
+        return Router::getHost(true, Http::isHttps()) . str_replace(PATH_ROOT, '', MediaManager::getDatasPath()) . $filename;
     }
 
     public function isImage() {

@@ -22,7 +22,7 @@
                                     <i class="fa fa-search-plus fa-3x"></i>
                                 </div>
                             </div>
-                            <img src="<?php echo $reference->media->filename; ?>" class="img-responsive" alt="<?php echo $reference->name; ?>">
+                            <img src="<?php echo $reference->media->getFilename(true, false, 'portfolio'); ?>" class="img-responsive" alt="<?php echo $reference->name; ?>">
                         </a>
                     </div>
                 <?php } ?>

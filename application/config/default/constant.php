@@ -3,7 +3,7 @@
 $config = array(
     //NAME => VALUE
     //required
-    'ENVIRONNEMENT' => 'prod', //dev/test/prod
+    'ENVIRONNEMENT' => 'dev', //dev/test/prod
     'HOSTNAME' => 'local.dev/midichlorians.fr', // your hostname
     'ADMIN_NAME' => 'dreadlokeur', // administrator name
     'ADMIN_EMAIL' => 'dreadlokeur@gmail.com', // administrator email
@@ -31,5 +31,8 @@ $config = array(
     'ADMIN_PASSWORD' => '**********************',
     'MEDIA_MAXSIZE' => 2, //(MiB)
     'MEDIA_ACCEPT' => 'image/*, audio/*, video/*',
+    'MEDIA_SIZE_PORTFOLIO_PROPORTION' => true,
+    'MEDIA_SIZE_PORTFOLIO_W' => 360,
+    'MEDIA_SIZE_PORTFOLIO_H' => 239,
 );
 ?>

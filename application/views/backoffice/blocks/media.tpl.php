@@ -51,13 +51,13 @@
                             <label class="col-sm-2 col-sm-2 control-label">Fichier</label>
                             <div class="col-sm-10">
                                 <?php if ($this->media->isImage()) { ?>
-
                                     <ul class="list-inline margin-top-30">
                                         <li><i class="fa fa-crop fa-4x cursor-pointer media-crop" title="Recadrer"></i></li>
                                         <li><i class="fa fa-arrows-h fa-4x cursor-pointer media-flip-h" title="Retournement horizontal"></i></li>
                                         <li><i class="fa fa-arrows-v fa-4x cursor-pointer media-flip-v" title="Retournement vertical"></i></li>
                                         <li><i class="fa fa-undo fa-4x cursor-pointer media-rotate-l" title="Tourner dans le sens inverse des aiguilles d’une montre"></i></li>
                                         <li><i class="fa fa-repeat fa-4x cursor-pointer media-rotate-r" title="Tourner dans le sens des aiguilles d’une montre"></i></li>
+                                        <li><i class="fa fa-upload fa-4x cursor-pointer" title="Restaurer image originale"></i></li>
                                     </ul>
                                     <ul class="list-inline">
                                         <li>Hauteur 
@@ -103,7 +103,7 @@
 
                         <div class="form-group margin-top-20">
                             <div class="col-sm-12 text-center">
-                                <input class="btn btn-theme03 update" type="submit" value="Eregistrer"></button>
+                                <input class="btn btn-theme03 update" type="submit" value="Eregistrer">
                                 <input class="btn btn-theme04" type="reset" value="Annuler">
                             </div>
                         </div>

@@ -30,3 +30,10 @@
 .cursor-pointer {
     cursor: pointer;
 }
+#github-graph {
+    background-color: #ffffff;
+    border: 1px solid #e0ded7;
+    height: 300px;
+    margin: 12px 0;
+    overflow: auto;
+}

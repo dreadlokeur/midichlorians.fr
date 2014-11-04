@@ -25,6 +25,98 @@ class Index extends Controller {
         $this->tpl->setFile('controllers' . DS . 'Index' . DS . 'index.tpl.php');
     }
 
+    public function github() {
+        $cache = $this->_cache->read('github');
+        if ($cache) {
+            $commitsCount = $cache['commitCount'];
+            $commits = $cache['commits'];
+            $reposteries = $cache['reposteries'];
+            $reposteriesCount = $cache['reposteriesCount'];
+            $forks = $cache['forks'];
+            $forksCount = $cache['forksCount'];
+            $nodes = $cache['nodes'];
+            $edges = $cache['edges'];
+        } else {
+            $client = new \GitHubClient();
+            $reposteriesDatas = $client->repos->listUserRepositories(GITHUB_USER);
+            $commitsCount = 0;
+            $commits = array();
+            $reposteries = array();
+            $reposteriesCount = 0;
+            $forks = array();
+            $forksCount = 0;
+            foreach ($reposteriesDatas as $repostery) {
+                $client->setPage();
+                $commitsRepo = $client->repos->commits->listCommitsOnRepository(GITHUB_USER, $repostery->getName(), null, null, GITHUB_USER);
+                if ($repostery->getFork()) {
+                    $forksCount++;
+                    $forks[$repostery->getName()] = array('repo' => $repostery, 'commitsCount' => count($commitsRepo));
+                } else {
+                    $reposteriesCount++;
+                    $reposteries[$repostery->getName()] = array('repo' => $repostery, 'commitsCount' => count($commitsRepo));
+                }
+
+                $commitsCount = $commitsCount + count($commitsRepo);
+                $commits[$repostery->getName()] = $commitsRepo;
+
+                $nodes = array();
+                $edges = array();
+                $i = 0;
+                foreach ($reposteries as $repo) {
+                    $nodes [] = array(
+                        'id' => $repo['repo']->getName(),
+                        'label' => $repo['repo']->getName(),
+                        'x' => rand() + $i + 500,
+                        'y' => 50,
+                        'size' => $repo['commitsCount']
+                    );
+                    $i++;
+                }
+                foreach ($forks as $fork) {
+                    $nodes [] = array(
+                        'id' => $fork['repo']->getName(),
+                        'label' => $fork['repo']->getName(),
+                        'x' => rand() + $i + 500,
+                        'y' => 50,
+                        'size' => $fork['commitsCount']
+                    );
+                    $i++;
+                }
+
+
+                foreach ($commits as $commitRepoName => $commitDatas) {
+                    foreach ($commitDatas as $commit) {
+                        $nodes [] = array(
+                            'id' => $commit->getSha(),
+                            'label' => $commit->getCommit()->getMessage() == '' ? 'No commit message' : $commit->getCommit()->getMessage(),
+                            'x' => rand() + $i + 500,
+                            'y' => 50 + rand(),
+                            'size' => 1,
+                            'color' => 'red'
+                        );
+                        $edges[] = array('id' => $commit->getSha(), 'source' => $commit->getSha(), 'target' => $commitRepoName);
+                        $i++;
+                    }
+                }
+                $this->_cache->write('github', array(
+                    'commitCount' => $commitsCount,
+                    'commits' => $commits,
+                    'reposteries' => $reposteries,
+                    'reposteriesCount' => $reposteriesCount,
+                    'forks' => $forks,
+                    'forksCount' => $forksCount,
+                    'nodes' => $nodes,
+                    'edges' => $edges), true, Cache::EXPIRE_DAY);
+            }
+        }
+
+        //put ajax datas
+        $this->addAjaxDatas('commitsCount', $commitsCount);
+        $this->addAjaxDatas('reposteriesCount', $reposteriesCount);
+        $this->addAjaxDatas('forksCount', $forksCount);
+        $this->addAjaxDatas('graph', array('nodes' => $nodes, 'edges' => $edges));
+    }
+
     public function language($language) {
         if (!is_string($language))
             $language = (string) $language;

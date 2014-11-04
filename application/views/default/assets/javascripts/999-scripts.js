@@ -82,20 +82,47 @@
         $('.navbar-collapse ul li a').click(function () {
             $('.navbar-toggle:visible').click();
         });
-
-        $("div.holder").jPages({
-            perPage: 6,
-            containerID: "portfolio-row",
-            animation: "bounceIn",
-            previous: 'i.jPagesPrevious',
-            next: 'i.jPagesNext',
-            first: false,
-            last: false,
-        });
+        // jPages plugin
+        if ($('div.holder').length > 0) {
+            $("div.holder").jPages({
+                perPage: 6,
+                containerID: "portfolio-row",
+                animation: "bounceIn",
+                previous: 'i.jPagesPrevious',
+                next: 'i.jPagesNext',
+                first: false,
+                last: false,
+            });
+        }
+        // bootsrap lightbox
         $(document).delegate('*[data-toggle="lightbox"]', 'click', function (event) {
             event.preventDefault();
             return $(this).ekkoLightbox();
         });
+
+        // github timeline
+        if ($('#github-graph').length > 0) {
+            $.ajax({
+                type: 'GET',
+                url: urls['github'],
+                dataType: "json",
+                success: function (datas) {
+                    $('#github-commit').find('span.count').html(datas.commitsCount);
+                    $('#github-repo').find('span.count').html(datas.reposteriesCount);
+                    $('#github-fork').find('span.count').html(datas.forksCount);
+                    var s = new sigma({
+                        graph: datas.graph,
+                        container: 'github-graph',
+                        settings: {
+                            edgeColor: 'default',
+                            defaultEdgeColor: '#18bc9c',
+                            nodeColor: 'default',
+                            defaultNodeColor: '#2c3e50',
+                        }
+                    });
+                }
+            });
+        }
     });
 
 

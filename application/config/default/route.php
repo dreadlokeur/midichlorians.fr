@@ -23,7 +23,6 @@ $config = array(
         ),
         'controller' => 'index',
         'methods' => array(
-            'setAjax' => true,
             'language' => array('[[1]]')
         )
     ),
@@ -45,6 +44,17 @@ $config = array(
         'controller' => 'error',
         'methods' => array(
             'debugger' => array('[[1]]')
+        )
+    ),
+    // route name => array(options)
+    'github' => array(
+        'rules' => array(
+            'github'
+        ),
+        'controller' => 'index',
+        'requireAjax' => true,
+        'methods' => array(
+            'github'
         )
     ),
     //backoffice

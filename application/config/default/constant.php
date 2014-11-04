@@ -34,5 +34,6 @@ $config = array(
     'MEDIA_SIZE_PORTFOLIO_PROPORTION' => true,
     'MEDIA_SIZE_PORTFOLIO_W' => 360,
     'MEDIA_SIZE_PORTFOLIO_H' => 239,
+    'GITHUB_USER' => 'dreadlokeur'
 );
 ?>

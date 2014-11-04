@@ -38,6 +38,7 @@ class Reference extends Backoffice {
                     'date' => Http::getPost('date') != null ? Http::getPost('date') : date('y-m-d'),
                     'link' => Http::getPost('link'),
                     'technology' => Http::getPost('technology'),
+                    'online' => Http::getPost('online') == 'on' ? 1 : 0
         )));
         if (!is_null($id)) {
             //cache
@@ -80,10 +81,9 @@ class Reference extends Backoffice {
             $reference->date = Http::getPost('date');
             $reference->link = Http::getPost('link');
             $reference->technology = Http::getPost('technology');
-
+            $reference->online = Http::getPost('online') == 'on' ? 1 : 0;
             if ($fullUpdate) {
                 $reference->content = Http::getPost('content', null, true);
-                $reference->online = Http::getPost('online') == 'on' ? 1 : 0;
                 $reference->mediaId = Http::getPost('mediaId');
             }
 

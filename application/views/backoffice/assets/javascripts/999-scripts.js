@@ -276,10 +276,13 @@
 
         $("body").on('change', '.editableDate', function () {
             var url = urls[$(this).parents("table").attr('id') + 'Update'] + '/' + $(this).parents("tr").attr('id');
-            //TODO background animation...
             update(url, getInputsTr($(this).parents("tr")));
             //replace hide span
             $(this).find('span.hide').html($(this).find('input').val());
+        });
+        $("body").on('change', '.editableSwitch', function () {
+            var url = urls[$(this).parents("table").attr('id') + 'Update'] + '/' + $(this).parents("tr").attr('id');
+            update(url, getInputsTr($(this).parents("tr")));
         });
         $("body").on('click', '.mediaModal', function () {
             var idMedia = $(this).parent().attr('id');
@@ -501,9 +504,18 @@
             crop();
         }
 
+
         function inputSwitch() {
-            // Switch
-            $("[data-toggle='switch']").wrap('<div class="switch" />').parent().bootstrapSwitch();
+            $('body').find("[data-toggle='switch']").each(function () {
+                if ($(this).parent().hasClass('switch-animate') == true) {
+                    var parent = $(this).parent().parent().parent();
+                    var input = $(this).parent().find('input');
+                    $(this).parent().parent().remove();
+                    parent.html(input);
+
+                }
+                $(this).wrap('<div class="switch"></div>').parent().bootstrapSwitch();
+            });
         }
 
         function datepicker() {
@@ -515,7 +527,7 @@
                 $(this).datetimepicker({
                     language: 'fr',
                     pickTime: false,
-                    format:"YYYY-MM-DD"
+                    format: "YYYY-MM-DD"
                 });
             });
         }

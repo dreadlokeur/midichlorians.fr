@@ -19,7 +19,9 @@
                     <td class="editableDate" name="date"><span class="hide"><?php echo $reference->date; ?></span><input name="date" type="text" class="form-control datepicker" value="<?php echo $reference->date; ?>"></td>
                     <td class="editable" name="link"><?php echo $reference->link; ?></td>
                     <td class="editable" name="technology"><?php echo $reference->technology; ?></td>
-                    <td><input type="checkbox" id="online" name="online" data-toggle="switch" <?php if ($reference->online) { ?>checked=""<?php } ?></td>
+                    <td class="editableSwitch">
+                        <input type="checkbox" name="online" data-toggle="switch" <?php if ($reference->online) { ?>checked=""<?php } ?>>
+                    </td>
                     <td>
                         <a href="<?php echo $reference->link; ?>" target="blanck"class="btn btn-default" title="Voir" alt="Voir"><i class="fa fa-eye"></i></a>
                         <a href="<?php echo $this->getUrl('referenceDelete', array($reference->id)); ?>" class="btn btn-default delete" title="Supprimer" alt="Supprimer"><i class="fa fa-times"></i></a>
@@ -36,7 +38,9 @@
             <th><input name="date" type="text" class="form-control datepicker" placeholder="Date"></th>
             <th><input name="link" type="text" class="form-control" placeholder="Lien"></th>
             <th><input name="technology" type="text" class="form-control" placeholder="Technologies"></th>
-            <th><input type="checkbox" id="online" name="online" data-toggle="switch"></th>
+            <th>
+                <input type="checkbox" name="online" data-toggle="switch">
+            </th>
             <th>
                 <a href="<?php echo $this->getUrl('referenceAdd'); ?>" class="btn btn-default add" title="Ajouter" alt="Ajouter"><i class="fa fa-plus"></i></a>
             </th>

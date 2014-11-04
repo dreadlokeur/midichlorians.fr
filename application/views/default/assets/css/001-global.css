@@ -34,6 +34,6 @@
     background-color: #ffffff;
     border: 1px solid #e0ded7;
     height: 300px;
-    margin: 12px 0;
+    width: 100%;
     overflow: auto;
 }

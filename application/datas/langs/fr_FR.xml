@@ -2,8 +2,8 @@
 <vars>
     <site_name>Jérémie NAYRAND</site_name>
     <site_slogan>Développeur web - Freelance - Entrepreneur</site_slogan>
-    <site_desc>site desc</site_desc>
-    <site_keywords>site keywords</site_keywords>
+    <site_desc>Site personnel d'un développeur web</site_desc>
+    <site_keywords>Développeur web, freelance, entrepneur, start up</site_keywords>
     <!-- errors -->
     <e_fatal>fatal</e_fatal>
     <e_error>erreur</e_error>

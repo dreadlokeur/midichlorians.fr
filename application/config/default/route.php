@@ -1,7 +1,31 @@
 <?php
 
 $config = array(
-    // route name => array(options)
+    /*
+     * 'routeName' => array(
+     *      //controller name class  (case-insensitive), based on controllers namespace
+     *      'controller' => 'index',
+     *      //optionals
+     *      //rules
+     *      'rules' => array(
+     *          'ruleName',
+     *          'ruleName/([0-9a-zA-Z]+)/([a-z]+)/([0-9]+)'
+     *      ),
+     *      //methods into controller called... (possibility pass arguments)
+     *      'methods' => array(
+     *          'captcha' => array('[[1]]', '[[2]]', '[[3]]')
+     *      ),
+     *      'regex' => true, (true|false, check regex into rules default is false)
+     *      'requireSsl' => false,  (true|false, default is false)
+     *      'requireAjax' => false,  (true|false, default is false)
+     *      'autoSetAjax' => true,  (true|false, turn on ajax controller, when request is ajax, optional default is true)
+     *      'requireHttpMethod' => 'POST', (GET, HEAD, POST, PUT', DELETE, TRACE, OPTIONS, CONNECT, PATCH, optional default is null (all))
+     *      'httpResponseStatusCode' => code (must be an integer, default is null),
+     *      'httpProtocol' => protocol (must be a string, default is null)
+     *      'security' => array('name', 'name') (Security names, must be a array, default is empty)
+     * 
+     *  ),
+     */
     'index' => array(
         'controller' => 'index',
     ),
@@ -65,7 +89,8 @@ $config = array(
         'controller' => 'backoffice',
         'methods' => array(
             'home'
-        )
+        ),
+        'security' => array('csrf') // security names (optionnal)
     ),
     'login' => array(
         'rules' => array(
@@ -74,7 +99,8 @@ $config = array(
         'controller' => 'backoffice',
         'methods' => array(
             'login'
-        )
+        ),
+        'security' => array('csrf') // security names (optionnal)
     ),
     'logout' => array(
         'rules' => array(
@@ -86,6 +112,7 @@ $config = array(
         ),
         'requireAjax' => true,
         'requireHttpMethod' => 'POST',
+        'security' => array('csrf') // security names (optionnal)
     ),
     //medias
     'media' => array(
@@ -95,7 +122,8 @@ $config = array(
         'controller' => 'backoffice\media',
         'methods' => array(
             'all'
-        )
+        ),
+        'security' => array('csrf') // security names (optionnal)
     ),
     'mediaView' => array(
         'regex' => true,
@@ -105,7 +133,8 @@ $config = array(
         'controller' => 'backoffice\media',
         'methods' => array(
             'view' => array('[[1]]')
-        )
+        ),
+        'security' => array('csrf') // security names (optionnal)
     ),
     'mediaAdd' => array(
         'rules' => array(
@@ -117,6 +146,7 @@ $config = array(
         ),
         'requireAjax' => true,
         'requireHttpMethod' => 'POST',
+        'security' => array('csrf') // security names (optionnal)
     ),
     'mediaDelete' => array(
         'regex' => true,
@@ -129,6 +159,7 @@ $config = array(
         ),
         'requireAjax' => true,
         'requireHttpMethod' => 'POST',
+        'security' => array('csrf') // security names (optionnal)
     ),
     'mediaUpdate' => array(
         'regex' => true,
@@ -142,6 +173,7 @@ $config = array(
         ),
         'requireAjax' => true,
         'requireHttpMethod' => 'POST',
+        'security' => array('csrf') // security names (optionnal)
     ),
     //pages
     'page' => array(
@@ -151,7 +183,8 @@ $config = array(
         'controller' => 'backoffice\page',
         'methods' => array(
             'all'
-        )
+        ),
+        'security' => array('csrf') // security names (optionnal)
     ),
     'pageView' => array(
         'regex' => true,
@@ -161,7 +194,8 @@ $config = array(
         'controller' => 'backoffice\page',
         'methods' => array(
             'view' => array('[[1]]')
-        )
+        ),
+        'security' => array('csrf') // security names (optionnal)
     ),
     'pageAdd' => array(
         'rules' => array(
@@ -173,6 +207,7 @@ $config = array(
         ),
         'requireAjax' => true,
         'requireHttpMethod' => 'POST',
+        'security' => array('csrf') // security names (optionnal)
     ),
     'pageDelete' => array(
         'regex' => true,
@@ -185,6 +220,7 @@ $config = array(
         ),
         'requireAjax' => true,
         'requireHttpMethod' => 'POST',
+        'security' => array('csrf') // security names (optionnal)
     ),
     'pageUpdate' => array(
         'regex' => true,
@@ -198,6 +234,7 @@ $config = array(
         ),
         'requireAjax' => true,
         'requireHttpMethod' => 'POST',
+        'security' => array('csrf') // security names (optionnal)
     ),
     //references
     'reference' => array(
@@ -207,7 +244,8 @@ $config = array(
         'controller' => 'backoffice\reference',
         'methods' => array(
             'all'
-        )
+        ),
+        'security' => array('csrf') // security names (optionnal)
     ),
     'referenceView' => array(
         'regex' => true,
@@ -217,7 +255,8 @@ $config = array(
         'controller' => 'backoffice\reference',
         'methods' => array(
             'view' => array('[[1]]')
-        )
+        ),
+        'security' => array('csrf') // security names (optionnal)
     ),
     'referenceAdd' => array(
         'rules' => array(
@@ -229,6 +268,7 @@ $config = array(
         ),
         'requireAjax' => true,
         'requireHttpMethod' => 'POST',
+        'security' => array('csrf') // security names (optionnal)
     ),
     'referenceDelete' => array(
         'regex' => true,
@@ -241,6 +281,7 @@ $config = array(
         ),
         'requireAjax' => true,
         'requireHttpMethod' => 'POST',
+        'security' => array('csrf') // security names (optionnal)
     ),
     'referenceUpdate' => array(
         'regex' => true,
@@ -254,6 +295,7 @@ $config = array(
         ),
         'requireAjax' => true,
         'requireHttpMethod' => 'POST',
+        'security' => array('csrf') // security names (optionnal)
     ),
 );
 ?>

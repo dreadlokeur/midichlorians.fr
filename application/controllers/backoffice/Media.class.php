@@ -20,19 +20,13 @@ class Media extends Backoffice {
         $this->_modelObject = Model::factoryObject('media');
     }
 
-    public function __destruct() {
-        parent::__destruct();
-    }
-
     public function all() {
         //define tpl vars
         $this->tpl->setVar('block', $this->tpl->getPath() . 'blocks' . DS . 'medias.tpl.php', false, true);
         $this->tpl->setVar('medias', $this->_modelManager->readAll(), false, true);
         //ajax datas
-        if ($this->isAjaxController()) {
+        if ($this->isAjaxController())
             $this->tpl->setFile('blocks' . DS . 'medias.tpl.php');
-            $this->setAjaxAutoAddDatas(true);
-        }
     }
 
     public function add() {
@@ -59,18 +53,13 @@ class Media extends Backoffice {
                         // update template content
                         $this->tpl->setVar('medias', $this->_modelManager->readAll(), false, true);
                         $this->tpl->setFile('tables' . DS . 'medias.tpl.php');
+                        $this->notifySuccess('Media ajouté');
                     }
-
-                    $success = (bool) $this->_modelObject->id;
                 } catch (Exception $e) {
                     //TODO rollback...
                 }
             }
         }
-
-        // put ajax datas
-        $this->addAjaxDatas('success', isset($success) ? $success : false);
-        $this->setAjaxAutoAddDatas(true);
     }
 
     public function delete($id) {
@@ -81,10 +70,7 @@ class Media extends Backoffice {
                 $this->_deleteFile();
 
                 // delete into database
-                $success = $this->_modelManager->delete($id);
-
-
-                if ($success) {
+                if ($this->_modelManager->delete($id)) {
                     // update cache
                     $this->_cache->delete('media' . $id);
                     $this->_cache->delete('media' . 'List');
@@ -92,15 +78,12 @@ class Media extends Backoffice {
                     //update template content
                     $this->tpl->setVar('medias', $this->_readAll('media'), false, true);
                     $this->tpl->setFile('tables' . DS . 'medias.tpl.php');
+                    $this->notifySuccess('Media supprimé');
                 }
             } catch (Exception $e) {
                 //TODO rollback...
             }
         }
-
-        // put ajax datas
-        $this->addAjaxDatas('success', isset($success) ? $success : false);
-        $this->setAjaxAutoAddDatas(true);
     }
 
     public function update($id, $fullUpdate = false) {
@@ -149,18 +132,14 @@ class Media extends Backoffice {
                 }
             }
             // update into bdd
-            $success = $this->_modelManager->update($this->_modelObject);
-
-            // update cache
-            if ($success) {
-                //cache
+            if ($this->_modelManager->update($this->_modelObject)) {
+                // update cache
                 $this->_cache->delete('media' . $id);
                 $this->_cache->delete('media' . 'List');
+
+                $this->notifySuccess('Media edité');
             }
         }
-
-        // put ajax datas
-        $this->addAjaxDatas('success', isset($success) ? $success : false);
     }
 
     public function view($id) {
@@ -170,12 +149,10 @@ class Media extends Backoffice {
             $this->tpl->setVar('media', $media, false, true);
 
             //ajax datas
-            if ($this->isAjaxController()) {
+            if ($this->isAjaxController())
                 $this->tpl->setFile('blocks' . DS . 'media.tpl.php');
-                $this->setAjaxAutoAddDatas(true);
-            }
         } else
-            $this->_redirect(Router::getUrl('error', array('404')), true);
+            Http::redirect(Router::getUrl('error', array('404')));
     }
 
     private function _saveFile($file) {

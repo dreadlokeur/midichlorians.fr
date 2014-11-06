@@ -9,7 +9,6 @@ use framework\mvc\Controller;
 use framework\mvc\Model;
 use framework\network\Http;
 use framework\utility\Cookie;
-use framework\security\Form;
 
 class Index extends Controller {
 
@@ -128,8 +127,8 @@ class Index extends Controller {
         new Cookie('language', $language, true, Cookie::EXPIRE_TIME_INFINITE, str_replace(Http::getServer('SERVER_NAME'), '', $this->router->getHost()));
     }
 
-    public function captcha($formName, $type) {
-        $captcha = Security::getSecurity(Security::TYPE_FORM)->getProtection($formName, Form::PROTECTION_CAPTCHA);
+    public function captcha($securityName, $type) {
+        $captcha = Security::getSecurity($securityName);
         if (!$captcha)
             $this->router->show404(true);
 

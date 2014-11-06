@@ -13,19 +13,13 @@ class Page extends Backoffice {
         parent::__construct();
     }
 
-    public function __destruct() {
-        parent::__destruct();
-    }
-
     public function all() {
         //define tpl vars
         $this->tpl->setVar('block', $this->tpl->getPath() . 'blocks' . DS . 'pages.tpl.php', false, true);
         $this->tpl->setVar('pages', $this->_readAll('page'), false, true);
         //ajax datas
-        if ($this->isAjaxController()) {
+        if ($this->isAjaxController())
             $this->tpl->setFile('blocks' . DS . 'pages.tpl.php');
-            $this->setAjaxAutoAddDatas(true);
-        }
     }
 
     public function add() {
@@ -44,11 +38,10 @@ class Page extends Backoffice {
             //update content
             $this->tpl->setVar('pages', $this->_readAll('page'), false, true);
             $this->tpl->setFile('tables' . DS . 'pages.tpl.php');
-            $this->setAjaxAutoAddDatas(true);
 
             //put ajax datas
             $this->addAjaxDatas('id', $id);
-            $this->addAjaxDatas('success', true);
+            $this->notifySuccess('Page ajoutée');
         }
     }
 
@@ -56,8 +49,7 @@ class Page extends Backoffice {
         $page = $this->_read('page', $name);
         if ($page) {
             $manager = Model::factoryManager('page');
-            $success = $manager->delete($name);
-            if ($success) {
+            if ($manager->delete($name)) {
                 //cache
                 $this->_cache->delete('page' . $name);
                 $this->_cache->delete('page' . 'List');
@@ -65,9 +57,8 @@ class Page extends Backoffice {
                 //update content
                 $this->tpl->setVar('pages', $this->_readAll('page'), false, true);
                 $this->tpl->setFile('tables' . DS . 'pages.tpl.php');
-                $this->setAjaxAutoAddDatas(true);
+                $this->notifySuccess('Page supprimée');
             }
-            $this->addAjaxDatas('success', $success);
         }
     }
 
@@ -83,14 +74,12 @@ class Page extends Backoffice {
 
             //load model
             $manager = Model::factoryManager('page');
-            $success = $manager->update($page);
-
-            if ($success) {
+            if ($manager->update($page)) {
                 //cache
                 $this->_cache->delete('page' . $name);
                 $this->_cache->delete('page' . 'List');
+                $this->notifySuccess('Page editée');
             }
-            $this->addAjaxDatas('success', $success);
         }
     }
 
@@ -101,13 +90,10 @@ class Page extends Backoffice {
             $this->tpl->setVar('page', $page, false, true);
 
             //ajax datas
-            if ($this->isAjaxController()) {
+            if ($this->isAjaxController())
                 $this->tpl->setFile('blocks' . DS . 'page.tpl.php');
-                $this->setAjaxAutoAddDatas(true);
-            }
-        } else {
-            $this->_redirect(Router::getUrl('error', array('404')), true);
-        }
+        } else
+            Http::redirect(Router::getUrl('error', array('404')));
     }
 
 }

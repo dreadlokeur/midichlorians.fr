@@ -70,6 +70,9 @@
                 success: function (datas) {
                     if (datas.updated === true)
                         window.location.replace(urls['index']);
+                },
+                error: function () {
+                    window.location.reload();
                 }
             });
             return false;
@@ -142,10 +145,9 @@
                 data: getInputsValues(),
                 dataType: "json",
                 success: function (datas) {
-                    ajaxCallback(datas);
                     //reload
-                    if (typeof (datas.success) !== "undefined" && datas.success !== null)
-                        location.reload();
+                    if (typeof (datas.notifySuccess) !== "undefined")
+                        window.location.reload();
                     else {
                         $('#login').wiggle('start', {
                             wiggleDegrees: ['1', '2', '1', '0', '-1', '-2', '-1', '0'],
@@ -156,9 +158,12 @@
 
                         $('.form-group').addClass('has-error');
                         //update token
-                        $('input#backoffice-token').val(datas.token);
+                        $('input#csrf').val(datas.csrf);
                     }
                     $("#login-loader").removeClass('show');
+                },
+                error: function () {
+                    window.location.reload();
                 }
             });
             return false;
@@ -172,12 +177,14 @@
                 data: getInputsValues(),
                 dataType: "json",
                 success: function (datas) {
-                    ajaxCallback(datas);
                     //reload
-                    if (typeof (datas.success) !== "undefined" && datas.success !== null)
+                    if (typeof (datas.notifySuccess) !== "undefined")
                         location.reload();
                     else
-                        $('input#backoffice-token').val(datas.token);
+                        $('input#csrf').val(datas.csrf);
+                },
+                error: function () {
+                    window.location.reload();
                 }
             });
             return false;
@@ -443,7 +450,6 @@
                 url: url,
                 dataType: "json",
                 success: function (datas) {
-                    ajaxCallback(datas);
                     $('#ajax-content').fadeOut('slow');
                     $("#global-loader").addClass('show').delay(800).queue(function () {
                         $('#ajax-content').html(datas.content).addClass('hide').fadeIn('slow').removeClass('hide');
@@ -451,9 +457,12 @@
                         init();
                         $("#global-loader").removeClass('show');
                         //update token
-                        $('input#backoffice-token').val(datas.token);
+                        $('input#csrf').val(datas.csrf);
                         $(this).dequeue();
                     });
+                },
+                error: function () {
+                    window.location.reload();
                 }
             });
         }
@@ -713,23 +722,15 @@
             });
         }
 
-        function ajaxCallback(datas) {
-            if (datas.notifyError !== null) {
-                if (typeof (datas.notifyError.messages.url) !== "undefined")
-                    window.location.replace(datas.notifyError.messages.url);
-            }
-        }
-
         function remove(url, tableId, urlsList) {
             $("#global-loader").addClass('show');
             $.ajax({
                 type: 'POST',
                 url: url,
-                data: {'backoffice-token': $('input#backoffice-token').val()},
+                data: {'csrf': $('input#csrf').val()},
                 dataType: "json",
                 success: function (datas) {
-                    ajaxCallback(datas);
-                    if (typeof (datas.success) !== "undefined" && datas.success === true) {
+                    if (typeof (datas.notifySuccess) !== "undefined") {
                         // update datatable
                         if (typeof (tableId) !== "undefined") {
                             //restore inputs default value
@@ -759,7 +760,7 @@
                     }
 
                     //update token
-                    $('input#backoffice-token').val(datas.token);
+                    $('input#csrf').val(datas.csrf);
                     $("#global-loader").removeClass('show');
 
                     if (urlsList && urlsList.length !== 0) {
@@ -767,21 +768,23 @@
                         urlsList.splice(0, 1);
                         remove(url, tableId, urlsList);
                     }
+                },
+                error: function () {
+                    window.location.reload();
                 }
             });
         }
 
         function add(tableId, inputs, url) {
             $("#global-loader").addClass('show');
-            inputs['backoffice-token'] = $('input#backoffice-token').val();
+            inputs['csrf'] = $('input#csrf').val();
             $.ajax({
                 type: 'POST',
                 url: url,
                 data: inputs,
                 dataType: "json",
                 success: function (datas) {
-                    ajaxCallback(datas);
-                    if (typeof (datas.success) !== "undefined" && datas.success === true) {
+                    if (typeof (datas.notifySuccess) !== "undefined") {
                         //update datatable
                         if (typeof (tableId) !== "undefined") {
                             //restore inputs default value
@@ -809,9 +812,12 @@
                     }
 
                     // update token
-                    $('input#backoffice-token').val(datas.token);
+                    $('input#csrf').val(datas.csrf);
 
                     $("#global-loader").removeClass('show');
+                },
+                error: function () {
+                    window.location.reload();
                 }
             });
         }
@@ -820,17 +826,16 @@
 
         function update(url, inputs) {
             $("#global-loader").addClass('show');
-            inputs['backoffice-token'] = $('input#backoffice-token').val();
+            inputs['csrf'] = $('input#csrf').val();
             $.ajax({
                 type: 'POST',
                 url: url,
                 data: inputs,
                 dataType: "json",
                 success: function (datas) {
-                    ajaxCallback(datas);
-                    if (typeof (datas.success) !== "undefined" && datas.success === true) {
+                    if (typeof (datas.notifySuccess) !== "undefined") {
                         // update token
-                        $('input#backoffice-token').val(datas.token);
+                        $('input#csrf').val(datas.csrf);
                         if (typeof (datas.mediaImageSrc) !== "undefined" && datas.mediaImageSrc !== null) {
                             //update image src
                             $('body').find('#media-block img').attr('src', datas.mediaImageSrc + '?' + Math.floor(Math.random() * 100)).removeAttr('style');
@@ -847,8 +852,11 @@
                         }
                     }
                     // update token
-                    $('input#backoffice-token').val(datas.token);
+                    $('input#csrf').val(datas.csrf);
                     $("#global-loader").removeClass('show');
+                },
+                error: function () {
+                    window.location.reload();
                 }
             });
         }
@@ -866,11 +874,10 @@
                     maxFilesize: $('#formMediaDropzone').attr('max-size'),
                     init: function () {
                         this.on("sending", function (file, xhr, formData) {
-                            formData.append("backoffice-token", $('input#backoffice-token').val());
+                            formData.append("csrf", $('input#csrf').val());
                         });
                         this.on("success", function (file, response) {
-                            ajaxCallback(response);
-                            if (typeof (response.success) !== "undefined" && response.success === true) {
+                            if (typeof (response.notifySuccess) !== "undefined") {
                                 //update datatable
                                 if (typeof ('media') !== "undefined") {
                                     //restore inputs default value
@@ -895,10 +902,10 @@
                                 }
                             }
                             // update token
-                            $('input#backoffice-token').val(response.token);
+                            $('input#csrf').val(response.csrf);
                         });
                         this.on("error", function (file, response) {
-                            $('input#backoffice-token').val(response.token);
+                            window.location.reload();
                         });
                     }
                 });

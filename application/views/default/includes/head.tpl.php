@@ -2,9 +2,9 @@
     <title><?php echo $this->langs->site_name; ?><?php if ($this->title) echo ' - ' . $this->title; ?></title>
     <meta charset="<?php echo $this->getCharset(); ?>">
     <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $this->getCharset(); ?>" />
-    <meta http-equiv="Expires" content="24Oct 2018 23:59:59 GMT">
+    <meta http-equiv="Expires" content="24Oct 2018 23:59:59 GMT" />
     <meta http-equiv="Cache-Control" content="public;max-age=315360000" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <?php if (defined('GOOGLE_VERIFICATION') && !is_null(GOOGLE_VERIFICATION)) { ?>
         <meta name="google-site-verification" content="<?php echo GOOGLE_VERIFICATION; ?>" />
     <?php } ?>
@@ -25,7 +25,7 @@
     <![endif]-->
     <!--[if IE]>
             <link rel="stylesheet" href="<?php echo $this->getUrlAsset('css'); ?>no-autoload/ie.css"> 
-    <!--[endif]-->
+    <![endif]-->
     <?php if (defined('GOOGLE_UA') && !is_null(GOOGLE_UA)) { ?>
     <script type="text/javascript">
         var _gaq = _gaq || [];

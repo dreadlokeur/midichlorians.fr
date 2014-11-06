@@ -11,19 +11,9 @@
             </li>
             <li>
                 <a href="">
-                    <i class="fa fa-dashboard"></i>
+                    <i class="fa fa-bar-chart"></i>
                     <span>Analytics</span>
                 </a>
-            </li>
-            <li class="sub-menu">
-                <a href="">
-                    <i class="fa fa-desktop"></i>
-                    <span>Préférences</span>
-                </a>
-                <ul class="sub">
-                    <li><a href="">Languages</a></li>
-                    <li><a href="">Paramètres</a></li>
-                </ul>
             </li>
             <li>
                 <a href="<?php echo $this->getUrl('media'); ?>" class="ajax-switcher">
@@ -55,6 +45,17 @@
                     <li><a  href="">Emailing</a></li>
                     <li><a  href="">Rendez-vous</a></li>
                     <li><a  href="">Sites/Applications</a></li>
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href="">
+                    <i class="fa fa-wrench"></i>
+                    <span>Réglages</span>
+                </a>
+                <ul class="sub">
+                    <li><a href="">Cache</a></li>
+                    <li><a href="">Languages</a></li>
+                    <li><a href="">Paramètres</a></li>
                 </ul>
             </li>
             <li class="sub-menu">

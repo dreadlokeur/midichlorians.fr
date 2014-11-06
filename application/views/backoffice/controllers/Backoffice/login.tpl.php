@@ -15,7 +15,7 @@
                         </div>
                         <input type="submit" autofocus="" id="admin-login" name="admin-login" value="Connexion" placeholder="Connexion" class="btn btn-theme btn-block">
                         <img class="hide" id="login-loader" src="<?php echo $this->getUrlAsset('img'); ?>loader.gif" />
-                        <input type="hidden" value="<?php echo $this->token; ?>" id="backoffice-token" name="backoffice-token">
+                        <input type="hidden" value="<?php echo $this->csrf; ?>" id="csrf" name="csrf">
                     </div>
                     <!-- Modal -->
                     <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="forgot" class="modal fade">

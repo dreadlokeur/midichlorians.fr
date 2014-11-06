@@ -7,7 +7,7 @@ $config = array(
     'HOSTNAME' => 'local.dev/midichlorians.fr', // your hostname
     'ADMIN_NAME' => 'dreadlokeur', // administrator name
     'ADMIN_EMAIL' => 'dreadlokeur@gmail.com', // administrator email
-    'LANGUAGE_DEFAULT' => 'fr_FR',
+    'LANGUAGE_DEFAULT' => 'fr-FR',
     //Optional
     'SITE_MAINTENANCE' => false, // true/false (if true, running route "error" with param : "503")
     'SMTP_SERVER' => null,

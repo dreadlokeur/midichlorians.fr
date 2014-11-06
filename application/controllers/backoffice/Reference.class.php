@@ -14,19 +14,13 @@ class Reference extends Backoffice {
         parent::__construct();
     }
 
-    public function __destruct() {
-        parent::__destruct();
-    }
-
     public function all() {
         //define tpl vars
         $this->tpl->setVar('block', $this->tpl->getPath() . 'blocks' . DS . 'references.tpl.php', false, true);
         $this->tpl->setVar('references', $this->_readAll('reference'), false, true);
         //ajax datas
-        if ($this->isAjaxController()) {
+        if ($this->isAjaxController())
             $this->tpl->setFile('blocks' . DS . 'references.tpl.php');
-            $this->setAjaxAutoAddDatas(true);
-        }
     }
 
     public function add() {
@@ -47,11 +41,10 @@ class Reference extends Backoffice {
             //update content
             $this->tpl->setVar('references', $this->_readAll('reference'), false, true);
             $this->tpl->setFile('tables' . DS . 'references.tpl.php');
-            $this->setAjaxAutoAddDatas(true);
 
             //put ajax datas
             $this->addAjaxDatas('id', $id);
-            $this->addAjaxDatas('success', true);
+            $this->notifySuccess('Référence ajoutée');
         }
     }
 
@@ -59,8 +52,7 @@ class Reference extends Backoffice {
         $reference = $this->_read('reference', $id);
         if ($reference) {
             $manager = Model::factoryManager('reference');
-            $success = $manager->delete($id);
-            if ($success) {
+            if ($manager->delete($id)) {
                 //cache
                 $this->_cache->delete('reference' . $id);
                 $this->_cache->delete('reference' . 'List');
@@ -68,9 +60,8 @@ class Reference extends Backoffice {
                 //update content
                 $this->tpl->setVar('references', $this->_readAll('reference'), false, true);
                 $this->tpl->setFile('tables' . DS . 'references.tpl.php');
-                $this->setAjaxAutoAddDatas(true);
+                $this->notifySuccess('Référence supprimée');
             }
-            $this->addAjaxDatas('success', $success);
         }
     }
 
@@ -89,13 +80,12 @@ class Reference extends Backoffice {
 
             //load model
             $manager = Model::factoryManager('reference');
-            $success = $manager->update($reference);
-            if ($success) {
+            if ($manager->update($reference)) {
                 //cache
                 $this->_cache->delete('reference' . $id);
                 $this->_cache->delete('reference' . 'List');
+                $this->notifySuccess('Référence editée');
             }
-            $this->addAjaxDatas('success', $success);
         }
     }
 
@@ -107,13 +97,10 @@ class Reference extends Backoffice {
             $this->tpl->setVar('medias', $this->_readAll('media', MediaObject::TYPE_IMAGE), false, true);
 
             //ajax datas
-            if ($this->isAjaxController()) {
+            if ($this->isAjaxController())
                 $this->tpl->setFile('blocks' . DS . 'reference.tpl.php');
-                $this->setAjaxAutoAddDatas(true);
-            }
-        } else {
-            $this->_redirect(Router::getUrl('error', array('404')), true);
-        }
+        } else
+            Http::redirect(Router::getUrl('error', array('404')));
     }
 
 }

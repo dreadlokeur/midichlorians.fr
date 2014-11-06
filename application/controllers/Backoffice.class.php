@@ -36,46 +36,21 @@ class Backoffice extends Controller {
         //check login
         $this->_checkLogin();
 
-        // init security
-        $this->_security = Security::getSecurity(Security::TYPE_FORM);
-        $this->_crsf = $this->_security->getProtection('backoffice', Form::PROTECTION_CSRF);
-        $this->_crsf->create();
-
-        //check security
-        if (Http::isPost()) {
-            if (!$this->_crsf->check(Http::getPost('backoffice-token'))) {
-                $this->log->debug('Invalid token security');
-                $this->_redirect(Router::getUrl('error', array('404')), true);
-            }
-        }
-
-
-        //assign token value into tpl
-        $this->_assignToken();
-
         // define template file
         $this->tpl->setFile('controllers' . DS . 'Backoffice' . DS . 'index.tpl.php');
-    }
-
-    public function __destruct() {
-        //update token into session
-        if ($this->_crsf) {
-            $this->_crsf->set();
-            $this->log->debug('Token security updated');
-        }
     }
 
     public function login() {
         //already logged
         if (Session::getInstance()->get('admin'))
-            $this->_redirect(Router::getUrl('backoffice'), true);
+            Http::redirect(Router::getUrl('backoffice'));
         else {
             // POST LOGIN with AJAX
             if (Http::isPost() && $this->isAjaxController()) {
                 //check password, username
                 if (Application::getDebug() || (sha1(Http::getPost('admin-password')) == ADMIN_PASSWORD && Http::getPost('admin-username') == ADMIN_NAME)) {
                     $this->_connect();
-                    $this->addAjaxDatas('success', true);
+                    $this->notifySuccess('Connecté avec success');
                 }
             }
 
@@ -85,38 +60,26 @@ class Backoffice extends Controller {
     }
 
     public function logout() {
-        // POST with AJAX
-        if (Http::isPost() && $this->isAjaxController()) {
-            //delete session
-            $this->session->delete('admin', true)->regenerateId();
-            $this->log->debug('Session admin deleted');
-            //delete cookie
-            if (Cookie::get('login')) {
-                $cookie = new Cookie('login', null, false);
-                $cookie->delete();
-                $this->log->debug('Cookie login deleted');
-            }
-
-            $this->addAjaxDatas('success', true);
+        //delete session
+        $this->session->delete('admin', true)->regenerateId();
+        $this->log->debug('Session admin deleted');
+        //delete cookie
+        if (Cookie::get('login')) {
+            $cookie = new Cookie('login', null, false);
+            $cookie->delete();
+            $this->log->debug('Cookie login deleted');
         }
+
+        $this->notifySuccess('Déconnecté avec success');
     }
 
     public function home() {
         //define tpl vars
         $this->tpl->setVar('block', $this->tpl->getPath() . 'blocks' . DS . 'home.tpl.php', false, true);
-        //ajax datas
-        if ($this->isAjaxController()) {
-            $this->tpl->setFile('blocks' . DS . 'home.tpl.php');
-            $this->setAjaxAutoAddDatas(true);
-        }
-    }
 
-    private function _assignToken() {
-        //assign token value
-        if ($this->isAjaxController() || Http::isAjax())
-            $this->addAjaxDatas('token', $this->_crsf->get());
-        else
-            $this->tpl->setVar('token', $this->_crsf->get());
+        //ajax datas
+        if ($this->isAjaxController())
+            $this->tpl->setFile('blocks' . DS . 'home.tpl.php');
     }
 
     private function _checkLogin() {
@@ -138,7 +101,7 @@ class Backoffice extends Controller {
         else {
             //redirect
             if ($this->router->getCurrentRoute() != 'login')
-                $this->_redirect(Router::getUrl('login'), true);
+                Http::redirect(Router::getUrl('login'));
         }
     }
 
@@ -157,14 +120,6 @@ class Backoffice extends Controller {
             $cache->write('login-cookie', $cookie, true);
             $cache->write('login-agent', $agent, true);
         }
-    }
-
-    protected function _redirect($url, $allowAjaxRedirect = false) {
-        if ($this->isAjaxController() || Http::isAjax())
-            $this->notifyError('redirecting', array('url' => $url));
-
-        if (!$this->isAjaxController() || !Http::isAjax() || $allowAjaxRedirect)
-            Http::redirect($url);
     }
 
     protected function _read($modelType, $id) {

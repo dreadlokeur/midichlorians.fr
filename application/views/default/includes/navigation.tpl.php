@@ -1,5 +1,5 @@
-<!-- bot trap -->
-<a class="hide" href="?badbottrap"></a>
+<!-- crawler trap -->
+<a class="hide" href="?crawlertrap"></a>
 <!-- Navigation -->
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">

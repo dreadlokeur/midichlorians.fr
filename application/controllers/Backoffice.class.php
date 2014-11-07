@@ -48,7 +48,7 @@ class Backoffice extends Controller {
             // POST LOGIN with AJAX
             if (Http::isPost() && $this->isAjaxController()) {
                 //check password, username
-                if (Application::getDebug() || (sha1(Http::getPost('admin-password')) == ADMIN_PASSWORD && Http::getPost('admin-username') == ADMIN_NAME)) {
+                if (/*Application::getDebug() ||*/ (sha1(Http::getPost('admin-password')) == ADMIN_PASSWORD && Http::getPost('admin-username') == ADMIN_NAME)) {
                     $this->_connect();
                     $this->notifySuccess('Connecté avec success');
                 }
@@ -100,7 +100,7 @@ class Backoffice extends Controller {
             $this->_connect($withCookie);
         else {
             //redirect
-            if ($this->router->getCurrentRoute() != 'login')
+            if ($this->router->getCurrentRouteName() != 'login')
                 Http::redirect(Router::getUrl('login'));
         }
     }

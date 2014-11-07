@@ -100,7 +100,7 @@ $config = array(
         'methods' => array(
             'login'
         ),
-        'security' => array('csrf') // security names (optionnal)
+        'security' => array('csrf', 'flooder') // security names (optionnal)
     ),
     'logout' => array(
         'rules' => array(

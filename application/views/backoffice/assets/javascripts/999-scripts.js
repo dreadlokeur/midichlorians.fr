@@ -68,7 +68,7 @@
                 url: urls['language'] + '/' + language,
                 dataType: 'json',
                 success: function (datas) {
-                    if (datas.updated === true)
+                    if (datas.notifySuccess !== null)
                         window.location.replace(urls['index']);
                 },
                 error: function () {
@@ -146,7 +146,7 @@
                 dataType: "json",
                 success: function (datas) {
                     //reload
-                    if (typeof (datas.notifySuccess) !== "undefined")
+                    if (datas.notifySuccess !== null)
                         window.location.reload();
                     else {
                         $('#login').wiggle('start', {
@@ -178,7 +178,7 @@
                 dataType: "json",
                 success: function (datas) {
                     //reload
-                    if (typeof (datas.notifySuccess) !== "undefined")
+                    if (datas.notifySuccess !== null)
                         location.reload();
                     else
                         $('input#csrf').val(datas.csrf);
@@ -730,7 +730,7 @@
                 data: {'csrf': $('input#csrf').val()},
                 dataType: "json",
                 success: function (datas) {
-                    if (typeof (datas.notifySuccess) !== "undefined") {
+                    if (datas.notifySuccess !== null) {
                         // update datatable
                         if (typeof (tableId) !== "undefined") {
                             //restore inputs default value
@@ -784,7 +784,7 @@
                 data: inputs,
                 dataType: "json",
                 success: function (datas) {
-                    if (typeof (datas.notifySuccess) !== "undefined") {
+                    if (datas.notifySuccess !== null) {
                         //update datatable
                         if (typeof (tableId) !== "undefined") {
                             //restore inputs default value
@@ -833,9 +833,7 @@
                 data: inputs,
                 dataType: "json",
                 success: function (datas) {
-                    if (typeof (datas.notifySuccess) !== "undefined") {
-                        // update token
-                        $('input#csrf').val(datas.csrf);
+                    if (datas.notifySuccess !== null) {
                         if (typeof (datas.mediaImageSrc) !== "undefined" && datas.mediaImageSrc !== null) {
                             //update image src
                             $('body').find('#media-block img').attr('src', datas.mediaImageSrc + '?' + Math.floor(Math.random() * 100)).removeAttr('style');
@@ -877,7 +875,7 @@
                             formData.append("csrf", $('input#csrf').val());
                         });
                         this.on("success", function (file, response) {
-                            if (typeof (response.notifySuccess) !== "undefined") {
+                            if (response.notifySuccess !== null) {
                                 //update datatable
                                 if (typeof ('media') !== "undefined") {
                                     //restore inputs default value

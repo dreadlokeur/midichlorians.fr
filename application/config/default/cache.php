@@ -1,14 +1,14 @@
 <?php
 
 $config = array(
-    // cache name => array(options)
     'core' => array(
         'adaptater' => 'file', // class name (must be implement \framework\cache\IAdaptater)
         'prefix' => '_', // prefix string
         'path' => '[PATH_CACHE_CORE]',
         'gc' => 'time', // Garbage collection : time/number => toutes les x secondes, ou toutes les x requests
         'gcOption' => 86400, // seconds/request
-        'groups' => 'autoloader,logger' // group list separated by ","
+        'groups' => 'autoloader,logger,security', // group list separated by ","
+        'allowReplace' => true, //(true|false, overload route possibility default is true)
     ),
     'default' => array(
         'adaptater' => 'file', // class name (must be implement \framework\cache\IAdaptater)

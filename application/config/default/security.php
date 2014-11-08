@@ -25,7 +25,8 @@ $config = array(
         'autorun' => false, // autorun (optionnal default is false)
         'maxAttempts' => 10, // attemps fail max (optional, default is 10)
         'errorRedirect' => true, // (redirect 403 if is blacklisted, optional, default is true)
-        'cache' => 'core', // cache name
+        'cache' => 'core', // cache name (required)
+        'httpMethod' => array('POST'),
     ),
     'crawler' => array(
         'adaptater' => 'crawler', // class name (implement \framework\security\IAdaptater)

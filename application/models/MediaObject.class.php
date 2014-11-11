@@ -2,10 +2,10 @@
 
 namespace models;
 
-use framework\mvc\Model;
-use framework\mvc\IModelObject;
-use framework\mvc\Router;
-use framework\network\Http;
+use libs\Model;
+use libs\IModelObject;
+use MidiChloriansPHP\mvc\Router;
+use MidiChloriansPHP\network\Http;
 
 class MediaObject extends Model implements IModelObject {
 

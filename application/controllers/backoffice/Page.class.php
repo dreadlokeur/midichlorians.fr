@@ -3,9 +3,9 @@
 namespace controllers\backoffice;
 
 use controllers\Backoffice;
-use framework\mvc\Model;
-use framework\network\Http;
-use framework\mvc\Router;
+use libs\Model;
+use MidiChloriansPHP\network\Http;
+use MidiChloriansPHP\mvc\Router;
 
 class Page extends Backoffice {
 

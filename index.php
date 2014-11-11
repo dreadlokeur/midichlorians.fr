@@ -50,7 +50,7 @@
  * @package    MidichloriansPHP
  */
 
-use framework\Application;
+use MidiChloriansPHP\Application;
 
 // Init
 ini_set('display_errors', 1);

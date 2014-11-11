@@ -1,22 +1,22 @@
 <?php
 
-use framework\Autoloader;
-use framework\Config;
-use framework\Session;
-use framework\Security;
-use framework\Logger;
-use framework\Language;
-use framework\autoloader\Globalizer;
-use framework\error\ErrorManager;
-use framework\error\ExceptionManager;
-use framework\error\observers\Display;
-use framework\error\observers\Log;
-use framework\logger\observers\Write;
-use framework\logger\observers\Mail;
-use framework\mvc\Template;
-use framework\mvc\Router;
-use framework\utility\Cookie;
-use framework\utility\Date;
+use MidiChloriansPHP\Autoloader;
+use MidiChloriansPHP\Config;
+use MidiChloriansPHP\Session;
+use MidiChloriansPHP\Security;
+use MidiChloriansPHP\Logger;
+use MidiChloriansPHP\Language;
+use MidiChloriansPHP\autoloader\Globalizer;
+use MidiChloriansPHP\error\ErrorManager;
+use MidiChloriansPHP\error\ExceptionManager;
+use MidiChloriansPHP\error\observers\Display;
+use MidiChloriansPHP\error\observers\Log;
+use MidiChloriansPHP\logger\observers\Write;
+use MidiChloriansPHP\logger\observers\Mail;
+use MidiChloriansPHP\mvc\Template;
+use MidiChloriansPHP\mvc\Router;
+use MidiChloriansPHP\utility\Cookie;
+use MidiChloriansPHP\utility\Date;
 
 // Load config
 Config::setPath(PATH_CONFIG);
@@ -38,7 +38,7 @@ if (defined('AUTOLOADER_CACHE') && !static::getDebug()) {
         $globalizer->loadGlobalizedClass();
     }
 }
-// Add vendors directory
+// Add vendor directory
 Autoloader::addDirectory(PATH_VENDOR);
 
 // Exception, Error and Logger management
@@ -81,7 +81,7 @@ if (defined('LOGGER_WRITE') && LOGGER_WRITE && !static::getDebug())
 if (defined('LOGGER_DISPLAY') && LOGGER_DISPLAY && static::getDebug()) {
     $observers = is_string(LOGGER_DISPLAY) ? explode(',', LOGGER_DISPLAY) : LOGGER_DISPLAY;
     foreach ($observers as &$observer) {
-        $name = '\framework\logger\observers\\' . ucfirst($observer);
+        $name = '\MidiChloriansPHP\logger\observers\\' . ucfirst($observer);
         if (class_exists($name))
             $log->attach(new $name(), $observer);
     }

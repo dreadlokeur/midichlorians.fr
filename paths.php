@@ -12,7 +12,6 @@
 // Root paths
 define('DS', DIRECTORY_SEPARATOR);
 define('PATH_ROOT', __DIR__ . DS);
-define('PATH_FRAMEWORK', PATH_ROOT . 'framework' . DS);
 define('PATH_VENDOR', PATH_ROOT . 'vendor' . DS);
 
 //application

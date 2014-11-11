@@ -2,9 +2,9 @@
 
 namespace models;
 
-use framework\mvc\Model;
-use framework\mvc\IModelObject;
-use framework\utility\Date;
+use libs\Model;
+use libs\IModelObject;
+use MidiChloriansPHP\utility\Date;
 
 class ReferenceObject extends Model implements IModelObject {
 

@@ -2,10 +2,10 @@
 
 namespace models;
 
-use framework\mvc\Model;
-use framework\mvc\IModelManager;
+use libs\Model;
+use libs\IModelManager;
 use models\PageObject;
-use framework\Database;
+use MidiChloriansPHP\Database;
 
 class PageManager extends Model implements IModelManager {
 

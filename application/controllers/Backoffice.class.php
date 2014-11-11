@@ -5,19 +5,17 @@
 
 namespace controllers;
 
-use framework\mvc\Controller;
-use framework\Security;
-use framework\security\Form;
-use framework\network\Http;
-use framework\Session;
-use framework\mvc\Router;
-use framework\mvc\Template;
-use framework\utility\Tools;
-use framework\Application;
-use framework\utility\Cookie;
-use framework\security\cryptography\Hash;
-use framework\Cache;
-use framework\mvc\Model;
+use MidiChloriansPHP\mvc\Controller;
+use MidiChloriansPHP\network\Http;
+use MidiChloriansPHP\Session;
+use MidiChloriansPHP\mvc\Router;
+use MidiChloriansPHP\mvc\Template;
+use MidiChloriansPHP\utility\Tools;
+use MidiChloriansPHP\Application;
+use MidiChloriansPHP\utility\Cookie;
+use MidiChloriansPHP\security\cryptography\Hash;
+use MidiChloriansPHP\Cache;
+use libs\Model;
 
 class Backoffice extends Controller {
 
@@ -48,7 +46,7 @@ class Backoffice extends Controller {
             // POST LOGIN with AJAX
             if (Http::isPost() && $this->isAjaxController()) {
                 //check password, username
-                if (/*Application::getDebug() ||*/ (sha1(Http::getPost('admin-password')) == ADMIN_PASSWORD && Http::getPost('admin-username') == ADMIN_NAME)) {
+                if (Application::getDebug() || (sha1(Http::getPost('admin-password')) == ADMIN_PASSWORD && Http::getPost('admin-username') == ADMIN_NAME)) {
                     $this->_connect();
                     $this->notifySuccess('Connecté avec success');
                 }

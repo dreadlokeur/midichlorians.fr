@@ -2,9 +2,9 @@
 
 namespace controllers;
 
-use framework\error\ErrorManager;
-use framework\error\ExceptionManager;
-use framework\mvc\Controller;
+use MidiChloriansPHP\error\ErrorManager;
+use MidiChloriansPHP\error\ExceptionManager;
+use MidiChloriansPHP\mvc\Controller;
 
 class Error extends Controller {
 

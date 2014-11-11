@@ -1,9 +1,9 @@
 <?php
 
-namespace framework\mvc;
+namespace libs;
 
-use framework\Database;
-use framework\database\IAdaptater;
+use MidiChloriansPHP\Database;
+use MidiChloriansPHP\database\IAdaptater;
 
 abstract class Model {
 
@@ -33,8 +33,8 @@ abstract class Model {
             $modelClass = $name;
 
         $inst = new \ReflectionClass($modelClass);
-        if (!in_array('framework\\mvc\\IModelManager', $inst->getInterfaceNames()))
-            throw new \Exception('Model class must be implement framework\mvc\IModelManager');
+        if (!in_array('libs\\IModelManager', $inst->getInterfaceNames()))
+            throw new \Exception('Model class must be implement libs\IModelManager');
 
         $manager = $inst->newInstance();
         $manager->setModelDBName($dbName);
@@ -58,8 +58,8 @@ abstract class Model {
             $modelClass = $name;
 
         $inst = new \ReflectionClass($modelClass);
-        if (!in_array('framework\\mvc\\IModelObject', $inst->getInterfaceNames()))
-            throw new \Exception('Model class must be implement framework\mvc\IModelObject');
+        if (!in_array('libs\\IModelObject', $inst->getInterfaceNames()))
+            throw new \Exception('Model class must be implement libs\IModelObject');
 
         $manager = $inst->newInstance();
         $manager->hydrate($datas);

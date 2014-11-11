@@ -3,10 +3,10 @@
 namespace controllers\backoffice;
 
 use controllers\Backoffice;
-use framework\mvc\Model;
-use framework\mvc\Router;
-use framework\network\Http;
-use framework\utility\Tools;
+use libs\Model;
+use MidiChloriansPHP\mvc\Router;
+use MidiChloriansPHP\network\Http;
+use MidiChloriansPHP\utility\Tools;
 use \Imagine\Gd\Imagine;
 use \Imagine\Image\Box;
 use \Imagine\Image\Point;

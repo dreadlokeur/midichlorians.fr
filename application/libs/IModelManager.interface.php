@@ -1,6 +1,6 @@
 <?php
 
-namespace framework\mvc;
+namespace libs;
 
 interface IModelManager {
 

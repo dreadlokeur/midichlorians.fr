@@ -1,8 +1,8 @@
 {
-    "name": "dreadlokeur/Midi-ChloriansPHP",
-    "description": "Small & Quick MVC Framework for PHP 5.4.",
+    "name": "dreadlokeur/midichlorians.fr",
+    "description": "Source of my personal website",
     "type": "library",
-    "homepage": "https://github.com/dreadlokeur/Midi-ChloriansPHP",
+    "homepage": "https://github.com/dreadlokeur/midichlorians.fr",
     "license": "GPLv3",
     "authors": [
         {
@@ -10,14 +10,12 @@
             "email": "dreadlokeur@gmail.com"
         }
     ],
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.4.0",
-        "firephp/firephp-core": "dev-master",
-        "ccampbell/chromephp": "dev-master",
-        "meenie/javascript-packer": "dev-master",
-        "dreadlokeur/php-wav-utils": "dev-master",
-        "swiftmailer/swiftmailer": "5.3.*@dev",
+        "dreadlokeur/midi-chlorians-php": "dev-master",
         "imagine/imagine": "dev-master",
         "tan-tan-kanarek/github-php-client": "dev-master"
     }
 }
+

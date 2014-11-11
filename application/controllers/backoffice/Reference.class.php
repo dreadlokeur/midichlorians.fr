@@ -3,9 +3,9 @@
 namespace controllers\backoffice;
 
 use controllers\Backoffice;
-use framework\mvc\Model;
-use framework\mvc\Router;
-use framework\network\Http;
+use libs\Model;
+use MidiChloriansPHP\mvc\Router;
+use MidiChloriansPHP\network\Http;
 use models\MediaObject;
 
 class Reference extends Backoffice {

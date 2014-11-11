@@ -2,13 +2,13 @@
 
 namespace controllers;
 
-use framework\Application;
-use framework\Cache;
-use framework\Security;
-use framework\mvc\Controller;
-use framework\mvc\Model;
-use framework\network\Http;
-use framework\utility\Cookie;
+use MidiChloriansPHP\Application;
+use MidiChloriansPHP\Cache;
+use MidiChloriansPHP\Security;
+use MidiChloriansPHP\mvc\Controller;
+use libs\Model;
+use MidiChloriansPHP\network\Http;
+use MidiChloriansPHP\utility\Cookie;
 use \GitHubClient;
 
 class Index extends Controller {

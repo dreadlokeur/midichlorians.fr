@@ -2,9 +2,9 @@
 
 namespace models;
 
-use framework\mvc\Model;
-use framework\mvc\IModelObject;
-use framework\utility\Tools;
+use libs\Model;
+use libs\IModelObject;
+use MidiChloriansPHP\utility\Tools;
 
 class PageObject extends Model implements IModelObject {
     

@@ -9,7 +9,7 @@ use framework\network\Http;
 use framework\utility\Tools;
 use \Imagine\Gd\Imagine;
 use \Imagine\Image\Box;
-use Imagine\Image\Point;
+use \Imagine\Image\Point;
 use models\MediaObject;
 
 class Media extends Backoffice {

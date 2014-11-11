@@ -17,6 +17,10 @@ if (!version_compare(PHP_VERSION, '5.4.0', '>='))
 
 // Include neccesary files
 require_once 'paths.php';
+
+// Composer autoloader
+require_once PATH_VENDOR . 'autoload.php';
+
 require_once PATH_FRAMEWORK . 'autoloader' . DS . 'Classes.trait.php';
 require_once PATH_FRAMEWORK . 'autoloader' . DS . 'Directories.trait.php';
 require_once PATH_FRAMEWORK . 'autoloader' . DS . 'Namespaces.trait.php';

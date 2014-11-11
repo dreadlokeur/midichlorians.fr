@@ -39,7 +39,7 @@ if (defined('AUTOLOADER_CACHE') && !static::getDebug()) {
     }
 }
 // Add vendors directory
-Autoloader::addDirectory(PATH_VENDORS);
+Autoloader::addDirectory(PATH_VENDOR);
 
 // Exception, Error and Logger management
 $exc = ExceptionManager::getInstance()->start();

@@ -9,6 +9,7 @@ use framework\mvc\Controller;
 use framework\mvc\Model;
 use framework\network\Http;
 use framework\utility\Cookie;
+use \GitHubClient;
 
 class Index extends Controller {
 
@@ -36,7 +37,7 @@ class Index extends Controller {
             $nodes = $cache['nodes'];
             $edges = $cache['edges'];
         } else {
-            $client = new \GitHubClient();
+            $client = new GitHubClient();
             $reposteriesDatas = $client->repos->listUserRepositories(GITHUB_USER);
             $commitsCount = 0;
             $commits = array();

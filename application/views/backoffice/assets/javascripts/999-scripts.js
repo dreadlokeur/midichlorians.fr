@@ -610,13 +610,20 @@
                         setDefaultInputs();
                         $("#global-loader").addClass('show');
                         var perPage = $("select.filter-number option").filter(":selected").val();
-                        var oSettings = datatables[id].fnSettings();
-                        if (perPage === 'all') {
-                            oSettings._iDisplayLength = 9999999999999; //TODO FIX: need disabled paging and reload
-                        } else
-                            oSettings._iDisplayLength = perPage;
+                        if (perPage === 'all')
+                            perPage = 9999999999999;//TODO FIX: need disabled paging and reload
 
-                        datatables[id].fnDraw();
+                        var oSettings = datatables[id].fnSettings();
+                        oSettings._iDisplayLength = parseInt(perPage, 10);
+                        if (oSettings.fnDisplayEnd() === oSettings.fnRecordsDisplay()) {
+                            oSettings._iDisplayStart = oSettings.fnDisplayEnd() - oSettings._iDisplayLength;
+                            if (oSettings._iDisplayStart < 0)
+                                oSettings._iDisplayStart = 0;
+                        }
+                        if (oSettings._iDisplayLength === -1)
+                            oSettings._iDisplayStart = 0;
+
+                        datatables[id].fnDraw(oSettings);
                         $("#global-loader").removeClass('show');
 
 

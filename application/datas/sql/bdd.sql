@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Ven 31 Octobre 2014 à 11:38
+-- Généré le: Dim 09 Novembre 2014 à 05:44
 -- Version du serveur: 5.6.19
 -- Version de PHP: 5.4.33-1~dotdeb.1
 
@@ -36,10 +36,10 @@ CREATE TABLE IF NOT EXISTS `media` (
   `height` int(11) DEFAULT NULL,
   `width` int(11) DEFAULT NULL,
   `size` int(11) DEFAULT NULL,
-  `date` date DEFAULT NULL,
+  `date` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `type` (`type`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `reference` (
   `mediaId` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `mediaId` (`mediaId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=203 ;
 
 --
 -- Contraintes pour les tables exportées

@@ -50,7 +50,7 @@
                         </div>
                         <div class="form-group margin-top-20">
                             <div class="col-sm-12 text-center">
-                                <input class="btn btn-theme03 update" type="submit" value="Eregistrer"></button>
+                                <input class="btn btn-theme03 update" type="submit" value="Eregistrer">
                                 <input class="btn btn-theme04" type="reset" value="Annuler">
                             </div>
                         </div>

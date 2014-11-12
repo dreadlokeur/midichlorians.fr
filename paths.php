@@ -13,6 +13,7 @@
 define('DS', DIRECTORY_SEPARATOR);
 define('PATH_ROOT', __DIR__ . DS);
 define('PATH_VENDOR', PATH_ROOT . 'vendor' . DS);
+define('PATH_MIDICHLORIANSPHP', PATH_VENDOR . 'dreadlokeur' . DS . 'midi-chlorians-php' . DS . 'src' . DS);
 
 //application
 define('PATH_APP', PATH_ROOT . 'application' . DS);

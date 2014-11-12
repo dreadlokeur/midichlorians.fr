@@ -30,16 +30,14 @@ if (defined('ENVIRONNEMENT'))
     static::setEnv(ENVIRONNEMENT);
 
 // Autoloader cache
-if (defined('AUTOLOADER_CACHE') && !static::getDebug()) {
+if (defined('AUTOLOADER_CACHE') ) {
     Autoloader::setCache(AUTOLOADER_CACHE);
     //Globalize essentials classes
-    if (defined('AUTOLOADER_GLOBALIZER') && AUTOLOADER_GLOBALIZER) {
+    if (!static::getDebug() && defined('AUTOLOADER_GLOBALIZER') && AUTOLOADER_GLOBALIZER) {
         $globalizer = new Globalizer(static::getGlobalizeClassList(), true);
         $globalizer->loadGlobalizedClass();
     }
 }
-// Add vendor directory
-Autoloader::addDirectory(PATH_VENDOR);
 
 // Exception, Error and Logger management
 $exc = ExceptionManager::getInstance()->start();

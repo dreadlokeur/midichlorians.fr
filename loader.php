@@ -9,7 +9,7 @@
  * @license    GNU General Public License 3 http://www.gnu.org/licenses/gpl.html
  * @package    MidichloriansPHP
  */
-use \MidiChloriansPHP\Autoloader;
+use MidiChloriansPHP\Autoloader;
 
 // Checking
 if (!version_compare(PHP_VERSION, '5.4.0', '>='))
@@ -29,14 +29,19 @@ $autoloader->setAutoloadExtensions(array(
     'final.php',
     'interface.php',
     'trait.php',
-    'php')
-);
+    'php'
+));
 $autoloader->addNamespaces(array(
+    'MidiChloriansPHP' => PATH_MIDICHLORIANSPHP,
     'libs' => PATH_LIBS,
     'controllers' => PATH_CONTROLLERS,
-    'models' => PATH_MODELS)
-);
+    'models' => PATH_MODELS,
+));
 
 // Include autoloaders adaptaters
-$autoloader->registerAutoloaders(array('Finder', 'Cache', 'Includer'));
+$autoloader->registerAutoloaders(array(
+    'Includer' => array('prepend' => true),
+    'Cache' => array('prepend' => true),
+    'Finder' => array('prepend' => true),
+));
 ?>
